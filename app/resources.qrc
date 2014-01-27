@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="icons/clear">icons/38.png</file>
+        <file alias="icons/search">icons/16.png</file>
+        <file alias="icons/item">icons/117.png</file>
+        <file alias="icons/sort_asc">icons/sort_ascending.png</file>
+        <file alias="icons/sort_desc">icons/sort_descending.png</file>
+        <file alias="icons/bul_green">icons/bullet_green.png</file>
+        <file alias="icons/bul_red">icons/bullet_red.png</file>
+        <file alias="icons/checked">icons/bullet_valid.png</file>
+        <file>icons/database_lightning.png</file>
+        <file>icons/database_refresh.png</file>
+        <file alias="icons/script">icons/script.png</file>
+        <file alias="icons/script_lightning">icons/script_lightning.png</file>
+        <file>icons/lightning.png</file>
+        <file>icons/database_key.png</file>
+        <file>appicon.ico</file>
+        <file>icons/clear.png</file>
+        <file>icons/cancel_16.png</file>
+        <file>icons/interact.png</file>
+        <file>icons/system_software_update.png</file>
+    </qresource>
+    <qresource prefix="/etc">
+        <file alias="/script">Schema.sql</file>
+    </qresource>
+</RCC>

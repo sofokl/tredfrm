@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+		xmlns:soap12bind="http://schemas.xmlsoap.org/wsdl/soap12/"
+		xmlns:soapbind="http://schemas.xmlsoap.org/wsdl/soap/"
+		xmlns:tns="http://www.tredifarm.org"
+		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+		xmlns:xsd1="http://www.tredifarm.org"
+		name="ClientServise"
+		targetNamespace="http://www.tredifarm.org">
+	<types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				xmlns:xs1="http://www.tredifarm.org"
+				targetNamespace="http://www.tredifarm.org"
+				attributeFormDefault="unqualified"
+				elementFormDefault="qualified">
+			<xs:complexType name="Order">
+				<xs:sequence>
+					<xs:element name="provider_id"
+							type="tns:UUID"/>
+					<xs:element name="salepoint_id"
+							type="tns:UUID"/>
+					<xs:element name="rows"
+							type="tns:OrderRow"
+							minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="OrderRow">
+				<xs:sequence>
+					<xs:element name="synonim_id"
+							type="tns:UUID"/>
+					<xs:element name="count_value"
+							type="xs:integer"/>
+					<xs:element name="price_value"
+							type="xs:double"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Price">
+				<xs:sequence>
+					<xs:element name="date"
+							type="xs:dateTime"/>
+					<xs:element name="manufacturer"
+							type="xs:string"/>
+					<xs:element name="providerProduct"
+							type="tns:ProviderProduct"/>
+					<xs:element name="priceValue"
+							type="xs:double"/>
+					<xs:element name="priceVital"
+							type="xs:double"/>
+					<xs:element name="countPricePack"
+							type="xs:integer"/>
+					<xs:element name="expirationDate"
+							type="xs:date"/>
+					<xs:element name="balance"
+							type="xs:integer"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="PriceList">
+				<xs:sequence>
+					<xs:element name="items"
+							type="tns:Price"
+							minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Product">
+				<xs:sequence>
+					<xs:element name="id"
+							type="tns:UUID"/>
+					<xs:element name="name"
+							type="xs:string"/>
+					<xs:element name="groupName"
+							type="xs:string"/>
+					<xs:element name="isVital"
+							type="xs:boolean"/>
+					<xs:element name="isDeleted"
+							type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="Provider">
+				<xs:sequence>
+					<xs:element name="id"
+							type="tns:UUID"/>
+					<xs:element name="name"
+							type="xs:string"/>
+					<xs:element name="isDeleted"
+							type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ProviderList">
+				<xs:sequence>
+					<xs:element name="items"
+							type="tns:Provider"
+							minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ProviderProduct">
+				<xs:sequence>
+					<xs:element name="id"
+							type="tns:UUID"/>
+					<xs:element name="product"
+							type="tns:Product"/>
+					<xs:element name="name"
+							type="xs:string"/>
+					<xs:element name="partCode"
+							type="xs:string"/>
+					<xs:element name="provider"
+							type="tns:Provider"/>
+					<xs:element name="isDeleted"
+							type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="ProviderProductList">
+				<xs:sequence>
+					<xs:element name="items"
+							type="tns:ProviderProduct"
+							minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SalePoint">
+				<xs:sequence>
+					<xs:element name="code"
+							type="tns:UUID"/>
+					<xs:element name="name"
+							type="xs:string"/>
+					<xs:element name="isDeleted"
+							type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="SalePointList">
+				<xs:sequence>
+					<xs:element name="items"
+							type="tns:SalePoint"
+							minOccurs="0"
+							maxOccurs="unbounded"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="UUID">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="getSalePoints">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getSalePointsResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="tns:SalePointList"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getUpdate">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getUpdateResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="xs:base64Binary"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getPriceList">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getPriceListResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="tns:PriceList"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="checkUpdate">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="clientVersion"
+								type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="checkUpdateResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="xs:boolean"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sendOrder">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="params"
+								type="tns:Order"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="sendOrderResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</types>
+	<message name="getSalePointsRequestMessage">
+		<part name="parameters"
+				element="tns:getSalePoints"/>
+	</message>
+	<message name="getSalePointsResponseMessage">
+		<part name="parameters"
+				element="tns:getSalePointsResponse"/>
+	</message>
+	<message name="getUpdateRequestMessage">
+		<part name="parameters"
+				element="tns:getUpdate"/>
+	</message>
+	<message name="getUpdateResponseMessage">
+		<part name="parameters"
+				element="tns:getUpdateResponse"/>
+	</message>
+	<message name="getPriceListRequestMessage">
+		<part name="parameters"
+				element="tns:getPriceList"/>
+	</message>
+	<message name="getPriceListResponseMessage">
+		<part name="parameters"
+				element="tns:getPriceListResponse"/>
+	</message>
+	<message name="checkUpdateRequestMessage">
+		<part name="parameters"
+				element="tns:checkUpdate"/>
+	</message>
+	<message name="checkUpdateResponseMessage">
+		<part name="parameters"
+				element="tns:checkUpdateResponse"/>
+	</message>
+	<message name="sendOrderRequestMessage">
+		<part name="parameters"
+				element="tns:sendOrder"/>
+	</message>
+	<message name="sendOrderResponseMessage">
+		<part name="parameters"
+				element="tns:sendOrderResponse"/>
+	</message>
+	<portType name="ClientServisePortType">
+		<operation name="getSalePoints">
+			<input message="tns:getSalePointsRequestMessage"/>
+			<output message="tns:getSalePointsResponseMessage"/>
+		</operation>
+		<operation name="getUpdate">
+			<input message="tns:getUpdateRequestMessage"/>
+			<output message="tns:getUpdateResponseMessage"/>
+		</operation>
+		<operation name="getPriceList">
+			<input message="tns:getPriceListRequestMessage"/>
+			<output message="tns:getPriceListResponseMessage"/>
+		</operation>
+		<operation name="checkUpdate">
+			<input message="tns:checkUpdateRequestMessage"/>
+			<output message="tns:checkUpdateResponseMessage"/>
+		</operation>
+		<operation name="sendOrder">
+			<input message="tns:sendOrderRequestMessage"/>
+			<output message="tns:sendOrderResponseMessage"/>
+		</operation>
+	</portType>
+	<binding name="ClientServiseSoapBinding"
+			type="tns:ClientServisePortType">
+		<soapbind:binding style="document"
+				transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="getSalePoints">
+			<soapbind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getSalePoints"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="getUpdate">
+			<soapbind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getUpdate"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="getPriceList">
+			<soapbind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getPriceList"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="checkUpdate">
+			<soapbind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:checkUpdate"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="sendOrder">
+			<soapbind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:sendOrder"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<binding name="ClientServiseSoap12Binding"
+			type="tns:ClientServisePortType">
+		<soap12bind:binding style="document"
+				transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="getSalePoints">
+			<soap12bind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getSalePoints"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="getUpdate">
+			<soap12bind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getUpdate"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="getPriceList">
+			<soap12bind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getPriceList"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="checkUpdate">
+			<soap12bind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:checkUpdate"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="sendOrder">
+			<soap12bind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:sendOrder"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="ClientServise">
+		<port name="ClientServiseSoap"
+				binding="tns:ClientServiseSoapBinding">
+			<documentation> 
+				<wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/"
+						conformsTo="http://ws-i.org/profiles/basic/1.1"/>
+			</documentation>
+			<soapbind:address location="http://10.9.43.118:8080/tredifarm/ws/service"/>
+		</port>
+		<port name="ClientServiseSoap12"
+				binding="tns:ClientServiseSoap12Binding">
+			<soap12bind:address location="http://10.9.43.118:8080/tredifarm/ws/service"/>
+		</port>
+	</service>
+</definitions>
