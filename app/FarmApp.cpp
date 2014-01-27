@@ -16,6 +16,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QTimer>
+#include <QProcess>
 
 #include <LkCheckedDelegate.h>
 #include "settingsdialog.h"
@@ -794,8 +795,11 @@ void MainWindow::on_actionUploadOrders_triggered(){
 }
 
 void MainWindow::on_actionCheckUpdate_triggered() {
-    qDebug() << BUILDN;
-
+    QProcess *vec = new QProcess;
+    QString command = QString("updater.exe inst.exe /S /D= %1 %2").arg(qApp->applicationDirPath())
+            .arg(qApp->applicationFilePath());
+    vec->startDetached(command);
+    qApp->quit();
 }
 
 void MainWindow::on_action_Qt_triggered() {
