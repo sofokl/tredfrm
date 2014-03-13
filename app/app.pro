@@ -7,10 +7,10 @@ TEMPLATE = app
 TARGET = Tredifarm
 DESTDIR = ../bin/
 
-VER_MAJ = 0
+VER_MAJ = 1
 VER_MIN = 2
 #VER_PAT = 14
-VERSION = 0.2
+VERSION = 1.2.0
 
 BUILDN = 202
 
@@ -25,12 +25,14 @@ SOURCES += \
     main.cpp \
     FarmApp.cpp \
     settingsdialog.cpp \
-    uploaddialog.cpp
+    uploaddialog.cpp \
+    diskid32.cpp
 
 HEADERS += \
     FarmApp.h \
     settingsdialog.h \
-    uploaddialog.h
+    uploaddialog.h \
+    diskid32.h
 
 RESOURCES += \
     resources.qrc

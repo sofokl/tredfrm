@@ -11,8 +11,11 @@ int main(int argc, char *argv[])
     QTextCodec* codec = QTextCodec::codecForName("CP1251");
     QTextCodec::setCodecForLocale(codec);
     MainWindow w;
-    w.showMaximized();
 
+    if(w.needExit)
+           return 0;
+
+    w.showMaximized();
 
     
     return a.exec();

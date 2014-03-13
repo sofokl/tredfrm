@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QSortFilterProxyModel>
 #include <QProgressDialog>
+#include <QUuid>
 
 #include <LkSpinBoxDelegate.h>
 #include <LkSqlTableModel.h>
@@ -12,6 +13,7 @@
 #include <LkStoreHelper.h>
 #include <LkUpdateHelper.h>
 #include <transportproxy.h>
+#include "diskid32.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +26,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    bool needExit;
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -42,7 +45,7 @@ public slots:
 private slots:
 
     void priceDataIsGetted(int count);
-    void init_db(QString);
+    bool init_db(QString);
     void init_models();
     void init_salePoints_comboBox();
     void init_medicines_view();
@@ -64,21 +67,14 @@ private slots:
     void on_le_FilterMedicines_textChanged(const QString &arg1);
     void on_pb_UpdatePriceLists_clicked();
     void on_actionSettings_triggered();
+    void on_actionUploadOrders_triggered();
+    void on_actionCheckUpdate_triggered();
+    void on_action_Qt_triggered();
+    void on_actionAbout_triggered();
 
     void priceCommitDataOrders(QWidget *editor);
-
-    void on_actionUploadOrders_triggered();
-
-    void on_actionCheckUpdate_triggered();
-
-    void on_action_Qt_triggered();
-
     void createTransport();
-
     void createDialog(QString startLabel, int range);
-
-
-    void on_actionAbout_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -96,6 +92,8 @@ private:
     int m_lastRowProduct;
     int m_priceDataCount;
     bool m_createDB;
+    bool m_isActivated;
+    QUuid m_snUID;
 
     QProgressDialog *m_progress_dlg;
 

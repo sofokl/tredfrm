@@ -523,6 +523,12 @@ QHash<QString, QString> LkStoreHelper::getSalepoints() {
 
 }
 
+bool LkStoreHelper::chechState(QString sn) {
+
+    qDebug() << "TODO: check activate";
+    return false;
+}
+
 QString LkStoreHelper::addToOrderByCode(TData params){
 
     QString salepoint   = params["sale_code"].toString();

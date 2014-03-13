@@ -42,6 +42,7 @@ public slots:
     QHash<QString, QString> getSalepoints();
 
     QString addToOrderByCode(TData params);
+    bool chechState(QString sn);
 
 private slots:
     int getOrderBySynonim(const QString &synonim_id, const QString sp_code);

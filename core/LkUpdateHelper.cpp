@@ -22,12 +22,14 @@ void LkUpdateHelper::updateLocalData(int l_number, int n_number)
 
 void LkUpdateHelper::update_from_201(int n_number)
 {
-    qDebug() << tr("Номер текущей сборки: %1").arg(n_number);
+    //qDebug() << tr("Номер текущей сборки: %1").arg(n_number);
 
     if(n_number == 202) {
-        qDebug() << "Выполняется обновление локальных данных до версии 0.3.1";
+        qDebug() << "Выполняется обновление локальных данных до версии 1.2.0";
         s_manager->setSplitterState("0x14", QByteArray());
         s_manager->setSplitterState("0x12", QByteArray());
+
+        qDebug() << "TODO: " << "Set new build number";
         //s_manager->setBuildNumber(202);
     }
 }

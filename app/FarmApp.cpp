@@ -31,6 +31,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     m_lastRowProduct = 0;
     m_1c_proxy = 0;
 
+    diskid::SYSTEMIDSDATA geom = sprintf_sn();
+
+    QString gg = QString("%1-%2").arg(geom.system_id).arg(geom.HardDriveSerialNumber);
+
+    QUuid ns = QUuid(gg);
+    QByteArray name = QByteArray(gg.toLatin1());
+
+    m_snUID = QUuid::createUuidV3(ns, name);
+
     m_manager = new LkSettingsManager(this);
 
     m_updater = new LkUpdateHelper(m_manager, BUILDN, this);
@@ -54,7 +63,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
         m_createDB = false;
     }
 
-    init_db(path);
+    m_isActivated = init_db(path);
+
+    if(!m_isActivated){
+       QMessageBox::critical(this, tr(""), tr("Сбой при проверки активации продукта!"));
+       needExit=true;
+       return;
+    }
+
     init_models();
 
     connect(m_helper, SIGNAL(orderIsChanged(int, bool)), this, SLOT(orderChanged(int,bool)));
@@ -110,7 +126,7 @@ void MainWindow::createDialog(QString startLabel, int range) {
 
 }
 
-void MainWindow::init_db(QString path)
+bool MainWindow::init_db(QString path)
 {
     db = QSqlDatabase::addDatabase("QSQLITE", "local_conn2");
     db.setDatabaseName(path);
@@ -136,6 +152,8 @@ void MainWindow::init_db(QString path)
 
         m_helper->writeNewDbSchema(file.readAll());
     }
+
+    return m_helper->chechState(m_snUID.toString());
 
 }
 
@@ -822,11 +840,13 @@ void MainWindow::updateAllTables() {
 void MainWindow::on_actionAbout_triggered()
 {
 
-    QString text = tr("<b>ТредиФарм %1.%2</b><br><br>Номер сборки: %3<br>Основан на Qt 5.2.0").arg(QString::number(VER_MAJ),
-                                                             QString::number(VER_MIN),
-                                                             QString::number(BUILDN));
+    QString text = tr("<b> ТредиФарм %1.%2</b> (build:%3)<br><br> Код продукта: %4<br><br><br><i> Данная программа использует Qt версии %5</i>")
+            .arg(QString::number(VER_MAJ),
+                 QString::number(VER_MIN),
+                 QString::number(BUILDN),
+                 m_snUID.toString().replace("{","").replace("}", ""),
+                 QT_VERSION_STR);
 
     QMessageBox::about(this, "О ТредиФарм", text);
-
 
 }

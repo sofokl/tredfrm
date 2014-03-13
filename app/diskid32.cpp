@@ -1407,17 +1407,16 @@ SYSTEMIDSDATA sprintf_sn(bool getBirdMC)
 //      PRINT_DEBUG = true;
 //   else
 //      PRINT_DEBUG = false;
+    SYSTEMIDSDATA sys_data;
+    sys_data.system_id = 0;
+    strcpy_s(sys_data.HardDriveModelNumber,"");
+    strcpy_s(sys_data.HardDriveSerialNumber,"");
 
    long id = getHardDriveComputerID ();
 
-   SYSTEMIDSDATA sys_data;
-   sys_data.system_id = 0;
 
-   strcpy_s(sys_data.HardDriveModelNumber,"");
-   strcpy_s(sys_data.HardDriveSerialNumber,"");
-   //strcpy_s(sys_data.HardDriveModelNumber, HardDriveModelNumber);
-   //strcpy_s(sys_data.HardDriveSerialNumber,HardDriveSerialNumber);
-
+   strcpy_s(sys_data.HardDriveModelNumber, HardDriveModelNumber);
+   strcpy_s(sys_data.HardDriveSerialNumber,HardDriveSerialNumber);
    sys_data.system_id = id;
 
     if (getBirdMC)

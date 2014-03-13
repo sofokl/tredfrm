@@ -7,6 +7,7 @@
 #include <string.h>
 #include <windows.h>
 #include <winioctl.h>
+#include <QObject>
 
 //  Max number of drives assuming primary/secondary, master/slave topology
 #define  MAX_IDE_DRIVES  16
@@ -22,7 +23,7 @@
 #define IOCTL_DISK_GET_DRIVE_GEOMETRY_EX CTL_CODE(IOCTL_DISK_BASE, 0x0028, METHOD_BUFFERED, FILE_ANY_ACCESS)
 
 
-#define PRINTING_TO_CONSOLE_ALLOWED
+//#define PRINTING_TO_CONSOLE_ALLOWED
 //#define TITLE   L"DiskId32"
 
 
