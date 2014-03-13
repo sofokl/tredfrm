@@ -17,7 +17,8 @@ SOURCES += \
     LkSettingsManager.cpp \
     LkStoreHelper.cpp \
     LkSpinBoxDelegate.cpp \
-    LkUpdateHelper.cpp
+    LkUpdateHelper.cpp \
+    diskid32.cpp
 
 HEADERS += \
     LkSqlTableModel.h \
@@ -27,4 +28,5 @@ HEADERS += \
     LkStoreHelper.h \
     core_global.h \
     LkSpinBoxDelegate.h \
-    LkUpdateHelper.h
+    LkUpdateHelper.h \
+    diskid32.h
