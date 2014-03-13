@@ -40,9 +40,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     m_snUID = QUuid::createUuidV3(ns, name);
 
-    m_manager = new LkSettingsManager(this);
 
-    m_updater = new LkUpdateHelper(m_manager, BUILDN, this);
+
+    m_manager = new LkSettingsManager(this);
 
     QString clientName= m_manager->getClientName();
     if(!clientName.isEmpty())
@@ -70,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
        needExit=true;
        return;
     }
+
+    m_updater = new LkUpdateHelper(m_manager, BUILDN, &db, this);
 
     init_models();
 
@@ -129,6 +131,8 @@ void MainWindow::createDialog(QString startLabel, int range) {
 bool MainWindow::init_db(QString path)
 {
     db = QSqlDatabase::addDatabase("QSQLITE", "local_conn2");
+    qDebug() << QSqlDatabase::drivers();
+
     db.setDatabaseName(path);
 
     if(!db.open()) {

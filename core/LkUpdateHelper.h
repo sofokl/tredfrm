@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "LkSettingsManager.h"
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 #include "core_global.h"
 
@@ -10,7 +13,7 @@ class CORESHARED_EXPORT LkUpdateHelper : public QObject
 {
     Q_OBJECT
 public:
-    explicit LkUpdateHelper(LkSettingsManager *sman, int cbuild, QObject *parent = 0);
+    explicit LkUpdateHelper(LkSettingsManager *sman, int cbuild, QSqlDatabase *db, QObject *parent = 0);
 
 signals:
 
@@ -20,6 +23,7 @@ private:
     LkSettingsManager *s_manager;
     void updateLocalData(int, int);
     void update_from_201(int);
+    QSqlDatabase *m_db;
 
 };
 
