@@ -32,6 +32,14 @@ public:
                 else
                     return al;
             }
+            else if (role == Qt::TextColorRole)
+            {
+                QModelIndex index_id = index(idx.row(), m_colorColumn);
+                bool isLife = index_id.data().toBool();
+                    if(isLife)
+                        result = m_textColor;
+               return result;
+            }
             else
                 result = QSqlTableModel::data(idx, role);
 
@@ -50,9 +58,16 @@ public slots:
         alignmentColumn[column] = align;
     }
 
+    void setColorTextByValueColumn(const int column, const QColor color) {
+        m_colorColumn = column;
+        m_textColor = color;
+    }
+
 private:
     QIcon m_icon;
     int m_incolumn;
+    int m_colorColumn;
+    QColor m_textColor;
 
     QMap<int, int> alignmentColumn;
 

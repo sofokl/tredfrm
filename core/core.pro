@@ -27,4 +27,5 @@ HEADERS += \
     LkStoreHelper.h \
     core_global.h \
     LkSpinBoxDelegate.h \
-    LkUpdateHelper.h
+    LkUpdateHelper.h \
+    LkSqlQueryModel.h
