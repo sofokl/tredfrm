@@ -28,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     ui->setupUi(this);
 
+    needExit = false;
     m_lastRowProduct = 0;
     m_1c_proxy = 0;
 
@@ -39,8 +40,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QByteArray name = QByteArray(gg.toLatin1());
 
     m_snUID = QUuid::createUuidV3(ns, name);
-
-
 
     m_manager = new LkSettingsManager(this);
 
@@ -65,11 +64,17 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     m_isActivated = init_db(path);
 
+    if(needExit)
+            return;
+
+
+#ifdef CHECKACTIVATED
     if(!m_isActivated){
        QMessageBox::critical(this, tr(""), tr("Сбой при проверки активации продукта!"));
        needExit=true;
        return;
     }
+#endif
 
     m_updater = new LkUpdateHelper(m_manager, BUILDN, &db, this);
 
@@ -84,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->tableView_Price->horizontalHeader()->restoreState(m_manager->getSplitterState("0x12"));
     ui->tableView_Orders->horizontalHeader()->restoreState(m_manager->getSplitterState("0x13"));
     ui->tableView_CurrentOrder->horizontalHeader()->restoreState(m_manager->getSplitterState("0x14"));
+
 
 }
 
@@ -130,22 +136,33 @@ void MainWindow::createDialog(QString startLabel, int range) {
 
 bool MainWindow::init_db(QString path)
 {
-    db = QSqlDatabase::addDatabase("QSQLITE", "local_conn2");
-    qDebug() << QSqlDatabase::drivers();
+    db = QSqlDatabase::addDatabase("QSQLCIPHER", "local_conn2");
+
+    if(db.lastError().type() != QSqlError::NoError){
+        needExit = true;
+        QMessageBox::critical(this, tr("DataBase Error"), db.lastError().text());
+        return false;
+    }
 
     db.setDatabaseName(path);
 
     if(!db.open()) {
+        needExit = true;
         QMessageBox::critical(this, tr("Ошибка открытия базы данных"), db.lastError().text(), QMessageBox::Ok);
         db.close();
+        return false;
     }
 
     m_helper = new LkStoreHelper(this, db);
-    connect(m_helper, SIGNAL(dataIsWriten(QString,int)), this, SLOT(dataUpdateSuccess(QString, int)));
 
     QSqlError er = m_helper->startDataBase();
-    if(er.type() != QSqlError::NoError)
-        qDebug() << "Start database: " << er.text();
+    if(er.type() != QSqlError::NoError) {
+        needExit = true;
+        QMessageBox::critical(this, tr("Start database"), er.text());
+        return false;
+    }
+
+    connect(m_helper, SIGNAL(dataIsWriten(QString,int)), this, SLOT(dataUpdateSuccess(QString, int)));
 
     if(m_createDB == true) {
         QFile file(":/etc/script");

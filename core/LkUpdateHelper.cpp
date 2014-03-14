@@ -35,7 +35,9 @@ void LkUpdateHelper::update_from_201(int n_number)
 
         QString textTable("CREATE TABLE IF NOT EXISTS INF (systemid VARCHAR UNIQUE PRIMARY KEY, is_enabled BOOLEAN not null default(0))");
         QSqlQuery query(textTable, *m_db);
-        qDebug() << query.lastError();
+
+        if(query.lastError().isValid())
+            qDebug() << "Update db to version 1.2.0:" << query.lastError();
 
         qDebug() << "TODO: " << "Set new build number";
         //s_manager->setBuildNumber(202);
