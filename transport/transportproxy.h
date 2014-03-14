@@ -1,6 +1,8 @@
 #ifndef TRANSPORTPROXY_H
 #define TRANSPORTPROXY_H
 
+#define WSP "/tredifarm/ws/service"
+
 #include <QObject>
 #include "transport_global.h"
 #include "wsdl_service.h"
@@ -18,13 +20,11 @@ typedef QHash<QString, TData> TList;
 
 using namespace ClientServise;
 
-const QString WS_PATH="/tredifarm/ws/service";
-
 class TRANSPORT_EXPORT TransportProxy : public QObject
 {
     Q_OBJECT
 public:
-    explicit TransportProxy(QObject *parent = 0);
+    explicit TransportProxy(QString apikkey, QObject *parent = 0);
     bool useSsl;
     bool ignoreSslErrors;
     
@@ -53,6 +53,7 @@ private:
     QString m_endPoint;
     QString m_username;
     QString m_password;
+    QString m_apikey;
     ClientServiseSoapBinding m_service;
     bool shouldRemove(TData first, TData second);
     

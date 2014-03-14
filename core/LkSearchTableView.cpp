@@ -9,8 +9,6 @@ LkSearchTableView::LkSearchTableView(QWidget *parent) : QTableView(parent)
     m_column = -1;
 }
 
-
-
 void LkSearchTableView::keyPressEvent(QKeyEvent * event)
 {
     if( event->key() == Qt::Key_Escape )

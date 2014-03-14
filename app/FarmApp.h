@@ -9,6 +9,7 @@
 
 #include <LkSpinBoxDelegate.h>
 #include <LkSqlTableModel.h>
+#include <LkSqlQueryModel.h>
 #include <LkSettingsManager.h>
 #include <LkStoreHelper.h>
 #include <LkUpdateHelper.h>
@@ -81,7 +82,7 @@ private:
 
     QSqlDatabase db;
     LkSqlTableModel *m_medicines_model, *m_price_model, *m_orders_model, *m_details_model;
-    QSqlQueryModel *m_query_model;
+    LkSqlQueryModel *m_query_model;
     QSortFilterProxyModel* m_proxy_medicine, * m_proxy_price, *m_proxy_details;
     QSqlTableModel *m_salePoints_model;
     LkSpinBoxDelegate *price_delegate;

@@ -13,6 +13,14 @@
 				targetNamespace="http://www.tredifarm.org"
 				attributeFormDefault="unqualified"
 				elementFormDefault="qualified">
+			<xs:complexType name="OperationError">
+				<xs:sequence>
+					<xs:element name="isValid"
+							type="xs:boolean"/>
+					<xs:element name="text"
+							type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
 			<xs:complexType name="Order">
 				<xs:sequence>
 					<xs:element name="provider_id"
@@ -135,6 +143,8 @@
 							type="tns:SalePoint"
 							minOccurs="0"
 							maxOccurs="unbounded"/>
+					<xs:element name="error"
+							type="tns:OperationError"/>
 				</xs:sequence>
 			</xs:complexType>
 			<xs:simpleType name="UUID">
@@ -142,9 +152,23 @@
 					<xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"/>
 				</xs:restriction>
 			</xs:simpleType>
+			<xs:complexType name="VersionDescription">
+				<xs:sequence>
+					<xs:element name="buildNumber"
+							type="xs:integer"/>
+					<xs:element name="stringNumber"
+							type="xs:string"/>
+					<xs:element name="description"
+							type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
 			<xs:element name="getSalePoints">
 				<xs:complexType>
-					<xs:sequence/>
+					<xs:sequence>
+						<xs:element name="apiKey"
+								type="tns:UUID"
+								nillable="true"/>
+					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="getSalePointsResponse">
@@ -157,7 +181,11 @@
 			</xs:element>
 			<xs:element name="getUpdate">
 				<xs:complexType>
-					<xs:sequence/>
+					<xs:sequence>
+						<xs:element name="apiKey"
+								type="tns:UUID"
+								nillable="true"/>
+					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="getUpdateResponse">
@@ -170,7 +198,11 @@
 			</xs:element>
 			<xs:element name="getPriceList">
 				<xs:complexType>
-					<xs:sequence/>
+					<xs:sequence>
+						<xs:element name="apiKey"
+								type="tns:UUID"
+								nillable="true"/>
+					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="getPriceListResponse">
@@ -184,8 +216,10 @@
 			<xs:element name="checkUpdate">
 				<xs:complexType>
 					<xs:sequence>
+						<xs:element name="apiKey"
+								type="tns:UUID"/>
 						<xs:element name="clientVersion"
-								type="xs:string"/>
+								type="xs:integer"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -193,13 +227,17 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="return"
-								type="xs:boolean"/>
+								type="tns:VersionDescription"
+								nillable="true"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="sendOrder">
 				<xs:complexType>
 					<xs:sequence>
+						<xs:element name="apiKey"
+								type="tns:UUID"
+								nillable="true"/>
 						<xs:element name="params"
 								type="tns:Order"/>
 					</xs:sequence>
@@ -394,11 +432,11 @@
 				<wsi:Claim xmlns:wsi="http://ws-i.org/schemas/conformanceClaim/"
 						conformsTo="http://ws-i.org/profiles/basic/1.1"/>
 			</documentation>
-			<soapbind:address location="http://10.9.43.118:8080/tredifarm/ws/service"/>
+			<soapbind:address location="http://192.168.1.103/tredifarm/ws/service"/>
 		</port>
 		<port name="ClientServiseSoap12"
 				binding="tns:ClientServiseSoap12Binding">
-			<soap12bind:address location="http://10.9.43.118:8080/tredifarm/ws/service"/>
+			<soap12bind:address location="http://192.168.1.103/tredifarm/ws/service"/>
 		</port>
 	</service>
 </definitions>

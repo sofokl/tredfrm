@@ -3,10 +3,11 @@
 #include <QtCore>
 #include <QHash>
 
-TransportProxy::TransportProxy(QObject *parent) : QObject(parent)
+TransportProxy::TransportProxy(QString apikkey, QObject *parent) : QObject(parent)
 {
 
     m_service.setSoapVersion(KDSoapClientInterface::SOAP1_1);
+    m_apikey = apikkey;
 
     connect(&m_service, SIGNAL(soapError(QString,KDSoapMessage)), this, SLOT(operationError(QString,KDSoapMessage)));
 
@@ -28,7 +29,7 @@ void TransportProxy::setEndPoint(const QString &point, int port) {
     else
         protocol = "http";
 
-    this->m_endPoint = QString(protocol+"://%1:%2"+WS_PATH).arg(point.trimmed(), QString::number(port));
+    this->m_endPoint = QString(protocol+"://%1:%2"+WSP).arg(point.trimmed(), QString::number(port));
     m_service.setEndPoint(this->m_endPoint);
 
 }
@@ -44,15 +45,19 @@ bool TransportProxy::getSalePoints() {
 
     m_service.clientInterface()->setAuthentication(*auth);
 
+    TNS__GetSalePoints params;
+    params.setApiKey(m_apikey);
+
+
     TNS__GetSalePointsResponse response;
 
-    response = m_service.getSalePoints();
+    response = m_service.getSalePoints(params);
 
     if(!m_service.lastError().isEmpty()){
 
         QString text = m_service.lastError();
         text = text.replace(m_endPoint, "$END_POINT$");
-        emit transportError(tr("Ошибка при получении данных [#1]"), text, true);
+        emit transportError(tr("Ошибка при получении данных [#1]\t\t"), text, true);
         return false;
     }
 
@@ -94,7 +99,10 @@ void TransportProxy::getPriceList() {
 
     m_service.clientInterface()->setAuthentication(*auth);
 
-    TNS__GetPriceListResponse response = m_service.getPriceList();
+
+    TNS__GetPriceList params;
+    params.setApiKey(m_apikey);
+    TNS__GetPriceListResponse response = m_service.getPriceList(params);
 
     if(!m_service.lastError().isEmpty()){
         QString text = m_service.lastError();

@@ -7,7 +7,6 @@ win32:CONFIG(release, debug|release): TARGET = transport
 else:win32:CONFIG(debug, debug|release): TARGET = transportd
 else:unix: TARGET = transport
 
-
 DEFINES += TRANSPORT_LIBRARY
 
 SOURCES += \ 
@@ -46,6 +45,7 @@ HEADERS  += \
     KDSoapClient/KDSoapAuthentication.h \
     KDSoapClient/KDSoapSslHandler.h \
     KDSoapClient/KDSoapMessageWriter_p.h \
+    KDSoapClient/KDSoapGlobal.h \
     transport_global.h \
-    transportproxy.h \
-    KDSoapClient/KDSoapGlobal.h
+    transportproxy.h
+

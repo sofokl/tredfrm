@@ -100,9 +100,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::createTransport(){
 
-    qDebug() << "Create 1c Transport agent";
-
-    m_1c_proxy = new TransportProxy(this);
+    m_1c_proxy = new TransportProxy(m_snUID.toString().replace("{","").replace("}",""), this);
     m_1c_proxy->setUserName(m_manager->getUserName());
     m_1c_proxy->setPassword(m_manager->getPassword());
     m_1c_proxy->useSsl = m_manager->getUseSsl();
@@ -136,9 +134,9 @@ void MainWindow::createDialog(QString startLabel, int range) {
 
 bool MainWindow::init_db(QString path)
 {
-   // db = QSqlDatabase::addDatabase("QSQLCIPHER", "local_conn2");
+   db = QSqlDatabase::addDatabase("QSQLCIPHER", "local_conn2");
 
-    db = QSqlDatabase::addDatabase("QSQLITE", "local_conn2");
+   // db = QSqlDatabase::addDatabase("QSQLITE", "local_conn2");
 
     if(db.lastError().type() != QSqlError::NoError){
         needExit = true;
@@ -201,6 +199,7 @@ void MainWindow::init_models()
 
 void MainWindow::init_salePoints_comboBox()
 {
+
     m_salePoints_model = new QSqlTableModel(this, db);
     m_salePoints_model->setTable("salepoints");
     m_salePoints_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
@@ -231,6 +230,7 @@ void MainWindow::init_medicines_view()
     m_medicines_model->setHeaderData(3, Qt::Horizontal, tr("ЖВП"));
     m_medicines_model->setHeaderData(4, Qt::Horizontal, tr("Заказан"));
     m_medicines_model->setRowsIcon(QIcon(":/icons/item"), 2);
+    m_medicines_model->setColorTextByValueColumn(3, QColor(Qt::red));
 
     m_proxy_medicine = new QSortFilterProxyModel(this);
     m_proxy_medicine->setSourceModel(m_medicines_model);
@@ -244,6 +244,8 @@ void MainWindow::init_medicines_view()
     ui->tableView_Medicines->setEditTriggers(QTableView::NoEditTriggers);
     ui->tableView_Medicines->setColumnHidden(0, true);
     ui->tableView_Medicines->setColumnHidden(1, true);
+    ui->tableView_Medicines->setColumnHidden(3, true);
+    ui->tableView_Medicines->setColumnHidden(4, true);
     ui->tableView_Medicines->setItemDelegateForColumn(3, new LkCheckedDelegate(ui->tableView_Medicines));
     ui->tableView_Medicines->setItemDelegateForColumn(4, new LkCheckedDelegate(ui->tableView_Medicines));
     ui->tableView_Medicines->horizontalHeader()->setStretchLastSection(true);
@@ -258,7 +260,9 @@ void MainWindow::init_medicines_view()
 
 void MainWindow::init_price_view()
 {
-    m_query_model = new QSqlQueryModel(this);
+    m_query_model = new LkSqlQueryModel(this);
+    m_query_model->setRowsIcon(QIcon(":/icons/item"), 2);
+   // m_query_model->setColorTextByValueColumn(3, QColor(Qt::red));
 
     QString textQuery("SELECT PRD.Code as ProdCode, FUL.SID as SynID, Prov.NAme as ProvName, "
                        "PROV.price_update, PRD.NAME as ProdName, FUL.SynCode, FUL.SynName, "
@@ -711,7 +715,7 @@ void MainWindow::on_pb_ClearOrder_clicked() {
 void MainWindow::on_pb_UpdatePriceLists_clicked() {
 
     createTransport();
-    createDialog(tr("Шаг 1/3\nПодключение к серверу данных ..."), 30);
+    createDialog(tr("Шаг 1/4\nПодключение к серверу данных ..."), 30);
     m_progress_dlg->show();
 
     emit getPriceListUpdate();
@@ -720,12 +724,20 @@ void MainWindow::on_pb_UpdatePriceLists_clicked() {
 void MainWindow::priceDataIsGetted(int count) {
 
     m_priceDataCount = count;
-    m_progress_dlg->setLabelText(tr("Шаг 2/3\nРаспаковка данных ..."));
+    m_progress_dlg->setLabelText(tr("Шаг 3/4\nРаспаковка данных ..."));
     m_progress_dlg->setValue(15);
     QCoreApplication::processEvents();
+
 }
 
 void MainWindow::dataUpdateSuccess(const QString &part, int step) {
+
+    if(part == QString("SalePoints")){
+        m_progress_dlg->setLabelText(tr("Шаг 2/4\nПолучение данных ..."));
+        m_progress_dlg->setValue(1);
+        QCoreApplication::processEvents();
+        return;
+    }
 
     if(part == QString("Finish")){
         m_lastRowProduct = 0;
@@ -741,16 +753,9 @@ void MainWindow::dataUpdateSuccess(const QString &part, int step) {
         return;
     }
 
-    if(part == QString("SalePoints")){
-        m_progress_dlg->setLabelText(tr("Шаг 1/3\nПолучение данных ..."));
-        m_progress_dlg->setValue(1);
-        QCoreApplication::processEvents();
-        return;
-    }
-
     if(part == QString("PriceList"))
     {
-        m_progress_dlg->setLabelText(tr("Шаг 3/3\nЗапись данных ..."));
+        m_progress_dlg->setLabelText(tr("Шаг 4/4\nЗапись данных ..."));
         if(step == 0) {
             m_progress_dlg->setRange(1, m_priceDataCount);
         }
@@ -762,17 +767,9 @@ void MainWindow::dataUpdateSuccess(const QString &part, int step) {
 
 void MainWindow::on_actionSettings_triggered() {
 
-//    qDebug() << qobject_cast<QObject>(m_1c_proxy);
-
     SettingsDialog *dialog = new SettingsDialog(this, m_manager);
     dialog->setWindowModality(Qt::WindowModal);
     dialog->exec();
-
-//    m_1c_proxy->setUserName(m_manager->getUserName());
-//    m_1c_proxy->setPassword(m_manager->getPassword());
-//    m_1c_proxy->useSsl = m_manager->getUseSsl();
-//    m_1c_proxy->ignoreSslErrors = m_manager->getIgnoreSslErrors();
-//    m_1c_proxy->setEndPoint(m_manager->getServerAddress(), m_manager->getPort());
 
 }
 
@@ -800,6 +797,7 @@ void MainWindow::on_pb_SendAllOrder_clicked() {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
+
     db.close();
 
     m_manager->setSplitterState("0x01", ui->splitter_PriceGroup->saveState());
@@ -850,7 +848,14 @@ void MainWindow::orderChanged(int order_id, bool show_progrees) {
 
 void MainWindow::operationError(QString title, QString text, bool canceled) {
 
-    QMessageBox *m_box = new QMessageBox(tr("Ошибка"),title,
+    if(text.compare("0xDAED")){
+       title = "Не активированная копия программы!\t\t";
+       text = "Обратитесь в службу поддержки!";
+       canceled = true;
+       m_isActivated = false;
+    }
+
+    QMessageBox *m_box = new QMessageBox(tr("Ошибка\t\t\t\t\t"),title,
                                          QMessageBox::Critical,
                                          QMessageBox::Close,0,0,this);
     m_box->setDetailedText(text);
@@ -858,8 +863,11 @@ void MainWindow::operationError(QString title, QString text, bool canceled) {
     m_box->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     m_box->setFixedWidth(350);
     m_box->setBaseSize(350, 50);
-    if(canceled)
+
+    if(canceled){
         m_progress_dlg->cancel();
+        delete m_1c_proxy;
+    }
 
     m_box->exec();
 
@@ -875,6 +883,11 @@ void MainWindow::on_actionUploadOrders_triggered(){
 }
 
 void MainWindow::on_actionCheckUpdate_triggered() {
+
+
+    QMessageBox::information(this,tr("Поиск обновлений\t\t\t\t\t\t"),tr("Вы используете последнюю версию!"));
+    return;
+
     QProcess *vec = new QProcess;
     QString command = QString("updater.exe inst.exe /S /D= %1 %2").arg(qApp->applicationDirPath())
             .arg(qApp->applicationFilePath());
