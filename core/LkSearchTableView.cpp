@@ -7,6 +7,7 @@ LkSearchTableView::LkSearchTableView(QWidget *parent) : QTableView(parent)
     m_searchLabel->setVisible(false);
     m_searchLabel->setPlaceholderText("Введите значение для поиска");
     m_column = -1;
+
 }
 
 void LkSearchTableView::keyPressEvent(QKeyEvent * event)
@@ -71,4 +72,29 @@ void LkSearchTableView::keyboardSearch(const QString &search)
     m_searchLabel->setText(search_string);
 
     this->setCurrentIndex(lst.first());
+    this->scrollTo(lst.first(),QAbstractItemView::PositionAtCenter);
+}
+
+void LkSearchTableView::mousePressEvent(QMouseEvent *event){
+
+    m_searchLabel->setText("");
+    if( m_searchLabel->isVisible() )
+    {
+        m_searchLabel->setVisible(false);
+
+    }
+    m_column = -1;
+    QTableView::mousePressEvent(event);
+}
+
+void LkSearchTableView::focusOutEvent(QFocusEvent *event)
+{
+    m_searchLabel->setText("");
+    if( m_searchLabel->isVisible() )
+    {
+        m_searchLabel->setVisible(false);
+
+    }
+    m_column = -1;
+    QTableView::focusOutEvent(event);
 }

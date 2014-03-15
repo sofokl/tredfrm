@@ -4,6 +4,8 @@
 #include <QTableView>
 #include <QLineEdit>
 #include <QKeyEvent>
+#include <QMouseEvent>
+#include <QFocusEvent>
 #include <QAbstractItemView>
 
 #include "core_global.h"
@@ -15,6 +17,8 @@ public:
     explicit LkSearchTableView(QWidget *parent = 0);
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void keyboardSearch(const QString &search);
+    virtual void mousePressEvent(QMouseEvent * event);
+    virtual void focusOutEvent(QFocusEvent *event);
     
 signals:
     
