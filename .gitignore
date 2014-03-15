@@ -215,3 +215,4 @@ pip-log.txt
 .mr.developer.cfg
 sqlcipher3/lib/sqlcipher.lib
 sqlcipher3/lib/sqlcipher.lib
+app/SchemaV2.sql
