@@ -17,7 +17,8 @@ SOURCES += \
     LkSettingsManager.cpp \
     LkStoreHelper.cpp \
     LkSpinBoxDelegate.cpp \
-    LkUpdateHelper.cpp
+    LkUpdateHelper.cpp \
+    LkInputTableView.cpp
 
 HEADERS += \
     LkSqlTableModel.h \
@@ -28,4 +29,5 @@ HEADERS += \
     core_global.h \
     LkSpinBoxDelegate.h \
     LkUpdateHelper.h \
-    LkSqlQueryModel.h
+    LkSqlQueryModel.h \
+    LkInputTableView.h

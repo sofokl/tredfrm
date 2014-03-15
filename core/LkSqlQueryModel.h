@@ -54,6 +54,28 @@ public slots:
         m_incolumn = in_column;
     }
 
+    void exec(QList<QVariant> list) {
+
+        query().prepare(query().executedQuery());
+
+        for (int i = 0; i < list.size(); ++i)
+                query().bindValue(i,list.at(i));
+
+        query().exec();
+        setQuery(query());
+    }
+
+    void exec(int countValues, QVariant value) {
+
+        query().prepare(query().executedQuery());
+
+        for (int i = 0; i < countValues; ++i)
+                query().bindValue(i, value);
+
+        query().exec();
+        setQuery(query());
+    }
+
     void setColumnAlignment(const int column, const int align) {
         alignmentColumn[column] = align;
     }
@@ -68,7 +90,6 @@ private:
     int m_incolumn;
     int m_colorColumn;
     QColor m_textColor;
-
     QMap<int, int> alignmentColumn;
 
 };

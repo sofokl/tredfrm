@@ -189,8 +189,7 @@ void MainWindow::init_models()
             this, SLOT(currentProductChanged(QItemSelection,QItemSelection)));
     connect(ui->tableView_Orders->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             this, SLOT(currentOrderChanged(QItemSelection,QItemSelection)));
-    connect(price_delegate, SIGNAL(closeEditor(QWidget*)),
-            this, SLOT(priceCommitDataOrders(QWidget*)));
+    connect(ui->tableView_Price, SIGNAL(editFinished(int)), this, SLOT(priceCommitDataOrders(int)));
 
     connect(ui->cb_SalePoints,SIGNAL(currentIndexChanged(int)), this, SLOT(currentSalepointChanged(int)));
 
@@ -230,7 +229,7 @@ void MainWindow::init_medicines_view()
     m_medicines_model->setHeaderData(3, Qt::Horizontal, tr("ЖВП"));
     m_medicines_model->setHeaderData(4, Qt::Horizontal, tr("Заказан"));
     m_medicines_model->setRowsIcon(QIcon(":/icons/item"), 2);
-    m_medicines_model->setColorTextByValueColumn(3, QColor(Qt::red));
+    m_medicines_model->setColorTextByValueColumn(3, QColor(Qt::darkGreen));
 
     m_proxy_medicine = new QSortFilterProxyModel(this);
     m_proxy_medicine->setSourceModel(m_medicines_model);
@@ -262,13 +261,14 @@ void MainWindow::init_price_view()
 {
     m_query_model = new LkSqlQueryModel(this);
     m_query_model->setRowsIcon(QIcon(":/icons/item"), 2);
-   // m_query_model->setColorTextByValueColumn(3, QColor(Qt::red));
 
     QString textQuery("SELECT PRD.Code as ProdCode, FUL.SID as SynID, Prov.NAme as ProvName, "
                        "PROV.price_update, PRD.NAME as ProdName, FUL.SynCode, FUL.SynName, "
                        "PRICELIST.manufacturer, PRICELIST.priceVital, PRD.groupName, "
-                       "PRICELIST.CountPricePack, PRICELIST.expirationDate, PRICELIST.PriceValue, "
+                       "PRICELIST.CountPricePack, PRICELIST.expirationDate, "
+                       "PRICELIST.PriceValue as PriceCoef, PRICELIST.PriceValue, "
                        "PRICELIST.balance, ifnull(VOR.Count, 0) as ORDER_COUNT, "
+                       "PRICELIST.PriceValue as SalePrice, "
                        "ifnull(FUl.SPCODE, 0) as salepoint_code	FROM PRICELIST "
                        "LEFT JOIN (SELECT id as SID, synonims.code as SynCode, "
                        "synonims.name as SynName, product_code as ProdCODE, "
@@ -283,17 +283,10 @@ void MainWindow::init_price_view()
 
     QSqlQuery query(db);
     query.prepare(textQuery);
-    query.bindValue(0, "-");
-    query.bindValue(1, "-");
-    query.exec();
     m_query_model->setQuery(query);
+    m_query_model->exec(2,"");
 
-   // m_query_model->
-
-    //m_price_model = model;
-    //m_price_model = new LkSqlTableModel(this, db);
-    //m_price_model->setTable("V02");
-    //m_query_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+   // m_query_model->setColorTextByValueColumn(3, QColor(Qt::red));
 
     QSqlError er = m_query_model->lastError();
 
@@ -313,23 +306,17 @@ void MainWindow::init_price_view()
     m_query_model->setHeaderData(9, Qt::Horizontal, tr("Группа"));
     m_query_model->setHeaderData(10, Qt::Horizontal, tr("КЦУ"));
     m_query_model->setHeaderData(11, Qt::Horizontal, tr("Годен до"));
-    m_query_model->setHeaderData(12, Qt::Horizontal, tr("Цена с НДС"));
-    m_query_model->setHeaderData(13, Qt::Horizontal, tr("Остаток"));
-    m_query_model->setHeaderData(14, Qt::Horizontal, tr("Заказано"));
-   // m_query_model->setRowsIcon(QIcon(":/icons/item"), 2);
-   // m_query_model->setColumnAlignment(4, Qt::AlignCenter);
-   // m_query_model->setColumnAlignment(6, Qt::AlignCenter);
-   // m_query_model->setColumnAlignment(7, Qt::AlignCenter);
-   // m_query_model->setColumnAlignment(8, Qt::AlignRight);
-  //  m_query_model->setColumnAlignment(10, Qt::AlignRight);
-  //  m_query_model->setColumnAlignment(12, Qt::AlignRight);
-  //  m_query_model->setColumnAlignment(13, Qt::AlignRight);
-  //  m_query_model->setColumnAlignment(14, Qt::AlignRight);
+    m_query_model->setHeaderData(12, Qt::Horizontal, tr("Цена по коэф."));
+    m_query_model->setHeaderData(13, Qt::Horizontal, tr("Цена с НДС"));
+    m_query_model->setHeaderData(14, Qt::Horizontal, tr("Остаток"));
+    m_query_model->setHeaderData(15, Qt::Horizontal, tr("Заказано"));
+    m_query_model->setHeaderData(16, Qt::Horizontal, tr("Продажная цена"));
+    m_query_model->setHeaderData(17, Qt::Horizontal, tr("Точка продажи"));
+
 
     m_proxy_price = new QSortFilterProxyModel(this);
     m_proxy_price->setSourceModel(m_query_model);
     m_proxy_price->setSortCaseSensitivity(Qt::CaseInsensitive);
-    //m_proxy_price->setFilterKeyColumn(0); //Устанавливаем колонку по которой будем фильтровать
     m_proxy_price->setDynamicSortFilter(true);
 
     ui->tableView_Price->setModel(m_proxy_price);
@@ -348,13 +335,13 @@ void MainWindow::init_price_view()
     ui->tableView_Price->hideColumn(3);
     ui->tableView_Price->hideColumn(4);
     ui->tableView_Price->hideColumn(9);
-    ui->tableView_Price->hideColumn(15);
+    ui->tableView_Price->hideColumn(17);
 
     ui->tableView_Price->setEditTriggers(QTableView::DoubleClicked);
     ui->tableView_Price->setIconSize(QSize(12,12));
 
-    price_delegate = new LkSpinBoxDelegate(this);
-    ui->tableView_Price->setItemDelegateForColumn(14, price_delegate);
+//    price_delegate = new LkSpinBoxDelegate(this);
+//    ui->tableView_Price->setItemDelegateForColumn(14, price_delegate);
     ui->tableView_Price->sortByColumn(12, Qt::AscendingOrder);
 
 }
@@ -467,10 +454,7 @@ void MainWindow::selectAllModels(int selected_order) {
 
     ui->tableView_Medicines->selectRow(m_lastRowProduct);
 
-    //m_query_model->select();
-
     if(m_query_model->rowCount() <= 0) {
-        m_proxy_details->setFilterFixedString("__");
         ui->gb_CurrentOrder->setEnabled(false);
     }
     else {
@@ -499,24 +483,14 @@ void MainWindow::currentOrderChanged(const QItemSelection & selected, const QIte
 
 void MainWindow::currentProductChanged(const QItemSelection & selected, const QItemSelection &) {
 
-//    if(selected.isEmpty()) {
-//        m_proxy_price->setFilterFixedString("__");
-//        return;
-//    }
+    if(selected.isEmpty()) {
+        m_query_model->exec(2, "");
+        return;
+    }
 
     QString med_key = selected.indexes().at(0).data().toString();
 
-    QSqlQuery query(db);
-
-    query.prepare(m_query_model->query().executedQuery());
-
-    qDebug() << (med_key == QString("bec6ea77-3cb2-11e3-b63d-000423bc7542"));
-
-    query.bindValue(0, med_key);
-    query.bindValue(1, med_key);
-    query.exec();
-
-    m_query_model->setQuery(query);
+    m_query_model->exec(2, med_key);
 
     m_lastRowProduct = selected.indexes().at(0).row();
 
@@ -534,9 +508,6 @@ void MainWindow::currentSalepointChanged(int index) {
 
     QString filter(QString("salepoint_code='%1'").arg(code));
 
-    //m_medicines_model->setFilter(filter);
-    //m_price_model->setFilter(filter);
-
     QString filter_order = filter + QString(" And sended=%1").arg(ui->pb_ShowSended->isChecked());
     m_orders_model->setFilter(filter_order);
 
@@ -550,14 +521,14 @@ void MainWindow::on_tableView_CurrentOrder_doubleClicked(QModelIndex index) {
     QString synonim_id = synonim_index.data().toString();
 
     //Get synonim_id in price model
-    QModelIndex start_ind = m_price_model->index(0,1);
-    QModelIndexList lst = m_price_model->match(start_ind, Qt::DisplayRole,
+    QModelIndex start_ind = m_query_model->index(0,1);
+    QModelIndexList lst = m_query_model->match(start_ind, Qt::DisplayRole,
                                                synonim_id, -1, Qt::MatchFixedString);
     if(lst.count() == 0)
         return;
 
     //Get product_id
-    QString product_id = m_price_model->index(lst.at(0).row(), 0).data().toString();
+    QString product_id = m_query_model->index(lst.at(0).row(), 0).data().toString();
 
     //Get index product for product_id
     int prod_id_column = 0;
@@ -582,8 +553,7 @@ void MainWindow::on_tableView_CurrentOrder_doubleClicked(QModelIndex index) {
 
 void MainWindow::on_tableView_Price_doubleClicked(QModelIndex index) {
 
-    QModelIndex priceIndex = ui->tableView_Price->model()->index(index.row(), 14);
-    ui->tableView_Price->edit(priceIndex);
+    ui->tableView_Price->keyboardSearch(m_proxy_price->index(index.row(), ORDERCOUNT_COLUMN).data().toString());
 
 }
 
@@ -698,9 +668,9 @@ void MainWindow::on_pb_ClearOrder_clicked() {
     if(error.type() != QSqlError::NoError)
         QMessageBox::critical(this, tr("Не удалось удалить заказа             "), error.text(), QMessageBox::Close);
 
-    m_price_model->select();
-    while(m_price_model->canFetchMore())
-        m_price_model->fetchMore();
+//    m_price_model->select();
+//    while(m_price_model->canFetchMore())
+//        m_price_model->fetchMore();
 
     m_orders_model->select();
 
@@ -813,14 +783,18 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 }
 
-void MainWindow::priceCommitDataOrders(QWidget *editor) {
+void MainWindow::priceCommitDataOrders(const int value) {
 
     int cur_row     = ui->tableView_Price->selectionModel()->currentIndex().row();
     QString syn_id  = m_proxy_price->index(cur_row, 1).data().toString();
-    int new_value   = static_cast<QSpinBox*>(editor)->value();
     double price    = m_proxy_price->index(cur_row, 12).data().toFloat();
 
-    m_helper->countValueChanged(syn_id, new_value, price);
+    m_helper->countValueChanged(syn_id, value, price);
+
+    m_query_model->query().exec();
+
+    ui->tableView_Price->selectRow(cur_row);
+    ui->tableView_Price->setFocus();
 
 }
 
@@ -910,6 +884,7 @@ void MainWindow::updateAllTables() {
 
     ui->tableView_Medicines->sortByColumn(2);
     ui->tableView_Medicines->setCurrentIndex(m_proxy_medicine->index(0,2));
+
 }
 
 void MainWindow::on_actionAbout_triggered()

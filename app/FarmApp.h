@@ -1,6 +1,8 @@
 #ifndef FARMAPP_H
 #define FARMAPP_H
 
+#define ORDERCOUNT_COLUMN 15
+
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSortFilterProxyModel>
@@ -73,7 +75,7 @@ private slots:
     void on_action_Qt_triggered();
     void on_actionAbout_triggered();
 
-    void priceCommitDataOrders(QWidget *editor);
+    void priceCommitDataOrders(int value);
     void createTransport();
     void createDialog(QString startLabel, int range);
 
@@ -81,7 +83,7 @@ private:
     Ui::MainWindow *ui;
 
     QSqlDatabase db;
-    LkSqlTableModel *m_medicines_model, *m_price_model, *m_orders_model, *m_details_model;
+    LkSqlTableModel *m_medicines_model, *m_orders_model, *m_details_model;
     LkSqlQueryModel *m_query_model;
     QSortFilterProxyModel* m_proxy_medicine, * m_proxy_price, *m_proxy_details;
     QSqlTableModel *m_salePoints_model;

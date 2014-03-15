@@ -216,3 +216,4 @@ pip-log.txt
 sqlcipher3/lib/sqlcipher.lib
 sqlcipher3/lib/sqlcipher.lib
 app/SchemaV2.sql
+sqlcipher3/lib/sqlcipher.lib

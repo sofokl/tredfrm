@@ -1,4 +1,4 @@
-QT  += core sql
+QT  += core sql widgets
 QT  -= webkit
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
