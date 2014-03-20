@@ -55,7 +55,7 @@ void LkStoreHelper::writeDataPrice(TList provs, TList prods, TList syns, TList p
         writeProviders(provs);
     m_db.commit();
     emit dataIsWriten(QString("Providers"));
-    //delete &provs;
+    //delete provs;
 
     m_db.transaction();
         qDebug() << QDateTime::currentDateTime().toString("hh:mm:ss") << "Write Product";
@@ -82,46 +82,38 @@ void LkStoreHelper::writeDataPrice(TList provs, TList prods, TList syns, TList p
 
 void LkStoreHelper::writeProviders(const TList &dataList)
 {
-//    if(!m_db.isOpen()){
-//        qDebug() << "База данных не открыта.";
-//        return;
-//    }
 
     foreach (QString key, dataList.keys()) {
         TData data = dataList.value(key);
 
-//        m_db.transaction();
         QSqlQuery query(m_db);
-        query.prepare("INSERT OR IGNORE INTO PROVIDERS (code, name, price_update, is_deleted) values (?,?,?,?)");
+        query.prepare("INSERT OR IGNORE INTO PROVIDERS (code, name, price_update, is_used, is_deleted, is_unavailable) values (?,?,?,?,?,?)");
         query.bindValue(0, key);
         query.bindValue(1, data["name"]);
-        query.bindValue(2, data["price_update"]);
-        query.bindValue(3, data["is_deleted"]);
+        query.bindValue(2, data["price_date"]);
+        query.bindValue(3, false);
+        query.bindValue(4, data["is_deleted"]);
+        query.bindValue(5, data["is_unavailable"]);
         query.exec();
 
-        query.prepare("UPDATE PROVIDERS SET name=?, price_update=?, is_deleted=? WHERE code=?");
+        query.prepare("UPDATE PROVIDERS SET name=?, price_update=?, is_deleted=?, is_unavailable=? WHERE code=?");
         query.bindValue(0, data["name"]);
-        query.bindValue(1, data["price_update"]);
+        query.bindValue(1, data["price_date"]);
         query.bindValue(2, data["is_deleted"]);
-        query.bindValue(3, key);
+        query.bindValue(3, data["is_unavailable"]);
+        query.bindValue(4, key);
 
         if(!query.exec()){
             qDebug() << "Error write provider:" << query.lastError().text();
-            m_db.rollback();
             return;
         }
-//        m_db.commit();
 
     }
-
+    emit dataIsWriten(QString("Providers"));
 }
 
 void LkStoreHelper::writeProducts(const TList &dataList)
 {
-//    if(!m_db.isOpen()){
-//        qDebug() << "База данных не открыта.";
-//        return;
-//    }
 
     foreach (QString key, dataList.keys()) {
         TData data = dataList.value(key);
@@ -157,29 +149,30 @@ void LkStoreHelper::writeProducts(const TList &dataList)
 void LkStoreHelper::writeSynonims(const TList &dataList)
 {
 
-
     foreach (QString key, dataList.keys()) {
         TData data = dataList.value(key);
 
         QSqlQuery query(m_db);
-        query.prepare("INSERT OR IGNORE INTO SYNONIMS (id, code, provider_code, product_code, name, is_deleted) "
-                      "values (?,?,?,?,?,?)");
+        query.prepare("INSERT OR IGNORE INTO SYNONIMS (id, code, provider_code, product_code, name, is_cutePrice, is_deleted) "
+                      "values (?,?,?,?,?,?,?)");
         query.bindValue(0, key);
         query.bindValue(1, data["code"]);
         query.bindValue(2, data["provider_code"]);
         query.bindValue(3, data["product_code"]);
         query.bindValue(4, data["name"]);
-        query.bindValue(5, data["is_deleted"]);
+        query.bindValue(5, data["is_cutePrice"]);
+        query.bindValue(6, data["is_deleted"]);
         query.exec();
 
-        query.prepare("UPDATE SYNONIMS SET code=?, provider_code=?, product_code=?, name=?, is_deleted=? "
+        query.prepare("UPDATE SYNONIMS SET code=?, provider_code=?, product_code=?, name=?, is_cutePrice=?, is_deleted=? "
                       "WHERE id=?");
         query.bindValue(0, data["code"]);
         query.bindValue(1, data["provider_code"]);
         query.bindValue(2, data["product_code"]);
         query.bindValue(3, data["name"]);
-        query.bindValue(4, data["is_deleted"]);
-        query.bindValue(5, key);
+        query.bindValue(4, data["is_cutePrice"]);
+        query.bindValue(5, data["is_deleted"]);
+        query.bindValue(6, key);
 
         if(!query.exec()){
             qDebug() << "Error write synonims:" << query.lastError().text();
@@ -207,8 +200,8 @@ void LkStoreHelper::writePriceList(const TList &dataList)
 
         query.clear();
         query.prepare("INSERT INTO PRICELIST "
-                      "(synonim_id, manufacturer, priceValue, priceVital, countPricePack, expirationDate, balance) "
-                      "values (?,?,?,?,?,?,?)");
+                      "(synonim_id, manufacturer, priceValue, priceVital, countPricePack, expirationDate, balance, is_urgent) "
+                      "values (?,?,?,?,?,?,?,?)");
         query.bindValue(0, row["key"]);
         query.bindValue(1, row["manufacturer"]);
         query.bindValue(2, row["priceValue"]);
@@ -216,6 +209,7 @@ void LkStoreHelper::writePriceList(const TList &dataList)
         query.bindValue(4, row["countPricePack"]);
         query.bindValue(5, row["expirationDate"]);
         query.bindValue(6, row["balance"]);
+        query.bindValue(7, row["is_urgent"]);
 
         if(!query.exec()){
             qDebug() << counter << "- Error write current price:" << query.lastError().text() << rowkey;
@@ -226,7 +220,7 @@ void LkStoreHelper::writePriceList(const TList &dataList)
     emit dataIsWriten(QString("PriceList"), counter);
 }
 
-void LkStoreHelper::writeSalepoints(const TList &dataList)
+void LkStoreHelper::writeSalePoints(const TList &dataList)
 {
 
     if(!m_db.isOpen())
@@ -273,7 +267,7 @@ void LkStoreHelper::setCurrentSpCode(QString &code)
     }
 }
 
-QString LkStoreHelper::countValueChanged(QString &synonim_id, int new_value, double price, QString other_sp)
+QString LkStoreHelper::countValueChanged(QString &synonim_id, int new_value, double price, QString &expDate, QString other_sp)
 {
     QString salepoint = m_currentSalepointCode;
     if(!other_sp.isEmpty())
@@ -283,11 +277,13 @@ QString LkStoreHelper::countValueChanged(QString &synonim_id, int new_value, dou
     QSqlQuery query(m_db);
     QString text("select VOR.id as ID, vor.count_val as VAL from order_products as VOR "
                  "INNER JOIN orders ON orders.id = vor.order_id "
-                 "WHERE vor.synonim_id = ? AND orders.sended = 0 AND orders.salepoint_code = ? LIMIT 1");
+                 "WHERE vor.synonim_id = ? AND orders.sended = 0 AND vor.expirationDate = ? "
+                 "AND orders.salepoint_code = ? LIMIT 1");
 
     query.prepare(text);
     query.bindValue(0, synonim_id);
-    query.bindValue(1, salepoint);
+    query.bindValue(1, expDate);
+    query.bindValue(2, salepoint);
 
     if(!query.exec())
         return query.lastError().text().prepend("Get last value");
@@ -307,6 +303,7 @@ QString LkStoreHelper::countValueChanged(QString &synonim_id, int new_value, dou
         query.clear();
         query.prepare("DELETE FROM order_products WHERE id = ?");
         query.bindValue(0, order_products_row);
+
 
         if(!query.exec())
             return query.lastError().text().prepend("Delete from order");
@@ -330,12 +327,13 @@ QString LkStoreHelper::countValueChanged(QString &synonim_id, int new_value, dou
 
     //INSERTING TO ORDER
     query.clear();
-    query.prepare("INSERT into order_products (synonim_id, order_id, count_val, price) "
-                  "VALUES (?, ?, ?, ?)");
+    query.prepare("INSERT into order_products (synonim_id, expirationDate, order_id, count_val, price) "
+                  "VALUES (?,?, ?, ?, ?)");
     query.bindValue(0, synonim_id);
-    query.bindValue(1, order_id);
-    query.bindValue(2, new_value);
-    query.bindValue(3, price);
+     query.bindValue(1, expDate);
+    query.bindValue(2, order_id);
+    query.bindValue(3, new_value);
+    query.bindValue(4, price);
 
     if(!query.exec())
         return query.lastError().text().prepend("Insert to order: ");
@@ -481,12 +479,40 @@ void LkStoreHelper::writeOrderAsSended(int id, QString number) {
     emit orderIsChanged(id, true);
 }
 
-QHash<QString, QString> LkStoreHelper::getProviders() {
+QList<QString> LkStoreHelper::getUsedProviderList() {
+
+    QList<QString> providers;
+
+    QSqlQuery query(m_db);
+    QString text("SELECT code, name FROM PROVIDERS WHERE %1");
+
+    text  = text.arg("is_deleted=0 AND is_used=1");
+
+    query.prepare(text);
+    if(!query.exec()){
+        qDebug() << "Error get providers " << query.lastError().text();
+        return providers;
+    }
+
+    while(query.next()){
+        QString code = query.record().value(0).toString();
+        providers << code;
+    }
+
+    return providers;
+
+}
+
+QHash<QString, QString> LkStoreHelper::getLocalProviders() {
 
     QHash<QString, QString> providers;
 
     QSqlQuery query(m_db);
-    query.prepare("SELECT code, name FROM PROVIDERS WHERE is_deleted = 0");
+    QString text("SELECT code, name FROM PROVIDERS WHERE %1");
+
+    text  = text.arg("is_deleted=0 AND is_used=1");
+
+    query.prepare(text);
     if(!query.exec()){
         qDebug() << "Error get providers " << query.lastError().text();
         return providers;
@@ -504,22 +530,22 @@ QHash<QString, QString> LkStoreHelper::getProviders() {
 
 QHash<QString, QString> LkStoreHelper::getSalepoints() {
 
-    QHash<QString, QString> providers;
+    QHash<QString, QString> salepoints;
 
     QSqlQuery query(m_db);
     query.prepare("SELECT code, name FROM SALEPOINTS WHERE is_deleted = 0");
     if(!query.exec()){
         qDebug() << "Error get salepoint " << query.lastError().text();
-        return providers;
+        return salepoints;
     }
 
     while(query.next()){
         QString code = query.record().value(0).toString();
         QString name = query.record().value(1).toString();
-        providers.insert(code, name);
+        salepoints.insert(code, name);
     }
 
-    return providers;
+    return salepoints;
 
 }
 
@@ -557,5 +583,30 @@ QString LkStoreHelper::addToOrderByCode(TData params){
 
     QString er = countValueChanged(syn_id, count, price, salepoint);
     return er;
+
+}
+
+QString LkStoreHelper::getTextPriceView(){
+
+    QString textQuery("SELECT PRD.Code as ProdCode, FUL.SID as SynID, Prov.NAme as ProvName, "
+                       "PROV.price_update, PRD.NAME as ProdName, FUL.SynCode, FUL.SynName, "
+                       "PRICELIST.manufacturer, PRICELIST.priceVital, PRD.groupName, "
+                       "PRICELIST.CountPricePack, PRICELIST.expirationDate, "
+                       "PRICELIST.PriceValue * Prov.coef as PriceCoef, PRICELIST.PriceValue, "
+                       "PRICELIST.balance, ifnull(VOR.Count, 0) as ORDER_COUNT, "
+                       "PRICELIST.PriceValue * (1 + FUL.markups / 100) as SalePrice, "
+                       "ifnull(FUl.SPCODE, 0) as salepoint_code, PRICELIST.is_urgent, FUL.is_cutePrice "
+                       "FROM PRICELIST "
+                       "LEFT JOIN (SELECT id as SID, synonims.code as SynCode, "
+                       "synonims.name as SynName, product_code as ProdCODE, "
+                       "provider_code as ProvCode, sp.code as SPCODE, sp.markups, synonims.is_cutePrice from synonims "
+                       "LEFT JOIN SAlepoints as sp WHERE sp.is_default = 1 AND "
+                       "product_code = ?) as FUL ON FUL.SID = PRICELIST.synonim_id "
+                       "LEFT JOIN V04 as VOR ON VOR.synonim_id = FUL.SID AND "
+                       "VOR.salepoint_code = FUl.SPCODE AND sended=0 AND VOR.expDate = PRICELIST.expirationDate "
+                       "LEFT JOIN PRODUCTS as PRD ON PRD.code = FUL.ProdCODE "
+                       "LEFT JOIN PROVIDERS as PROV ON PROV.CODE = FUL.ProvCode AND PROV.is_used = 1 "
+                       "WHERE PRD.code  = ?");
+    return textQuery;
 
 }

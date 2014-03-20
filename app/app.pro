@@ -1,5 +1,5 @@
 QT  += core sql widgets
-QT  -= webkit
+QT  -= webkit angle
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = app
@@ -26,21 +26,25 @@ SOURCES += \
     FarmApp.cpp \
     settingsdialog.cpp \
     uploaddialog.cpp \
-    diskid32.cpp
+    diskid32.cpp \
+    providersdialog.cpp
 
 HEADERS += \
     FarmApp.h \
     settingsdialog.h \
     uploaddialog.h \
-    diskid32.h
+    diskid32.h \
+    providersdialog.h
 
 RESOURCES += \
     resources.qrc
 
 FORMS += \
-    mainwindow.ui \
     settingsdialog.ui \
-    uploaddialog.ui
+    uploaddialog.ui \
+    MainWindow.ui \
+    providersdialog.ui \
+    providersdialog.ui
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../bin/ -lcore
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../bin/ -lcored

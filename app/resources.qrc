@@ -19,6 +19,8 @@
         <file>icons/cancel_16.png</file>
         <file>icons/interact.png</file>
         <file>icons/system_software_update.png</file>
+        <file alias="icons/bul_blue">icons/bullet_blue.png</file>
+        <file alias="icons/bul_orange">icons/bullet_orange.png</file>
     </qresource>
     <qresource prefix="/etc">
         <file alias="/script">Schema.sql</file>

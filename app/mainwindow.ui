@@ -139,6 +139,12 @@
                <property name="tabKeyNavigation">
                 <bool>false</bool>
                </property>
+               <property name="alternatingRowColors">
+                <bool>false</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SingleSelection</enum>
+               </property>
                <property name="cornerButtonEnabled">
                 <bool>false</bool>
                </property>
@@ -266,9 +272,6 @@
                <property name="sortingEnabled">
                 <bool>true</bool>
                </property>
-               <property name="cornerButtonEnabled">
-                <bool>false</bool>
-               </property>
                <attribute name="horizontalHeaderCascadingSectionResizes">
                 <bool>true</bool>
                </attribute>
@@ -374,7 +377,7 @@
           </layout>
          </item>
          <item row="1" column="0">
-          <widget class="LkSearchTableView" name="tableView_Orders">
+          <widget class="LkInputTableView" name="tableView_Orders">
            <property name="font">
             <font>
              <family>Tahoma</family>
@@ -461,7 +464,7 @@
           </layout>
          </item>
          <item row="1" column="0">
-          <widget class="LkSearchTableView" name="tableView_CurrentOrder">
+          <widget class="LkInputTableView" name="tableView_CurrentOrder">
            <property name="font">
             <font>
              <family>Tahoma</family>
@@ -517,6 +520,8 @@
     <property name="title">
      <string>Сервис</string>
     </property>
+    <addaction name="action_Providers"/>
+    <addaction name="separator"/>
     <addaction name="actionSettings"/>
    </widget>
    <addaction name="menu"/>
@@ -569,28 +574,9 @@
     <string>F1</string>
    </property>
   </action>
-  <action name="action_1">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
+  <action name="action_Providers">
    <property name="text">
-    <string>Поставщик 1</string>
-   </property>
-  </action>
-  <action name="action_2">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Поставщик 2</string>
-   </property>
-  </action>
-  <action name="action_3">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Поставщик 3</string>
+    <string>Работа с поставщиками</string>
    </property>
   </action>
  </widget>

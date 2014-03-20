@@ -73,6 +73,7 @@ void LkSettingsManager::setProxyPort(int value)
 void LkSettingsManager::setSplitterState(QString id, QByteArray data)
 {
     settings->setValue("Geometry/"+id, data);
+    qDebug() << id << data;
 }
 
 void LkSettingsManager::setBuildNumber(int value)
@@ -99,6 +100,16 @@ void LkSettingsManager::setIgnoreSslErrors(bool value)
 bool LkSettingsManager::getIgnoreSslErrors()
 {
     return settings->value("Connections/ignore_ssl_errors").toBool();
+}
+
+bool LkSettingsManager::getShowAllProvs()
+{
+    return settings->value("Main/showallprovs").toBool();
+}
+
+void LkSettingsManager::setShowAllProvs(bool value)
+{
+    settings->setValue("Main/showallprovs", value);
 }
 
 void LkSettingsManager::setUseSsl(bool value)

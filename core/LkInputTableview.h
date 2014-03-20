@@ -15,6 +15,12 @@ class CORESHARED_EXPORT LkInputTableView : public QTableView
 public:
     explicit LkInputTableView(QWidget *parent = 0);
     virtual void keyboardSearch(const QString &search);
+    virtual void setModel(QAbstractItemModel *model);
+    static const int hideColumnFlag = 0x2;
+
+
+public slots:
+   // virtual void hideColumn(int column);
 
 signals:
     void editFinished(int);
@@ -25,6 +31,8 @@ private:
 private slots:
     void onSpinBoxValueChanged();
     void inputFinished(int result);
+    void on_action(bool trigered);
+
 
     Q_DECLARE_PRIVATE(QTableView)
 

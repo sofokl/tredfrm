@@ -26,24 +26,26 @@ signals:
     
 public slots:
     void writeNewDbSchema(const QByteArray &data);
-    void writeSalepoints(const TList &dataList);
+    void writeSalePoints(const TList &dataList);
     void writeOrderAsSended(int id, QString number);
     void writeDataPrice(TList provs, TList prods, TList syns, TList prices);
 
     void setCurrentSpCode(QString &code);
-    QString countValueChanged(QString &synonim_id, int new_value, double price, QString other_sp="");
+    QString countValueChanged(QString &synonim_id, int new_value, double price, QString &expDate, QString other_sp="");
 
     QSqlError deleteOrder(QString &id);
     QSqlError clearOrder(QString &id);
 
     TDataList getOrdersData(const QVector<int> &order_ids, bool current_sp=true);
 
-    QHash<QString, QString> getProviders();
+    QHash<QString, QString> getLocalProviders();
     QHash<QString, QString> getSalepoints();
+    QList<QString> getUsedProviderList();
 
     QString addToOrderByCode(TData params);
     bool chechState(QString sn);
 
+    QString getTextPriceView();
 private slots:
     int getOrderBySynonim(const QString &synonim_id, const QString sp_code);
     void writeProviders(const TList &dataList);

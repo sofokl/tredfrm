@@ -22,6 +22,7 @@ public:
     bool getIgnoreSslErrors();
     int getPort();
     int getBuildNumber();
+    bool getShowAllProvs();
 
     QByteArray getSplitterState(QString id);
     int getProxyPort();
@@ -39,6 +40,7 @@ public slots:
     void setUseSsl(bool);
     void setIgnoreSslErrors(bool);
     void setBuildNumber(int);
+    void setShowAllProvs(bool);
 
 private:
     QSettings *settings;

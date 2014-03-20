@@ -98,3 +98,13 @@ void LkSearchTableView::focusOutEvent(QFocusEvent *event)
     m_column = -1;
     QTableView::focusOutEvent(event);
 }
+
+void LkSearchTableView::setModel(QAbstractItemModel *m_model){
+    QTableView::setModel(m_model);
+
+    for(int i=0; i < this->model()->columnCount(); i++){
+        QString data = this->model()->headerData(i, Qt::Horizontal, Qt::UserRole).toString();
+        if(data == QString("isHiden"))
+            hideColumn(i);
+    }
+}

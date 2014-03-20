@@ -30,8 +30,8 @@ void LkUpdateHelper::update_from_201(int n_number)
 
     if(n_number == 202) {
         qDebug() << "Выполняется обновление локальных данных до версии 1.2.0";
-        s_manager->setSplitterState("0x14", QByteArray());
-        s_manager->setSplitterState("0x12", QByteArray());
+        //s_manager->setSplitterState("0x14", QByteArray());
+        //s_manager->setSplitterState("0x12", QByteArray());
 
         QString textTable("CREATE TABLE IF NOT EXISTS INF (systemid VARCHAR UNIQUE PRIMARY KEY, is_enabled BOOLEAN not null default(0))");
         QSqlQuery query(textTable, *m_db);

@@ -41,7 +41,7 @@
 #include "LkSpinBoxDelegate.h"
 #include <QAbstractItemModel>
 
-#include <QSpinBox>
+#include <QDoubleSpinBox>
 
 
 LkSpinBoxDelegate::LkSpinBoxDelegate(QObject *parent)
@@ -53,20 +53,21 @@ QWidget *LkSpinBoxDelegate::createEditor(QWidget *parent,
     const QStyleOptionViewItem &/* option */,
     const QModelIndex &/* index */) const
 {
-    QSpinBox *editor = new QSpinBox(parent);
-   // editor->setFrame(false);
+    QDoubleSpinBox *editor = new QDoubleSpinBox(parent);
+    editor->setFrame(false);
     editor->setMinimum(0);
     editor->setMaximum(99999);
-    editor->setButtonSymbols(QSpinBox::PlusMinus);
+    editor->setDecimals(2);
+    editor->setButtonSymbols(QDoubleSpinBox::PlusMinus);
 
     return editor;
 }
 
 void LkSpinBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-    int value = index.model()->data(index, Qt::EditRole).toInt();
+    double value = index.model()->data(index, Qt::EditRole).toDouble();
 
-    QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
+    QDoubleSpinBox *spinBox = static_cast<QDoubleSpinBox*>(editor);
     spinBox->setValue(value);
 
 }
@@ -74,9 +75,9 @@ void LkSpinBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index)
 void LkSpinBoxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                    const QModelIndex &index) const
 {
-    QSpinBox *spinBox = static_cast<QSpinBox*>(editor);
+    QDoubleSpinBox *spinBox = static_cast<QDoubleSpinBox*>(editor);
     spinBox->interpretText();
-    int value = spinBox->value();
+    double value = spinBox->value();
 
     model->setData(index, value, Qt::EditRole);
 }

@@ -31,7 +31,7 @@ void UploadDialog::on_tbSelectFile_clicked()
 
 void UploadDialog::setProvidersList()
 {
-    QHash<QString, QString> data = m_helper->getProviders();
+    QHash<QString, QString> data = m_helper->getLocalProviders();
 
     foreach (QString key, data.keys())
     {

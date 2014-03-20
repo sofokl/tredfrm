@@ -19,6 +19,7 @@ public:
     virtual void keyboardSearch(const QString &search);
     virtual void mousePressEvent(QMouseEvent * event);
     virtual void focusOutEvent(QFocusEvent *event);
+    virtual void setModel(QAbstractItemModel *m_model);
     
 signals:
     

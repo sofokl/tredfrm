@@ -2,12 +2,14 @@
 #define FARMAPP_H
 
 #define ORDERCOUNT_COLUMN 15
+//#define USE_CRYPT_DB true
 
 #include <QMainWindow>
 #include <QSqlDatabase>
 #include <QSortFilterProxyModel>
 #include <QProgressDialog>
 #include <QUuid>
+#include <QDataWidgetMapper>
 
 #include <LkSpinBoxDelegate.h>
 #include <LkSqlTableModel.h>
@@ -15,6 +17,11 @@
 #include <LkSettingsManager.h>
 #include <LkStoreHelper.h>
 #include <LkUpdateHelper.h>
+#include <LkCheckedDelegate.h>
+
+#include "settingsdialog.h"
+#include "providersdialog.h"
+
 #include <transportproxy.h>
 #include "diskid32.h"
 
@@ -35,7 +42,8 @@ protected:
     void closeEvent(QCloseEvent *event);
 
 signals:
-    void getPriceListUpdate();
+    void getPriceListUpdate(QList<QString>);
+    void providersIsUpdated();
 
 
 public slots:
@@ -78,6 +86,11 @@ private slots:
     void priceCommitDataOrders(int value);
     void createTransport();
     void createDialog(QString startLabel, int range);
+    void updateProviders();
+
+    void on_action_Providers_triggered();
+
+    void on_dsb_markups_editingFinished();
 
 private:
     Ui::MainWindow *ui;
@@ -98,6 +111,7 @@ private:
     bool m_createDB;
     bool m_isActivated;
     QUuid m_snUID;
+    QDataWidgetMapper *mapper;
 
     QProgressDialog *m_progress_dlg;
 
