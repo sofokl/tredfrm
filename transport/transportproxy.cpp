@@ -78,13 +78,57 @@ bool TransportProxy::getSalePoints() {
 
 }
 
+bool TransportProxy::getProviders() {
+
+    if(this->useSsl && this->ignoreSslErrors)
+        m_service.ignoreSslErrors();
+
+    KDSoapAuthentication *auth = new KDSoapAuthentication();
+    auth->setUser(m_username);
+    auth->setPassword(m_password);
+
+    m_service.clientInterface()->setAuthentication(*auth);
+
+    TNS__GetProviders params;
+    params.setApiKey(m_apikey);
+
+    TNS__GetProvidersResponse response;
+
+    response = m_service.getProviders(params);
+
+    if(!m_service.lastError().isEmpty()){
+
+        QString text = m_service.lastError();
+        text = text.replace(m_endPoint, "$END_POINT$");
+        emit transportError(tr("Ошибка при получении данных [#1]\t\t"), text, true);
+        return false;
+    }
+
+    TList data;
+
+    foreach (TNS__Provider item, response.return_().items())
+    {
+        TData props;
+        QString key = item.id().value();
+        props["name"] = item.name();
+        props["is_deleted"] = item.isDeleted();
+        props["is_unavailable"] = item.isUnavailable();
+        props["price_date"] = item.datePrice().toString("dd.MM - hh:mm");
+        data.insert(key, props);
+    }
+
+    emit dataProvidersIsReady(data);
+    return true;
+
+}
+
 void TransportProxy::operationError(QString method, const KDSoapMessage &error)
 {
     QString err=error.faultAsString().replace(m_endPoint,"$END_POINT$");
     emit transportError(tr("Ошибка метода [$%1]").arg(method), err, true);
 }
 
-void TransportProxy::getPriceList() {
+void TransportProxy::getPriceList(QList<QString> providerList) {
 
     bool ok = this->getSalePoints();
     if(!ok)
@@ -99,9 +143,31 @@ void TransportProxy::getPriceList() {
 
     m_service.clientInterface()->setAuthentication(*auth);
 
+    TNS__ProviderList provs;
+    QList<TNS__Provider> provList;
+    for(int i=0; i < providerList.size(); i++){
+
+
+        QString p_key = providerList.at(i);
+        TNS__UUID uuid;
+        uuid.setValue(p_key);
+
+        TNS__Provider prov;
+        prov.setId(uuid);
+       // prov.setName("asdas");
+       // prov.setIsUnavailable(false);
+       // prov.setDatePrice(KDDateTime());
+       // prov.setIsDeleted(false);
+
+       provList << prov;
+    }
+    provs.setItems(provList);
+    qDebug() << provs.items().count();
 
     TNS__GetPriceList params;
     params.setApiKey(m_apikey);
+    params.setProviders(provs);
+
     TNS__GetPriceListResponse response = m_service.getPriceList(params);
 
     if(!m_service.lastError().isEmpty()){
@@ -123,13 +189,13 @@ void TransportProxy::getPriceList() {
 
         TNS__ProviderProduct provProduct = item.providerProduct();
 
-        TNS__Provider provider = provProduct.provider();
-        TData provider_data;
-        provider_data["name"]           = provider.name();
-        provider_data["price_update"]   = item.date().toString("dd.MM - hh:mm");
-        provider_data["is_deleted"]     = provider.isDeleted();
-        QString key = provider.id().value();
-        providers.insert(key, provider_data);
+//        TNS__Provider provider = provProduct.provider();
+//        TData provider_data;
+//        provider_data["name"]           = provider.name();
+//        provider_data["price_update"]   = item.date().toString("dd.MM - hh:mm");
+//        provider_data["is_deleted"]     = provider.isDeleted();
+//        QString key = provider.id().value();
+//        providers.insert(key, provider_data);
 
         TNS__Product product = provProduct.product();
         TData product_data;
@@ -143,25 +209,25 @@ void TransportProxy::getPriceList() {
         TData synonim_data;
         QString key_syn                 = provProduct.id().value();
         synonim_data["code"]            = provProduct.partCode();
-        synonim_data["provider_code"]   = provProduct.provider().id().value();
+        synonim_data["provider_code"]   = provProduct.provider_id().value();
         synonim_data["product_code"]    = provProduct.product().id().value();
         synonim_data["name"]            = provProduct.name();
         synonim_data["is_deleted"]      = provProduct.isDeleted();
+        synonim_data["is_cutePrice"]    = provProduct.isCutPrice();
         synonims.insert(key_syn, synonim_data);
 
         TData price_row;
-        QString key_row = item.providerProduct().id().value();
-        QDate price_date = item.expirationDate();
-        price_row["key"] = key_row;
-        price_row["manufacturer"] = item.manufacturer();
-        price_row["priceValue"] = item.priceValue();
-        price_row["priceVital"] = item.priceVital();
-        price_row["countPricePack"] = item.countPricePack();
-        price_row["expirationDate"]= price_date.toString("dd.MM.yyyy");
-        price_row["balance"] = item.balance();
-        price_row["key"] = key_row;
-
-        //QString unique_row_key = key_row+price_date.toString("-ddmmyy-")+item.balance()+ item.priceValue();
+        QString key_row                 = item.providerProduct().id().value();
+        //QDate price_date                = item.date();
+        price_row["key"]                = key_row;
+        price_row["manufacturer"]       = item.manufacturer();
+        price_row["priceValue"]         = item.priceValue();
+        price_row["priceVital"]         = item.priceVital();
+        price_row["countPricePack"]     = item.countPricePack();
+        price_row["expirationDate"]     = item.expirationDate().toString("dd.MM.yyyy");
+        price_row["balance"]            = item.balance();
+        price_row["is_urgent"]          = item.isUrgent();
+        price_row["key"]                = key_row;
 
         pricelist.insert(QString::number(item_counter++), price_row);
 

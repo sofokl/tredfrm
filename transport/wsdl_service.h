@@ -6,9 +6,9 @@
 #include <QtCore/QString>
 #include <QtCore/QSharedData>
 #include <QtCore/QList>
+#include <QtCore/QByteArray>
 #include "KDSoapClient/KDDateTime.h"
 #include <QtCore/QDate>
-#include <QtCore/QByteArray>
 #include "KDSoapClient/KDSoapJob.h"
 #include <QtCore/QObject>
 #include "KDSoapClient/KDSoapClientInterface.h"
@@ -28,6 +28,7 @@ class TNS__Price;
 class TNS__PriceList;
 class TNS__Product;
 class TNS__Provider;
+class TNS__ProviderList;
 class TNS__ProviderProduct;
 class TNS__SalePoint;
 class TNS__SalePointList;
@@ -55,103 +56,19 @@ private:
     QString mValue;
 };
 
-class TNS__CheckUpdate
-{
-public:
-    void setApiKey( const TNS__UUID& apiKey );
-    TNS__UUID apiKey() const;
-    void setClientVersion( qint64 clientVersion );
-    qint64 clientVersion() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CheckUpdate();
-    ~TNS__CheckUpdate();
-
-public:
-    TNS__CheckUpdate( const TNS__CheckUpdate& );
-    TNS__CheckUpdate &operator=( const TNS__CheckUpdate& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__GetPriceList
+class TNS__GetProviders
 {
 public:
     void setApiKey( const TNS__UUID& apiKey );
     TNS__UUID apiKey() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__GetPriceList();
-    ~TNS__GetPriceList();
+    TNS__GetProviders();
+    ~TNS__GetProviders();
 
 public:
-    TNS__GetPriceList( const TNS__GetPriceList& );
-    TNS__GetPriceList &operator=( const TNS__GetPriceList& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__Provider
-{
-public:
-    void setId( const TNS__UUID& id );
-    TNS__UUID id() const;
-    void setName( const QString& name );
-    QString name() const;
-    void setIsDeleted( bool isDeleted );
-    bool isDeleted() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__Provider();
-    ~TNS__Provider();
-
-public:
-    TNS__Provider( const TNS__Provider& );
-    TNS__Provider &operator=( const TNS__Provider& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__GetSalePointsResponse
-{
-public:
-    void setReturn( const TNS__SalePointList& return_ );
-    TNS__SalePointList return_() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetSalePointsResponse();
-    ~TNS__GetSalePointsResponse();
-
-public:
-    TNS__GetSalePointsResponse( const TNS__GetSalePointsResponse& );
-    TNS__GetSalePointsResponse &operator=( const TNS__GetSalePointsResponse& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__SendOrder
-{
-public:
-    void setApiKey( const TNS__UUID& apiKey );
-    TNS__UUID apiKey() const;
-    void setParams( const TNS__Order& params );
-    TNS__Order params() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SendOrder();
-    ~TNS__SendOrder();
-
-public:
-    TNS__SendOrder( const TNS__SendOrder& );
-    TNS__SendOrder &operator=( const TNS__SendOrder& );
+    TNS__GetProviders( const TNS__GetProviders& );
+    TNS__GetProviders &operator=( const TNS__GetProviders& );
 
 private:
     class PrivateDPtr;
@@ -171,6 +88,86 @@ public:
 public:
     TNS__GetSalePoints( const TNS__GetSalePoints& );
     TNS__GetSalePoints &operator=( const TNS__GetSalePoints& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__PriceList
+{
+public:
+    void setItems( const QList<TNS__Price>& items );
+    QList<TNS__Price> items() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__PriceList();
+    ~TNS__PriceList();
+
+public:
+    TNS__PriceList( const TNS__PriceList& );
+    TNS__PriceList &operator=( const TNS__PriceList& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__SalePoint
+{
+public:
+    void setCode( const TNS__UUID& code );
+    TNS__UUID code() const;
+    void setName( const QString& name );
+    QString name() const;
+    void setIsDeleted( bool isDeleted );
+    bool isDeleted() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SalePoint();
+    ~TNS__SalePoint();
+
+public:
+    TNS__SalePoint( const TNS__SalePoint& );
+    TNS__SalePoint &operator=( const TNS__SalePoint& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetUpdateResponse
+{
+public:
+    void setReturn( const QByteArray& return_ );
+    QByteArray return_() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetUpdateResponse();
+    ~TNS__GetUpdateResponse();
+
+public:
+    TNS__GetUpdateResponse( const TNS__GetUpdateResponse& );
+    TNS__GetUpdateResponse &operator=( const TNS__GetUpdateResponse& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetSalePointsResponse
+{
+public:
+    void setReturn( const TNS__SalePointList& return_ );
+    TNS__SalePointList return_() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetSalePointsResponse();
+    ~TNS__GetSalePointsResponse();
+
+public:
+    TNS__GetSalePointsResponse( const TNS__GetSalePointsResponse& );
+    TNS__GetSalePointsResponse &operator=( const TNS__GetSalePointsResponse& );
 
 private:
     class PrivateDPtr;
@@ -198,6 +195,154 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
+class TNS__CheckUpdateResponse
+{
+public:
+    void setReturn( const TNS__VersionDescription& return_ );
+    TNS__VersionDescription return_() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CheckUpdateResponse();
+    ~TNS__CheckUpdateResponse();
+
+public:
+    TNS__CheckUpdateResponse( const TNS__CheckUpdateResponse& );
+    TNS__CheckUpdateResponse &operator=( const TNS__CheckUpdateResponse& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__Price
+{
+public:
+    void setDate( const KDDateTime& date );
+    KDDateTime date() const;
+    void setManufacturer( const QString& manufacturer );
+    QString manufacturer() const;
+    void setProviderProduct( const TNS__ProviderProduct& providerProduct );
+    TNS__ProviderProduct providerProduct() const;
+    void setPriceValue( double priceValue );
+    double priceValue() const;
+    void setPriceVital( double priceVital );
+    double priceVital() const;
+    void setCountPricePack( qint64 countPricePack );
+    qint64 countPricePack() const;
+    void setExpirationDate( const QDate& expirationDate );
+    QDate expirationDate() const;
+    void setBalance( qint64 balance );
+    qint64 balance() const;
+    void setIsUrgent( bool isUrgent );
+    bool isUrgent() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__Price();
+    ~TNS__Price();
+
+public:
+    TNS__Price( const TNS__Price& );
+    TNS__Price &operator=( const TNS__Price& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__OperationError
+{
+public:
+    void setIsValid( bool isValid );
+    bool isValid() const;
+    void setText( const QString& text );
+    QString text() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__OperationError();
+    ~TNS__OperationError();
+
+public:
+    TNS__OperationError( const TNS__OperationError& );
+    TNS__OperationError &operator=( const TNS__OperationError& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CheckUpdate
+{
+public:
+    void setApiKey( const TNS__UUID& apiKey );
+    TNS__UUID apiKey() const;
+    void setClientVersion( qint64 clientVersion );
+    qint64 clientVersion() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CheckUpdate();
+    ~TNS__CheckUpdate();
+
+public:
+    TNS__CheckUpdate( const TNS__CheckUpdate& );
+    TNS__CheckUpdate &operator=( const TNS__CheckUpdate& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__ProviderProduct
+{
+public:
+    void setId( const TNS__UUID& id );
+    TNS__UUID id() const;
+    void setProduct( const TNS__Product& product );
+    TNS__Product product() const;
+    void setName( const QString& name );
+    QString name() const;
+    void setPartCode( const QString& partCode );
+    QString partCode() const;
+    void setProvider_id( const TNS__UUID& provider_id );
+    TNS__UUID provider_id() const;
+    void setIsDeleted( bool isDeleted );
+    bool isDeleted() const;
+    void setIsCutPrice( bool isCutPrice );
+    bool isCutPrice() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ProviderProduct();
+    ~TNS__ProviderProduct();
+
+public:
+    TNS__ProviderProduct( const TNS__ProviderProduct& );
+    TNS__ProviderProduct &operator=( const TNS__ProviderProduct& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__SendOrder
+{
+public:
+    void setApiKey( const TNS__UUID& apiKey );
+    TNS__UUID apiKey() const;
+    void setParams( const TNS__Order& params );
+    TNS__Order params() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SendOrder();
+    ~TNS__SendOrder();
+
+public:
+    TNS__SendOrder( const TNS__SendOrder& );
+    TNS__SendOrder &operator=( const TNS__SendOrder& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
 class TNS__GetPriceListResponse
 {
 public:
@@ -211,6 +356,155 @@ public:
 public:
     TNS__GetPriceListResponse( const TNS__GetPriceListResponse& );
     TNS__GetPriceListResponse &operator=( const TNS__GetPriceListResponse& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__OrderRow
+{
+public:
+    void setSynonim_id( const TNS__UUID& synonim_id );
+    TNS__UUID synonim_id() const;
+    void setCount_value( qint64 count_value );
+    qint64 count_value() const;
+    void setPrice_value( double price_value );
+    double price_value() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__OrderRow();
+    ~TNS__OrderRow();
+
+public:
+    TNS__OrderRow( const TNS__OrderRow& );
+    TNS__OrderRow &operator=( const TNS__OrderRow& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetPriceList
+{
+public:
+    void setApiKey( const TNS__UUID& apiKey );
+    TNS__UUID apiKey() const;
+    void setProviders( const TNS__ProviderList& providers );
+    TNS__ProviderList providers() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetPriceList();
+    ~TNS__GetPriceList();
+
+public:
+    TNS__GetPriceList( const TNS__GetPriceList& );
+    TNS__GetPriceList &operator=( const TNS__GetPriceList& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetUpdate
+{
+public:
+    void setApiKey( const TNS__UUID& apiKey );
+    TNS__UUID apiKey() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetUpdate();
+    ~TNS__GetUpdate();
+
+public:
+    TNS__GetUpdate( const TNS__GetUpdate& );
+    TNS__GetUpdate &operator=( const TNS__GetUpdate& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__ProviderList
+{
+public:
+    void setItems( const QList<TNS__Provider>& items );
+    QList<TNS__Provider> items() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ProviderList();
+    ~TNS__ProviderList();
+
+public:
+    TNS__ProviderList( const TNS__ProviderList& );
+    TNS__ProviderList &operator=( const TNS__ProviderList& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__VersionDescription
+{
+public:
+    void setBuildNumber( qint64 buildNumber );
+    qint64 buildNumber() const;
+    void setStringNumber( const QString& stringNumber );
+    QString stringNumber() const;
+    void setDescription( const QString& description );
+    QString description() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__VersionDescription();
+    ~TNS__VersionDescription();
+
+public:
+    TNS__VersionDescription( const TNS__VersionDescription& );
+    TNS__VersionDescription &operator=( const TNS__VersionDescription& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__SendOrderResponse
+{
+public:
+    void setReturn( const QString& return_ );
+    QString return_() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SendOrderResponse();
+    ~TNS__SendOrderResponse();
+
+public:
+    TNS__SendOrderResponse( const TNS__SendOrderResponse& );
+    TNS__SendOrderResponse &operator=( const TNS__SendOrderResponse& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__Order
+{
+public:
+    void setProvider_id( const TNS__UUID& provider_id );
+    TNS__UUID provider_id() const;
+    void setSalepoint_id( const TNS__UUID& salepoint_id );
+    TNS__UUID salepoint_id() const;
+    void setDescription( const QString& description );
+    QString description() const;
+    void setRows( const QList<TNS__OrderRow>& rows );
+    QList<TNS__OrderRow> rows() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__Order();
+    ~TNS__Order();
+
+public:
+    TNS__Order( const TNS__Order& );
+    TNS__Order &operator=( const TNS__Order& );
 
 private:
     class PrivateDPtr;
@@ -244,405 +538,51 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__Price
+class TNS__GetProvidersResponse
 {
 public:
-    void setDate( const KDDateTime& date );
-    KDDateTime date() const;
-    void setManufacturer( const QString& manufacturer );
-    QString manufacturer() const;
-    void setProviderProduct( const TNS__ProviderProduct& providerProduct );
-    TNS__ProviderProduct providerProduct() const;
-    void setPriceValue( double priceValue );
-    double priceValue() const;
-    void setPriceVital( double priceVital );
-    double priceVital() const;
-    void setCountPricePack( qint64 countPricePack );
-    qint64 countPricePack() const;
-    void setExpirationDate( const QDate& expirationDate );
-    QDate expirationDate() const;
-    void setBalance( qint64 balance );
-    qint64 balance() const;
+    void setReturn( const TNS__ProviderList& return_ );
+    TNS__ProviderList return_() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__Price();
-    ~TNS__Price();
+    TNS__GetProvidersResponse();
+    ~TNS__GetProvidersResponse();
 
 public:
-    TNS__Price( const TNS__Price& );
-    TNS__Price &operator=( const TNS__Price& );
+    TNS__GetProvidersResponse( const TNS__GetProvidersResponse& );
+    TNS__GetProvidersResponse &operator=( const TNS__GetProvidersResponse& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__GetUpdate
-{
-public:
-    void setApiKey( const TNS__UUID& apiKey );
-    TNS__UUID apiKey() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetUpdate();
-    ~TNS__GetUpdate();
-
-public:
-    TNS__GetUpdate( const TNS__GetUpdate& );
-    TNS__GetUpdate &operator=( const TNS__GetUpdate& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__SalePoint
-{
-public:
-    void setCode( const TNS__UUID& code );
-    TNS__UUID code() const;
-    void setName( const QString& name );
-    QString name() const;
-    void setIsDeleted( bool isDeleted );
-    bool isDeleted() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SalePoint();
-    ~TNS__SalePoint();
-
-public:
-    TNS__SalePoint( const TNS__SalePoint& );
-    TNS__SalePoint &operator=( const TNS__SalePoint& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__PriceList
-{
-public:
-    void setItems( const QList<TNS__Price>& items );
-    QList<TNS__Price> items() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__PriceList();
-    ~TNS__PriceList();
-
-public:
-    TNS__PriceList( const TNS__PriceList& );
-    TNS__PriceList &operator=( const TNS__PriceList& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__OrderRow
-{
-public:
-    void setSynonim_id( const TNS__UUID& synonim_id );
-    TNS__UUID synonim_id() const;
-    void setCount_value( qint64 count_value );
-    qint64 count_value() const;
-    void setPrice_value( double price_value );
-    double price_value() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__OrderRow();
-    ~TNS__OrderRow();
-
-public:
-    TNS__OrderRow( const TNS__OrderRow& );
-    TNS__OrderRow &operator=( const TNS__OrderRow& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__ProviderProduct
+class TNS__Provider
 {
 public:
     void setId( const TNS__UUID& id );
     TNS__UUID id() const;
-    void setProduct( const TNS__Product& product );
-    TNS__Product product() const;
     void setName( const QString& name );
     QString name() const;
-    void setPartCode( const QString& partCode );
-    QString partCode() const;
-    void setProvider( const TNS__Provider& provider );
-    TNS__Provider provider() const;
     void setIsDeleted( bool isDeleted );
     bool isDeleted() const;
+    void setIsUnavailable( bool isUnavailable );
+    bool isUnavailable() const;
+    void setDatePrice( const KDDateTime& datePrice );
+    KDDateTime datePrice() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__ProviderProduct();
-    ~TNS__ProviderProduct();
+    TNS__Provider();
+    ~TNS__Provider();
 
 public:
-    TNS__ProviderProduct( const TNS__ProviderProduct& );
-    TNS__ProviderProduct &operator=( const TNS__ProviderProduct& );
+    TNS__Provider( const TNS__Provider& );
+    TNS__Provider &operator=( const TNS__Provider& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
-
-class TNS__OperationError
-{
-public:
-    void setIsValid( bool isValid );
-    bool isValid() const;
-    void setText( const QString& text );
-    QString text() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__OperationError();
-    ~TNS__OperationError();
-
-public:
-    TNS__OperationError( const TNS__OperationError& );
-    TNS__OperationError &operator=( const TNS__OperationError& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__GetUpdateResponse
-{
-public:
-    void setReturn( const QByteArray& return_ );
-    QByteArray return_() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetUpdateResponse();
-    ~TNS__GetUpdateResponse();
-
-public:
-    TNS__GetUpdateResponse( const TNS__GetUpdateResponse& );
-    TNS__GetUpdateResponse &operator=( const TNS__GetUpdateResponse& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__Order
-{
-public:
-    void setProvider_id( const TNS__UUID& provider_id );
-    TNS__UUID provider_id() const;
-    void setSalepoint_id( const TNS__UUID& salepoint_id );
-    TNS__UUID salepoint_id() const;
-    void setRows( const QList<TNS__OrderRow>& rows );
-    QList<TNS__OrderRow> rows() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__Order();
-    ~TNS__Order();
-
-public:
-    TNS__Order( const TNS__Order& );
-    TNS__Order &operator=( const TNS__Order& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__VersionDescription
-{
-public:
-    void setBuildNumber( qint64 buildNumber );
-    qint64 buildNumber() const;
-    void setStringNumber( const QString& stringNumber );
-    QString stringNumber() const;
-    void setDescription( const QString& description );
-    QString description() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__VersionDescription();
-    ~TNS__VersionDescription();
-
-public:
-    TNS__VersionDescription( const TNS__VersionDescription& );
-    TNS__VersionDescription &operator=( const TNS__VersionDescription& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__CheckUpdateResponse
-{
-public:
-    void setReturn( const TNS__VersionDescription& return_ );
-    TNS__VersionDescription return_() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CheckUpdateResponse();
-    ~TNS__CheckUpdateResponse();
-
-public:
-    TNS__CheckUpdateResponse( const TNS__CheckUpdateResponse& );
-    TNS__CheckUpdateResponse &operator=( const TNS__CheckUpdateResponse& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__SendOrderResponse
-{
-public:
-    void setReturn( const QString& return_ );
-    QString return_() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SendOrderResponse();
-    ~TNS__SendOrderResponse();
-
-public:
-    TNS__SendOrderResponse( const TNS__SendOrderResponse& );
-    TNS__SendOrderResponse &operator=( const TNS__SendOrderResponse& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-namespace ClientServise {
-    namespace ClientServiseSoapBindingJobs {
-        class GetSalePointsJob : public KDSoapJob
-        {
-            Q_OBJECT
-
-        public:
-            GetSalePointsJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
-            void setParameters( const TNS__GetSalePoints& arg0 );
-            TNS__GetSalePoints parameters() const;
-            TNS__GetSalePointsResponse resultParameters() const;
-
-        protected:
-            void doStart();
-
-        private Q_SLOTS:
-            void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-        private:
-            ClientServise::ClientServiseSoapBinding *mService;
-            TNS__GetSalePoints mParameters;
-            TNS__GetSalePointsResponse mResultParameters;
-};
-} // namespace end
-} // namespace end
-
-namespace ClientServise {
-    namespace ClientServiseSoapBindingJobs {
-        class GetUpdateJob : public KDSoapJob
-        {
-            Q_OBJECT
-
-        public:
-            GetUpdateJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
-            void setParameters( const TNS__GetUpdate& arg0 );
-            TNS__GetUpdate parameters() const;
-            TNS__GetUpdateResponse resultParameters() const;
-
-        protected:
-            void doStart();
-
-        private Q_SLOTS:
-            void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-        private:
-            ClientServise::ClientServiseSoapBinding *mService;
-            TNS__GetUpdate mParameters;
-            TNS__GetUpdateResponse mResultParameters;
-};
-} // namespace end
-} // namespace end
-
-namespace ClientServise {
-    namespace ClientServiseSoapBindingJobs {
-        class GetPriceListJob : public KDSoapJob
-        {
-            Q_OBJECT
-
-        public:
-            GetPriceListJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
-            void setParameters( const TNS__GetPriceList& arg0 );
-            TNS__GetPriceList parameters() const;
-            TNS__GetPriceListResponse resultParameters() const;
-
-        protected:
-            void doStart();
-
-        private Q_SLOTS:
-            void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-        private:
-            ClientServise::ClientServiseSoapBinding *mService;
-            TNS__GetPriceList mParameters;
-            TNS__GetPriceListResponse mResultParameters;
-};
-} // namespace end
-} // namespace end
-
-namespace ClientServise {
-    namespace ClientServiseSoapBindingJobs {
-        class CheckUpdateJob : public KDSoapJob
-        {
-            Q_OBJECT
-
-        public:
-            CheckUpdateJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
-            void setParameters( const TNS__CheckUpdate& arg0 );
-            TNS__CheckUpdate parameters() const;
-            TNS__CheckUpdateResponse resultParameters() const;
-
-        protected:
-            void doStart();
-
-        private Q_SLOTS:
-            void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-        private:
-            ClientServise::ClientServiseSoapBinding *mService;
-            TNS__CheckUpdate mParameters;
-            TNS__CheckUpdateResponse mResultParameters;
-};
-} // namespace end
-} // namespace end
-
-namespace ClientServise {
-    namespace ClientServiseSoapBindingJobs {
-        class SendOrderJob : public KDSoapJob
-        {
-            Q_OBJECT
-
-        public:
-            SendOrderJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
-            void setParameters( const TNS__SendOrder& arg0 );
-            TNS__SendOrder parameters() const;
-            TNS__SendOrderResponse resultParameters() const;
-
-        protected:
-            void doStart();
-
-        private Q_SLOTS:
-            void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-        private:
-            ClientServise::ClientServiseSoapBinding *mService;
-            TNS__SendOrder mParameters;
-            TNS__SendOrderResponse mResultParameters;
-};
-} // namespace end
-} // namespace end
 
 namespace ClientServise {
     namespace ClientServiseSoap12BindingJobs {
@@ -775,155 +715,185 @@ namespace ClientServise {
 } // namespace end
 
 namespace ClientServise {
-    class ClientServiseSoapBinding : public QObject
-    {
-        Q_OBJECT
+    namespace ClientServiseSoap12BindingJobs {
+        class GetProvidersJob : public KDSoapJob
+        {
+            Q_OBJECT
 
-    public:
-        ClientServiseSoapBinding( QObject* parent = 0 );
-        ~ClientServiseSoapBinding();
-        /**
-            Asks Qt to ignore ssl errors in https requests. Use this for
-            testing only!
-         */
-        void ignoreSslErrors();
-        /**
-            Overwrite the end point defined in the .wsdl file, with another
-            http/https URL.
-         */
-        void setEndPoint( const QString& endPoint );
-        /**
-            Overwrite the soap version defined in the .wsdl file, with another
-            version.
-            version can be KDSoapClientInterface::SOAP1_1 or
-            KDSoapClientInterface::SOAP1_2
-         */
-        void setSoapVersion( KDSoapClientInterface::SoapVersion soapVersion );
-        /**
-            Return the error from the last blocking call.
-            Empty if no error.
-         */
-        QString lastError() const;
-        /**
-            Returns the underlying KDSoapClientInterface instance, which allows
-            to access setCookieJar, lastResponseHeaders, etc.
-         */
-        const KDSoapClientInterface *clientInterface() const;
-        KDSoapClientInterface *clientInterface();
-        /**
-            Blocking call to getSalePoints.
-            Not recommended in a GUI thread.
-         */
-        TNS__GetSalePointsResponse getSalePoints( const TNS__GetSalePoints& parameters );
-        /**
-            Asynchronous call to getSalePoints.
-            Remember to connect to getSalePointsDone and getSalePointsError.
-         */
-        void asyncGetSalePoints( const TNS__GetSalePoints& parameters );
-        /**
-            Blocking call to getUpdate.
-            Not recommended in a GUI thread.
-         */
-        TNS__GetUpdateResponse getUpdate( const TNS__GetUpdate& parameters );
-        /**
-            Asynchronous call to getUpdate.
-            Remember to connect to getUpdateDone and getUpdateError.
-         */
-        void asyncGetUpdate( const TNS__GetUpdate& parameters );
-        /**
-            Blocking call to getPriceList.
-            Not recommended in a GUI thread.
-         */
-        TNS__GetPriceListResponse getPriceList( const TNS__GetPriceList& parameters );
-        /**
-            Asynchronous call to getPriceList.
-            Remember to connect to getPriceListDone and getPriceListError.
-         */
-        void asyncGetPriceList( const TNS__GetPriceList& parameters );
-        /**
-            Blocking call to checkUpdate.
-            Not recommended in a GUI thread.
-         */
-        TNS__CheckUpdateResponse checkUpdate( const TNS__CheckUpdate& parameters );
-        /**
-            Asynchronous call to checkUpdate.
-            Remember to connect to checkUpdateDone and checkUpdateError.
-         */
-        void asyncCheckUpdate( const TNS__CheckUpdate& parameters );
-        /**
-            Blocking call to sendOrder.
-            Not recommended in a GUI thread.
-         */
-        TNS__SendOrderResponse sendOrder( const TNS__SendOrder& parameters );
-        /**
-            Asynchronous call to sendOrder.
-            Remember to connect to sendOrderDone and sendOrderError.
-         */
-        void asyncSendOrder( const TNS__SendOrder& parameters );
+        public:
+            GetProvidersJob( ClientServise::ClientServiseSoap12Binding* service, QObject* parent = 0 );
+            void setParameters( const TNS__GetProviders& arg0 );
+            TNS__GetProviders parameters() const;
+            TNS__GetProvidersResponse resultParameters() const;
 
-    Q_SIGNALS:
-        /**
-            This signal is emitted whenever a SOAP call failed, for a central
-            processing of all SOAP errors.
-            method is the name of the method (or operation) that returned the
-            fault, for instance "addContact".
-         */
-        void soapError( const QString& method, const KDSoapMessage& fault );
-        /**
-            This signal is emitted whenever the call to getSalePoints()
-            succeeded.
-         */
-        void getSalePointsDone( const TNS__GetSalePointsResponse& parameters );
-        /**
-            This signal is emitted whenever the call to getSalePoints() failed.
-         */
-        void getSalePointsError( const KDSoapMessage& fault );
-        /**
-            This signal is emitted whenever the call to getUpdate() succeeded.
-         */
-        void getUpdateDone( const TNS__GetUpdateResponse& parameters );
-        /**
-            This signal is emitted whenever the call to getUpdate() failed.
-         */
-        void getUpdateError( const KDSoapMessage& fault );
-        /**
-            This signal is emitted whenever the call to getPriceList()
-            succeeded.
-         */
-        void getPriceListDone( const TNS__GetPriceListResponse& parameters );
-        /**
-            This signal is emitted whenever the call to getPriceList() failed.
-         */
-        void getPriceListError( const KDSoapMessage& fault );
-        /**
-            This signal is emitted whenever the call to checkUpdate()
-            succeeded.
-         */
-        void checkUpdateDone( const TNS__CheckUpdateResponse& parameters );
-        /**
-            This signal is emitted whenever the call to checkUpdate() failed.
-         */
-        void checkUpdateError( const KDSoapMessage& fault );
-        /**
-            This signal is emitted whenever the call to sendOrder() succeeded.
-         */
-        void sendOrderDone( const TNS__SendOrderResponse& parameters );
-        /**
-            This signal is emitted whenever the call to sendOrder() failed.
-         */
-        void sendOrderError( const KDSoapMessage& fault );
+        protected:
+            void doStart();
 
-    private Q_SLOTS:
-        void _kd_slotGetSalePointsFinished( KDSoapPendingCallWatcher* watcher );
-        void _kd_slotGetUpdateFinished( KDSoapPendingCallWatcher* watcher );
-        void _kd_slotGetPriceListFinished( KDSoapPendingCallWatcher* watcher );
-        void _kd_slotCheckUpdateFinished( KDSoapPendingCallWatcher* watcher );
-        void _kd_slotSendOrderFinished( KDSoapPendingCallWatcher* watcher );
+        private Q_SLOTS:
+            void slotFinished( KDSoapPendingCallWatcher* watcher );
 
-    private:
-        class PrivateDPtr;
-        PrivateDPtr *d_ptr;
+        private:
+            ClientServise::ClientServiseSoap12Binding *mService;
+            TNS__GetProviders mParameters;
+            TNS__GetProvidersResponse mResultParameters;
 };
+} // namespace end
+} // namespace end
+
+namespace ClientServise {
+    namespace ClientServiseSoapBindingJobs {
+        class GetSalePointsJob : public KDSoapJob
+        {
+            Q_OBJECT
+
+        public:
+            GetSalePointsJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
+            void setParameters( const TNS__GetSalePoints& arg0 );
+            TNS__GetSalePoints parameters() const;
+            TNS__GetSalePointsResponse resultParameters() const;
+
+        protected:
+            void doStart();
+
+        private Q_SLOTS:
+            void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+        private:
+            ClientServise::ClientServiseSoapBinding *mService;
+            TNS__GetSalePoints mParameters;
+            TNS__GetSalePointsResponse mResultParameters;
+};
+} // namespace end
+} // namespace end
+
+namespace ClientServise {
+    namespace ClientServiseSoapBindingJobs {
+        class GetUpdateJob : public KDSoapJob
+        {
+            Q_OBJECT
+
+        public:
+            GetUpdateJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
+            void setParameters( const TNS__GetUpdate& arg0 );
+            TNS__GetUpdate parameters() const;
+            TNS__GetUpdateResponse resultParameters() const;
+
+        protected:
+            void doStart();
+
+        private Q_SLOTS:
+            void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+        private:
+            ClientServise::ClientServiseSoapBinding *mService;
+            TNS__GetUpdate mParameters;
+            TNS__GetUpdateResponse mResultParameters;
+};
+} // namespace end
+} // namespace end
+
+namespace ClientServise {
+    namespace ClientServiseSoapBindingJobs {
+        class GetPriceListJob : public KDSoapJob
+        {
+            Q_OBJECT
+
+        public:
+            GetPriceListJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
+            void setParameters( const TNS__GetPriceList& arg0 );
+            TNS__GetPriceList parameters() const;
+            TNS__GetPriceListResponse resultParameters() const;
+
+        protected:
+            void doStart();
+
+        private Q_SLOTS:
+            void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+        private:
+            ClientServise::ClientServiseSoapBinding *mService;
+            TNS__GetPriceList mParameters;
+            TNS__GetPriceListResponse mResultParameters;
+};
+} // namespace end
+} // namespace end
+
+namespace ClientServise {
+    namespace ClientServiseSoapBindingJobs {
+        class CheckUpdateJob : public KDSoapJob
+        {
+            Q_OBJECT
+
+        public:
+            CheckUpdateJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
+            void setParameters( const TNS__CheckUpdate& arg0 );
+            TNS__CheckUpdate parameters() const;
+            TNS__CheckUpdateResponse resultParameters() const;
+
+        protected:
+            void doStart();
+
+        private Q_SLOTS:
+            void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+        private:
+            ClientServise::ClientServiseSoapBinding *mService;
+            TNS__CheckUpdate mParameters;
+            TNS__CheckUpdateResponse mResultParameters;
+};
+} // namespace end
+} // namespace end
+
+namespace ClientServise {
+    namespace ClientServiseSoapBindingJobs {
+        class SendOrderJob : public KDSoapJob
+        {
+            Q_OBJECT
+
+        public:
+            SendOrderJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
+            void setParameters( const TNS__SendOrder& arg0 );
+            TNS__SendOrder parameters() const;
+            TNS__SendOrderResponse resultParameters() const;
+
+        protected:
+            void doStart();
+
+        private Q_SLOTS:
+            void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+        private:
+            ClientServise::ClientServiseSoapBinding *mService;
+            TNS__SendOrder mParameters;
+            TNS__SendOrderResponse mResultParameters;
+};
+} // namespace end
+} // namespace end
+
+namespace ClientServise {
+    namespace ClientServiseSoapBindingJobs {
+        class GetProvidersJob : public KDSoapJob
+        {
+            Q_OBJECT
+
+        public:
+            GetProvidersJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent = 0 );
+            void setParameters( const TNS__GetProviders& arg0 );
+            TNS__GetProviders parameters() const;
+            TNS__GetProvidersResponse resultParameters() const;
+
+        protected:
+            void doStart();
+
+        private Q_SLOTS:
+            void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+        private:
+            ClientServise::ClientServiseSoapBinding *mService;
+            TNS__GetProviders mParameters;
+            TNS__GetProvidersResponse mResultParameters;
+};
+} // namespace end
 } // namespace end
 
 namespace ClientServise {
@@ -1012,6 +982,16 @@ namespace ClientServise {
             Remember to connect to sendOrderDone and sendOrderError.
          */
         void asyncSendOrder( const TNS__SendOrder& parameters );
+        /**
+            Blocking call to getProviders.
+            Not recommended in a GUI thread.
+         */
+        TNS__GetProvidersResponse getProviders( const TNS__GetProviders& parameters );
+        /**
+            Asynchronous call to getProviders.
+            Remember to connect to getProvidersDone and getProvidersError.
+         */
+        void asyncGetProviders( const TNS__GetProviders& parameters );
 
     Q_SIGNALS:
         /**
@@ -1064,6 +1044,15 @@ namespace ClientServise {
             This signal is emitted whenever the call to sendOrder() failed.
          */
         void sendOrderError( const KDSoapMessage& fault );
+        /**
+            This signal is emitted whenever the call to getProviders()
+            succeeded.
+         */
+        void getProvidersDone( const TNS__GetProvidersResponse& parameters );
+        /**
+            This signal is emitted whenever the call to getProviders() failed.
+         */
+        void getProvidersError( const KDSoapMessage& fault );
 
     private Q_SLOTS:
         void _kd_slotGetSalePointsFinished( KDSoapPendingCallWatcher* watcher );
@@ -1071,6 +1060,179 @@ namespace ClientServise {
         void _kd_slotGetPriceListFinished( KDSoapPendingCallWatcher* watcher );
         void _kd_slotCheckUpdateFinished( KDSoapPendingCallWatcher* watcher );
         void _kd_slotSendOrderFinished( KDSoapPendingCallWatcher* watcher );
+        void _kd_slotGetProvidersFinished( KDSoapPendingCallWatcher* watcher );
+
+    private:
+        class PrivateDPtr;
+        PrivateDPtr *d_ptr;
+};
+} // namespace end
+
+namespace ClientServise {
+    class ClientServiseSoapBinding : public QObject
+    {
+        Q_OBJECT
+
+    public:
+        ClientServiseSoapBinding( QObject* parent = 0 );
+        ~ClientServiseSoapBinding();
+        /**
+            Asks Qt to ignore ssl errors in https requests. Use this for
+            testing only!
+         */
+        void ignoreSslErrors();
+        /**
+            Overwrite the end point defined in the .wsdl file, with another
+            http/https URL.
+         */
+        void setEndPoint( const QString& endPoint );
+        /**
+            Overwrite the soap version defined in the .wsdl file, with another
+            version.
+            version can be KDSoapClientInterface::SOAP1_1 or
+            KDSoapClientInterface::SOAP1_2
+         */
+        void setSoapVersion( KDSoapClientInterface::SoapVersion soapVersion );
+        /**
+            Return the error from the last blocking call.
+            Empty if no error.
+         */
+        QString lastError() const;
+        /**
+            Returns the underlying KDSoapClientInterface instance, which allows
+            to access setCookieJar, lastResponseHeaders, etc.
+         */
+        const KDSoapClientInterface *clientInterface() const;
+        KDSoapClientInterface *clientInterface();
+        /**
+            Blocking call to getSalePoints.
+            Not recommended in a GUI thread.
+         */
+        TNS__GetSalePointsResponse getSalePoints( const TNS__GetSalePoints& parameters );
+        /**
+            Asynchronous call to getSalePoints.
+            Remember to connect to getSalePointsDone and getSalePointsError.
+         */
+        void asyncGetSalePoints( const TNS__GetSalePoints& parameters );
+        /**
+            Blocking call to getUpdate.
+            Not recommended in a GUI thread.
+         */
+        TNS__GetUpdateResponse getUpdate( const TNS__GetUpdate& parameters );
+        /**
+            Asynchronous call to getUpdate.
+            Remember to connect to getUpdateDone and getUpdateError.
+         */
+        void asyncGetUpdate( const TNS__GetUpdate& parameters );
+        /**
+            Blocking call to getPriceList.
+            Not recommended in a GUI thread.
+         */
+        TNS__GetPriceListResponse getPriceList( const TNS__GetPriceList& parameters );
+        /**
+            Asynchronous call to getPriceList.
+            Remember to connect to getPriceListDone and getPriceListError.
+         */
+        void asyncGetPriceList( const TNS__GetPriceList& parameters );
+        /**
+            Blocking call to checkUpdate.
+            Not recommended in a GUI thread.
+         */
+        TNS__CheckUpdateResponse checkUpdate( const TNS__CheckUpdate& parameters );
+        /**
+            Asynchronous call to checkUpdate.
+            Remember to connect to checkUpdateDone and checkUpdateError.
+         */
+        void asyncCheckUpdate( const TNS__CheckUpdate& parameters );
+        /**
+            Blocking call to sendOrder.
+            Not recommended in a GUI thread.
+         */
+        TNS__SendOrderResponse sendOrder( const TNS__SendOrder& parameters );
+        /**
+            Asynchronous call to sendOrder.
+            Remember to connect to sendOrderDone and sendOrderError.
+         */
+        void asyncSendOrder( const TNS__SendOrder& parameters );
+        /**
+            Blocking call to getProviders.
+            Not recommended in a GUI thread.
+         */
+        TNS__GetProvidersResponse getProviders( const TNS__GetProviders& parameters );
+        /**
+            Asynchronous call to getProviders.
+            Remember to connect to getProvidersDone and getProvidersError.
+         */
+        void asyncGetProviders( const TNS__GetProviders& parameters );
+
+    Q_SIGNALS:
+        /**
+            This signal is emitted whenever a SOAP call failed, for a central
+            processing of all SOAP errors.
+            method is the name of the method (or operation) that returned the
+            fault, for instance "addContact".
+         */
+        void soapError( const QString& method, const KDSoapMessage& fault );
+        /**
+            This signal is emitted whenever the call to getSalePoints()
+            succeeded.
+         */
+        void getSalePointsDone( const TNS__GetSalePointsResponse& parameters );
+        /**
+            This signal is emitted whenever the call to getSalePoints() failed.
+         */
+        void getSalePointsError( const KDSoapMessage& fault );
+        /**
+            This signal is emitted whenever the call to getUpdate() succeeded.
+         */
+        void getUpdateDone( const TNS__GetUpdateResponse& parameters );
+        /**
+            This signal is emitted whenever the call to getUpdate() failed.
+         */
+        void getUpdateError( const KDSoapMessage& fault );
+        /**
+            This signal is emitted whenever the call to getPriceList()
+            succeeded.
+         */
+        void getPriceListDone( const TNS__GetPriceListResponse& parameters );
+        /**
+            This signal is emitted whenever the call to getPriceList() failed.
+         */
+        void getPriceListError( const KDSoapMessage& fault );
+        /**
+            This signal is emitted whenever the call to checkUpdate()
+            succeeded.
+         */
+        void checkUpdateDone( const TNS__CheckUpdateResponse& parameters );
+        /**
+            This signal is emitted whenever the call to checkUpdate() failed.
+         */
+        void checkUpdateError( const KDSoapMessage& fault );
+        /**
+            This signal is emitted whenever the call to sendOrder() succeeded.
+         */
+        void sendOrderDone( const TNS__SendOrderResponse& parameters );
+        /**
+            This signal is emitted whenever the call to sendOrder() failed.
+         */
+        void sendOrderError( const KDSoapMessage& fault );
+        /**
+            This signal is emitted whenever the call to getProviders()
+            succeeded.
+         */
+        void getProvidersDone( const TNS__GetProvidersResponse& parameters );
+        /**
+            This signal is emitted whenever the call to getProviders() failed.
+         */
+        void getProvidersError( const KDSoapMessage& fault );
+
+    private Q_SLOTS:
+        void _kd_slotGetSalePointsFinished( KDSoapPendingCallWatcher* watcher );
+        void _kd_slotGetUpdateFinished( KDSoapPendingCallWatcher* watcher );
+        void _kd_slotGetPriceListFinished( KDSoapPendingCallWatcher* watcher );
+        void _kd_slotCheckUpdateFinished( KDSoapPendingCallWatcher* watcher );
+        void _kd_slotSendOrderFinished( KDSoapPendingCallWatcher* watcher );
+        void _kd_slotGetProvidersFinished( KDSoapPendingCallWatcher* watcher );
 
     private:
         class PrivateDPtr;

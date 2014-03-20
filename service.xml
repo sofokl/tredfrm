@@ -27,6 +27,8 @@
 							type="tns:UUID"/>
 					<xs:element name="salepoint_id"
 							type="tns:UUID"/>
+					<xs:element name="description"
+							type="xs:string"/>
 					<xs:element name="rows"
 							type="tns:OrderRow"
 							minOccurs="0"
@@ -61,6 +63,8 @@
 							type="xs:date"/>
 					<xs:element name="balance"
 							type="xs:integer"/>
+					<xs:element name="isUrgent"
+							type="xs:boolean"/>
 				</xs:sequence>
 			</xs:complexType>
 			<xs:complexType name="PriceList">
@@ -90,9 +94,17 @@
 					<xs:element name="id"
 							type="tns:UUID"/>
 					<xs:element name="name"
-							type="xs:string"/>
+							type="xs:string"
+							nillable="true"/>
 					<xs:element name="isDeleted"
-							type="xs:boolean"/>
+							type="xs:boolean"
+							nillable="true"/>
+					<xs:element name="isUnavailable"
+							type="xs:boolean"
+							nillable="true"/>
+					<xs:element name="datePrice"
+							type="xs:dateTime"
+							nillable="true"/>
 				</xs:sequence>
 			</xs:complexType>
 			<xs:complexType name="ProviderList">
@@ -113,9 +125,11 @@
 							type="xs:string"/>
 					<xs:element name="partCode"
 							type="xs:string"/>
-					<xs:element name="provider"
-							type="tns:Provider"/>
+					<xs:element name="provider_id"
+							type="tns:UUID"/>
 					<xs:element name="isDeleted"
+							type="xs:boolean"/>
+					<xs:element name="isCutPrice"
 							type="xs:boolean"/>
 				</xs:sequence>
 			</xs:complexType>
@@ -202,6 +216,8 @@
 						<xs:element name="apiKey"
 								type="tns:UUID"
 								nillable="true"/>
+						<xs:element name="Providers"
+								type="tns:ProviderList"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -209,7 +225,8 @@
 				<xs:complexType>
 					<xs:sequence>
 						<xs:element name="return"
-								type="tns:PriceList"/>
+								type="tns:PriceList"
+								nillable="true"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -248,6 +265,23 @@
 					<xs:sequence>
 						<xs:element name="return"
 								type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getProviders">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="apiKey"
+								type="tns:UUID"
+								nillable="true"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getProvidersResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="return"
+								type="tns:ProviderList"/>
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
@@ -293,6 +327,14 @@
 		<part name="parameters"
 				element="tns:sendOrderResponse"/>
 	</message>
+	<message name="getProvidersRequestMessage">
+		<part name="parameters"
+				element="tns:getProviders"/>
+	</message>
+	<message name="getProvidersResponseMessage">
+		<part name="parameters"
+				element="tns:getProvidersResponse"/>
+	</message>
 	<portType name="ClientServisePortType">
 		<operation name="getSalePoints">
 			<input message="tns:getSalePointsRequestMessage"/>
@@ -313,6 +355,10 @@
 		<operation name="sendOrder">
 			<input message="tns:sendOrderRequestMessage"/>
 			<output message="tns:sendOrderResponseMessage"/>
+		</operation>
+		<operation name="getProviders">
+			<input message="tns:getProvidersRequestMessage"/>
+			<output message="tns:getProvidersResponseMessage"/>
 		</operation>
 	</portType>
 	<binding name="ClientServiseSoapBinding"
@@ -369,6 +415,16 @@
 				<soapbind:body use="literal"/>
 			</output>
 		</operation>
+		<operation name="getProviders">
+			<soapbind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getProviders"/>
+			<input>
+				<soapbind:body use="literal"/>
+			</input>
+			<output>
+				<soapbind:body use="literal"/>
+			</output>
+		</operation>
 	</binding>
 	<binding name="ClientServiseSoap12Binding"
 			type="tns:ClientServisePortType">
@@ -417,6 +473,16 @@
 		<operation name="sendOrder">
 			<soap12bind:operation style="document"
 					soapAction="http://www.tredifarm.org#ClientServise:sendOrder"/>
+			<input>
+				<soap12bind:body use="literal"/>
+			</input>
+			<output>
+				<soap12bind:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="getProviders">
+			<soap12bind:operation style="document"
+					soapAction="http://www.tredifarm.org#ClientServise:getProviders"/>
 			<input>
 				<soap12bind:body use="literal"/>
 			</input>

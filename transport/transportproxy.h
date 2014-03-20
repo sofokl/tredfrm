@@ -30,6 +30,7 @@ public:
     
 signals:
     void dataSalepoinstIsReady(const TList);
+    void dataProvidersIsReady(const TList);
     void priceDataIsReady(TList providers, TList products, TList synons, TList prices);
     void priceDataIsGetted(int count);
 
@@ -42,7 +43,8 @@ public slots:
     void setEndPoint(const QString &, int port);
 
     bool getSalePoints();
-    void getPriceList();
+    bool getProviders();
+    void getPriceList(QList<QString> providerList);
     void sendOrders(const TDataList &data);
 
 

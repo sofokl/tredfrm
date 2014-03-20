@@ -56,715 +56,25 @@ TNS__UUID::~TNS__UUID()
 }
 
 
-class TNS__SendOrder::PrivateDPtr : public QSharedData
+class TNS__GetPriceListResponse::PrivateDPtr : public QSharedData
 {
 public:
-    TNS__UUID mApiKey;
-    TNS__Order mParams;
+    TNS__PriceList mReturn;
 };
 
-void TNS__SendOrder::setApiKey( const TNS__UUID& apiKey )
-{
-    d_ptr->mApiKey = apiKey;
-}
-
-TNS__UUID TNS__SendOrder::apiKey() const
-{
-    return d_ptr->mApiKey;
-}
-
-void TNS__SendOrder::setParams( const TNS__Order& params )
-{
-    d_ptr->mParams = params;
-}
-
-TNS__Order TNS__SendOrder::params() const
-{
-    return d_ptr->mParams;
-}
-
-KDSoapValue TNS__SendOrder::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("sendOrder"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueApiKey.setQualified(true);
-    args.append(_valueApiKey);// converter_complextype.cpp:223
-    KDSoapValue _valueParams(d_ptr->mParams.serialize(QString::fromLatin1("params")));// converter_complextype.cpp:209
-    _valueParams.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueParams.setQualified(true);
-    args.append(_valueParams);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__SendOrder::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
-            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
-        }
-        else if (name == QLatin1String("params")) {// converter_complextype.cpp:235
-            d_ptr->mParams.deserialize(val);// converter_complextype.cpp:250
-        }
-    }
-}
-
-TNS__SendOrder::TNS__SendOrder()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__SendOrder::~TNS__SendOrder()
-{
-}
-
-TNS__SendOrder::TNS__SendOrder( const TNS__SendOrder& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__SendOrder&  TNS__SendOrder::operator=( const TNS__SendOrder& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__SalePointList::PrivateDPtr : public QSharedData
-{
-public:
-    QList<TNS__SalePoint> mItems;
-    TNS__OperationError mError;
-};
-
-void TNS__SalePointList::setItems( const QList<TNS__SalePoint>& items )
-{
-    d_ptr->mItems = items;
-}
-
-QList<TNS__SalePoint> TNS__SalePointList::items() const
-{
-    return d_ptr->mItems;
-}
-
-void TNS__SalePointList::setError( const TNS__OperationError& error )
-{
-    d_ptr->mError = error;
-}
-
-TNS__OperationError TNS__SalePointList::error() const
-{
-    return d_ptr->mError;
-}
-
-KDSoapValue TNS__SalePointList::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("SalePointList"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    for (int i = 0; i < d_ptr->mItems.count(); ++i) {
-        KDSoapValue _valueItems(d_ptr->mItems.at(i).serialize(QString::fromLatin1("items")));// converter_complextype.cpp:209
-        _valueItems.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-        _valueItems.setQualified(true);
-        args.append(_valueItems);// converter_complextype.cpp:223
-    }
-    KDSoapValue _valueError(d_ptr->mError.serialize(QString::fromLatin1("error")));// converter_complextype.cpp:209
-    _valueError.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueError.setQualified(true);
-    args.append(_valueError);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__SalePointList::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("items")) {// converter_complextype.cpp:235
-            TNS__SalePoint mItemsTemp;
-            mItemsTemp.deserialize(val);// converter_complextype.cpp:250
-            d_ptr->mItems.append(mItemsTemp);
-        }
-        else if (name == QLatin1String("error")) {// converter_complextype.cpp:235
-            d_ptr->mError.deserialize(val);// converter_complextype.cpp:250
-        }
-    }
-}
-
-TNS__SalePointList::TNS__SalePointList()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__SalePointList::~TNS__SalePointList()
-{
-}
-
-TNS__SalePointList::TNS__SalePointList( const TNS__SalePointList& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__SalePointList&  TNS__SalePointList::operator=( const TNS__SalePointList& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__GetSalePoints::PrivateDPtr : public QSharedData
-{
-public:
-    TNS__UUID mApiKey;
-};
-
-void TNS__GetSalePoints::setApiKey( const TNS__UUID& apiKey )
-{
-    d_ptr->mApiKey = apiKey;
-}
-
-TNS__UUID TNS__GetSalePoints::apiKey() const
-{
-    return d_ptr->mApiKey;
-}
-
-KDSoapValue TNS__GetSalePoints::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getSalePoints"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueApiKey.setQualified(true);
-    args.append(_valueApiKey);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__GetSalePoints::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
-            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
-        }
-    }
-}
-
-TNS__GetSalePoints::TNS__GetSalePoints()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__GetSalePoints::~TNS__GetSalePoints()
-{
-}
-
-TNS__GetSalePoints::TNS__GetSalePoints( const TNS__GetSalePoints& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__GetSalePoints&  TNS__GetSalePoints::operator=( const TNS__GetSalePoints& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__ProviderProduct::PrivateDPtr : public QSharedData
-{
-public:
-    PrivateDPtr();
-
-public:
-    TNS__UUID mId;
-    TNS__Product mProduct;
-    QString mName;
-    QString mPartCode;
-    TNS__Provider mProvider;
-    bool mIsDeleted;
-};
-
-TNS__ProviderProduct::PrivateDPtr::PrivateDPtr()
-    : mIsDeleted(false)
-{
-}
-
-
-void TNS__ProviderProduct::setId( const TNS__UUID& id )
-{
-    d_ptr->mId = id;
-}
-
-TNS__UUID TNS__ProviderProduct::id() const
-{
-    return d_ptr->mId;
-}
-
-void TNS__ProviderProduct::setProduct( const TNS__Product& product )
-{
-    d_ptr->mProduct = product;
-}
-
-TNS__Product TNS__ProviderProduct::product() const
-{
-    return d_ptr->mProduct;
-}
-
-void TNS__ProviderProduct::setName( const QString& name )
-{
-    d_ptr->mName = name;
-}
-
-QString TNS__ProviderProduct::name() const
-{
-    return d_ptr->mName;
-}
-
-void TNS__ProviderProduct::setPartCode( const QString& partCode )
-{
-    d_ptr->mPartCode = partCode;
-}
-
-QString TNS__ProviderProduct::partCode() const
-{
-    return d_ptr->mPartCode;
-}
-
-void TNS__ProviderProduct::setProvider( const TNS__Provider& provider )
-{
-    d_ptr->mProvider = provider;
-}
-
-TNS__Provider TNS__ProviderProduct::provider() const
-{
-    return d_ptr->mProvider;
-}
-
-void TNS__ProviderProduct::setIsDeleted( bool isDeleted )
-{
-    d_ptr->mIsDeleted = isDeleted;
-}
-
-bool TNS__ProviderProduct::isDeleted() const
-{
-    return d_ptr->mIsDeleted;
-}
-
-KDSoapValue TNS__ProviderProduct::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("ProviderProduct"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueId(QString::fromLatin1("id"), d_ptr->mId.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueId.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueId.setQualified(true);
-    args.append(_valueId);// converter_complextype.cpp:223
-    KDSoapValue _valueProduct(d_ptr->mProduct.serialize(QString::fromLatin1("product")));// converter_complextype.cpp:209
-    _valueProduct.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueProduct.setQualified(true);
-    args.append(_valueProduct);// converter_complextype.cpp:223
-    KDSoapValue _valueName(QString::fromLatin1("name"), QVariant::fromValue(d_ptr->mName), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valueName.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueName.setQualified(true);
-    args.append(_valueName);// converter_complextype.cpp:223
-    KDSoapValue _valuePartCode(QString::fromLatin1("partCode"), QVariant::fromValue(d_ptr->mPartCode), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valuePartCode.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valuePartCode.setQualified(true);
-    args.append(_valuePartCode);// converter_complextype.cpp:223
-    KDSoapValue _valueProvider(d_ptr->mProvider.serialize(QString::fromLatin1("provider")));// converter_complextype.cpp:209
-    _valueProvider.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueProvider.setQualified(true);
-    args.append(_valueProvider);// converter_complextype.cpp:223
-    KDSoapValue _valueIsDeleted(QString::fromLatin1("isDeleted"), QVariant::fromValue(d_ptr->mIsDeleted), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
-    _valueIsDeleted.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueIsDeleted.setQualified(true);
-    args.append(_valueIsDeleted);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__ProviderProduct::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("id")) {// converter_complextype.cpp:235
-            d_ptr->mId.deserialize(val.value());// converter_complextype.cpp:252
-        }
-        else if (name == QLatin1String("product")) {// converter_complextype.cpp:235
-            d_ptr->mProduct.deserialize(val);// converter_complextype.cpp:250
-        }
-        else if (name == QLatin1String("name")) {// converter_complextype.cpp:235
-            d_ptr->mName = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("partCode")) {// converter_complextype.cpp:235
-            d_ptr->mPartCode = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("provider")) {// converter_complextype.cpp:235
-            d_ptr->mProvider.deserialize(val);// converter_complextype.cpp:250
-        }
-        else if (name == QLatin1String("isDeleted")) {// converter_complextype.cpp:235
-            d_ptr->mIsDeleted = val.value().value<bool>();// converter_complextype.cpp:248
-        }
-    }
-}
-
-TNS__ProviderProduct::TNS__ProviderProduct()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__ProviderProduct::~TNS__ProviderProduct()
-{
-}
-
-TNS__ProviderProduct::TNS__ProviderProduct( const TNS__ProviderProduct& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__ProviderProduct&  TNS__ProviderProduct::operator=( const TNS__ProviderProduct& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__GetUpdate::PrivateDPtr : public QSharedData
-{
-public:
-    TNS__UUID mApiKey;
-};
-
-void TNS__GetUpdate::setApiKey( const TNS__UUID& apiKey )
-{
-    d_ptr->mApiKey = apiKey;
-}
-
-TNS__UUID TNS__GetUpdate::apiKey() const
-{
-    return d_ptr->mApiKey;
-}
-
-KDSoapValue TNS__GetUpdate::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getUpdate"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueApiKey.setQualified(true);
-    args.append(_valueApiKey);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__GetUpdate::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
-            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
-        }
-    }
-}
-
-TNS__GetUpdate::TNS__GetUpdate()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__GetUpdate::~TNS__GetUpdate()
-{
-}
-
-TNS__GetUpdate::TNS__GetUpdate( const TNS__GetUpdate& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__GetUpdate&  TNS__GetUpdate::operator=( const TNS__GetUpdate& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__CheckUpdate::PrivateDPtr : public QSharedData
-{
-public:
-    PrivateDPtr();
-
-public:
-    TNS__UUID mApiKey;
-    qint64 mClientVersion;
-};
-
-TNS__CheckUpdate::PrivateDPtr::PrivateDPtr()
-    : mClientVersion(0)
-{
-}
-
-
-void TNS__CheckUpdate::setApiKey( const TNS__UUID& apiKey )
-{
-    d_ptr->mApiKey = apiKey;
-}
-
-TNS__UUID TNS__CheckUpdate::apiKey() const
-{
-    return d_ptr->mApiKey;
-}
-
-void TNS__CheckUpdate::setClientVersion( qint64 clientVersion )
-{
-    d_ptr->mClientVersion = clientVersion;
-}
-
-qint64 TNS__CheckUpdate::clientVersion() const
-{
-    return d_ptr->mClientVersion;
-}
-
-KDSoapValue TNS__CheckUpdate::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("checkUpdate"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueApiKey.setQualified(true);
-    args.append(_valueApiKey);// converter_complextype.cpp:223
-    KDSoapValue _valueClientVersion(QString::fromLatin1("clientVersion"), QVariant::fromValue(d_ptr->mClientVersion), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
-    _valueClientVersion.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueClientVersion.setQualified(true);
-    args.append(_valueClientVersion);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__CheckUpdate::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
-            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
-        }
-        else if (name == QLatin1String("clientVersion")) {// converter_complextype.cpp:235
-            d_ptr->mClientVersion = val.value().value<qint64>();// converter_complextype.cpp:248
-        }
-    }
-}
-
-TNS__CheckUpdate::TNS__CheckUpdate()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__CheckUpdate::~TNS__CheckUpdate()
-{
-}
-
-TNS__CheckUpdate::TNS__CheckUpdate( const TNS__CheckUpdate& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__CheckUpdate&  TNS__CheckUpdate::operator=( const TNS__CheckUpdate& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__GetUpdateResponse::PrivateDPtr : public QSharedData
-{
-public:
-    QByteArray mReturn;
-};
-
-void TNS__GetUpdateResponse::setReturn( const QByteArray& return_ )
+void TNS__GetPriceListResponse::setReturn( const TNS__PriceList& return_ )
 {
     d_ptr->mReturn = return_;
 }
 
-QByteArray TNS__GetUpdateResponse::return_() const
+TNS__PriceList TNS__GetPriceListResponse::return_() const
 {
     return d_ptr->mReturn;
 }
 
-KDSoapValue TNS__GetUpdateResponse::serialize( const QString& valueName ) const
+KDSoapValue TNS__GetPriceListResponse::serialize( const QString& valueName ) const
 {
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getUpdateResponse"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueReturn(QString::fromLatin1("return"), QString::fromLatin1(d_ptr->mReturn.toBase64().constData()), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("base64Binary"));// converter_complextype.cpp:215
-    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueReturn.setQualified(true);
-    args.append(_valueReturn);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__GetUpdateResponse::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
-            d_ptr->mReturn = QByteArray::fromBase64(val.value().toString().toLatin1());// converter_complextype.cpp:248
-        }
-    }
-}
-
-TNS__GetUpdateResponse::TNS__GetUpdateResponse()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__GetUpdateResponse::~TNS__GetUpdateResponse()
-{
-}
-
-TNS__GetUpdateResponse::TNS__GetUpdateResponse( const TNS__GetUpdateResponse& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__GetUpdateResponse&  TNS__GetUpdateResponse::operator=( const TNS__GetUpdateResponse& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__PriceList::PrivateDPtr : public QSharedData
-{
-public:
-    QList<TNS__Price> mItems;
-};
-
-void TNS__PriceList::setItems( const QList<TNS__Price>& items )
-{
-    d_ptr->mItems = items;
-}
-
-QList<TNS__Price> TNS__PriceList::items() const
-{
-    return d_ptr->mItems;
-}
-
-KDSoapValue TNS__PriceList::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("PriceList"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    for (int i = 0; i < d_ptr->mItems.count(); ++i) {
-        KDSoapValue _valueItems(d_ptr->mItems.at(i).serialize(QString::fromLatin1("items")));// converter_complextype.cpp:209
-        _valueItems.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-        _valueItems.setQualified(true);
-        args.append(_valueItems);// converter_complextype.cpp:223
-    }
-    return mainValue;
-}
-
-void TNS__PriceList::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("items")) {// converter_complextype.cpp:235
-            TNS__Price mItemsTemp;
-            mItemsTemp.deserialize(val);// converter_complextype.cpp:250
-            d_ptr->mItems.append(mItemsTemp);
-        }
-    }
-}
-
-TNS__PriceList::TNS__PriceList()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__PriceList::~TNS__PriceList()
-{
-}
-
-TNS__PriceList::TNS__PriceList( const TNS__PriceList& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__PriceList&  TNS__PriceList::operator=( const TNS__PriceList& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__CheckUpdateResponse::PrivateDPtr : public QSharedData
-{
-public:
-    TNS__VersionDescription mReturn;
-};
-
-void TNS__CheckUpdateResponse::setReturn( const TNS__VersionDescription& return_ )
-{
-    d_ptr->mReturn = return_;
-}
-
-TNS__VersionDescription TNS__CheckUpdateResponse::return_() const
-{
-    return d_ptr->mReturn;
-}
-
-KDSoapValue TNS__CheckUpdateResponse::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("checkUpdateResponse"));// converter_complextype.cpp:323
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getPriceListResponse"));// converter_complextype.cpp:323
     KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
     mainValue.setQualified(true);// converter_complextype.cpp:345
     KDSoapValue _valueReturn(d_ptr->mReturn.serialize(QString::fromLatin1("return")));// converter_complextype.cpp:209
@@ -774,7 +84,7 @@ KDSoapValue TNS__CheckUpdateResponse::serialize( const QString& valueName ) cons
     return mainValue;
 }
 
-void TNS__CheckUpdateResponse::deserialize( const KDSoapValue& mainValue )
+void TNS__GetPriceListResponse::deserialize( const KDSoapValue& mainValue )
 {
     const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
     for (int argNr = 0; argNr < args.count(); ++argNr) {
@@ -786,21 +96,21 @@ void TNS__CheckUpdateResponse::deserialize( const KDSoapValue& mainValue )
     }
 }
 
-TNS__CheckUpdateResponse::TNS__CheckUpdateResponse()
+TNS__GetPriceListResponse::TNS__GetPriceListResponse()
     : d_ptr(new PrivateDPtr)
 {
 }
 
-TNS__CheckUpdateResponse::~TNS__CheckUpdateResponse()
+TNS__GetPriceListResponse::~TNS__GetPriceListResponse()
 {
 }
 
-TNS__CheckUpdateResponse::TNS__CheckUpdateResponse( const TNS__CheckUpdateResponse& other )
+TNS__GetPriceListResponse::TNS__GetPriceListResponse( const TNS__GetPriceListResponse& other )
     : d_ptr( other.d_ptr )
 {
 }
 
-TNS__CheckUpdateResponse&  TNS__CheckUpdateResponse::operator=( const TNS__CheckUpdateResponse& other )
+TNS__GetPriceListResponse&  TNS__GetPriceListResponse::operator=( const TNS__GetPriceListResponse& other )
 {
     if ( this == &other )
         return *this;
@@ -811,196 +121,433 @@ TNS__CheckUpdateResponse&  TNS__CheckUpdateResponse::operator=( const TNS__Check
 }
 
 
-class TNS__Price::PrivateDPtr : public QSharedData
+class TNS__ProviderList::PrivateDPtr : public QSharedData
 {
 public:
-    PrivateDPtr();
-
-public:
-    KDDateTime mDate;
-    QString mManufacturer;
-    TNS__ProviderProduct mProviderProduct;
-    double mPriceValue;
-    double mPriceVital;
-    qint64 mCountPricePack;
-    QDate mExpirationDate;
-    qint64 mBalance;
+    QList<TNS__Provider> mItems;
 };
 
-TNS__Price::PrivateDPtr::PrivateDPtr()
-    : mPriceValue(0), mPriceVital(0), mCountPricePack(0), mBalance(0)
+void TNS__ProviderList::setItems( const QList<TNS__Provider>& items )
 {
+    d_ptr->mItems = items;
 }
 
-
-void TNS__Price::setDate( const KDDateTime& date )
+QList<TNS__Provider> TNS__ProviderList::items() const
 {
-    d_ptr->mDate = date;
+    return d_ptr->mItems;
 }
 
-KDDateTime TNS__Price::date() const
+KDSoapValue TNS__ProviderList::serialize( const QString& valueName ) const
 {
-    return d_ptr->mDate;
-}
-
-void TNS__Price::setManufacturer( const QString& manufacturer )
-{
-    d_ptr->mManufacturer = manufacturer;
-}
-
-QString TNS__Price::manufacturer() const
-{
-    return d_ptr->mManufacturer;
-}
-
-void TNS__Price::setProviderProduct( const TNS__ProviderProduct& providerProduct )
-{
-    d_ptr->mProviderProduct = providerProduct;
-}
-
-TNS__ProviderProduct TNS__Price::providerProduct() const
-{
-    return d_ptr->mProviderProduct;
-}
-
-void TNS__Price::setPriceValue( double priceValue )
-{
-    d_ptr->mPriceValue = priceValue;
-}
-
-double TNS__Price::priceValue() const
-{
-    return d_ptr->mPriceValue;
-}
-
-void TNS__Price::setPriceVital( double priceVital )
-{
-    d_ptr->mPriceVital = priceVital;
-}
-
-double TNS__Price::priceVital() const
-{
-    return d_ptr->mPriceVital;
-}
-
-void TNS__Price::setCountPricePack( qint64 countPricePack )
-{
-    d_ptr->mCountPricePack = countPricePack;
-}
-
-qint64 TNS__Price::countPricePack() const
-{
-    return d_ptr->mCountPricePack;
-}
-
-void TNS__Price::setExpirationDate( const QDate& expirationDate )
-{
-    d_ptr->mExpirationDate = expirationDate;
-}
-
-QDate TNS__Price::expirationDate() const
-{
-    return d_ptr->mExpirationDate;
-}
-
-void TNS__Price::setBalance( qint64 balance )
-{
-    d_ptr->mBalance = balance;
-}
-
-qint64 TNS__Price::balance() const
-{
-    return d_ptr->mBalance;
-}
-
-KDSoapValue TNS__Price::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("Price"));// converter_complextype.cpp:323
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("ProviderList"));// converter_complextype.cpp:323
     KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
     mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueDate(QString::fromLatin1("date"), d_ptr->mDate.toDateString(), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("dateTime"));// converter_complextype.cpp:215
-    _valueDate.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueDate.setQualified(true);
-    args.append(_valueDate);// converter_complextype.cpp:223
-    KDSoapValue _valueManufacturer(QString::fromLatin1("manufacturer"), QVariant::fromValue(d_ptr->mManufacturer), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valueManufacturer.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueManufacturer.setQualified(true);
-    args.append(_valueManufacturer);// converter_complextype.cpp:223
-    KDSoapValue _valueProviderProduct(d_ptr->mProviderProduct.serialize(QString::fromLatin1("providerProduct")));// converter_complextype.cpp:209
-    _valueProviderProduct.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueProviderProduct.setQualified(true);
-    args.append(_valueProviderProduct);// converter_complextype.cpp:223
-    KDSoapValue _valuePriceValue(QString::fromLatin1("priceValue"), QVariant::fromValue(d_ptr->mPriceValue), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("double"));// converter_complextype.cpp:215
-    _valuePriceValue.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valuePriceValue.setQualified(true);
-    args.append(_valuePriceValue);// converter_complextype.cpp:223
-    KDSoapValue _valuePriceVital(QString::fromLatin1("priceVital"), QVariant::fromValue(d_ptr->mPriceVital), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("double"));// converter_complextype.cpp:215
-    _valuePriceVital.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valuePriceVital.setQualified(true);
-    args.append(_valuePriceVital);// converter_complextype.cpp:223
-    KDSoapValue _valueCountPricePack(QString::fromLatin1("countPricePack"), QVariant::fromValue(d_ptr->mCountPricePack), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
-    _valueCountPricePack.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueCountPricePack.setQualified(true);
-    args.append(_valueCountPricePack);// converter_complextype.cpp:223
-    KDSoapValue _valueExpirationDate(QString::fromLatin1("expirationDate"), QVariant::fromValue(d_ptr->mExpirationDate), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("date"));// converter_complextype.cpp:215
-    _valueExpirationDate.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueExpirationDate.setQualified(true);
-    args.append(_valueExpirationDate);// converter_complextype.cpp:223
-    KDSoapValue _valueBalance(QString::fromLatin1("balance"), QVariant::fromValue(d_ptr->mBalance), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
-    _valueBalance.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueBalance.setQualified(true);
-    args.append(_valueBalance);// converter_complextype.cpp:223
+    for (int i = 0; i < d_ptr->mItems.count(); ++i) {
+        KDSoapValue _valueItems(d_ptr->mItems.at(i).serialize(QString::fromLatin1("items")));// converter_complextype.cpp:209
+        _valueItems.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+        _valueItems.setQualified(true);
+        args.append(_valueItems);// converter_complextype.cpp:223
+    }
     return mainValue;
 }
 
-void TNS__Price::deserialize( const KDSoapValue& mainValue )
+void TNS__ProviderList::deserialize( const KDSoapValue& mainValue )
 {
     const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
     for (int argNr = 0; argNr < args.count(); ++argNr) {
         const KDSoapValue& val = args.at(argNr);
         const QString name = val.name();
-        if (name == QLatin1String("date")) {// converter_complextype.cpp:235
-            d_ptr->mDate = KDDateTime::fromDateString(val.value().toString());// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("manufacturer")) {// converter_complextype.cpp:235
-            d_ptr->mManufacturer = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("providerProduct")) {// converter_complextype.cpp:235
-            d_ptr->mProviderProduct.deserialize(val);// converter_complextype.cpp:250
-        }
-        else if (name == QLatin1String("priceValue")) {// converter_complextype.cpp:235
-            d_ptr->mPriceValue = val.value().value<double>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("priceVital")) {// converter_complextype.cpp:235
-            d_ptr->mPriceVital = val.value().value<double>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("countPricePack")) {// converter_complextype.cpp:235
-            d_ptr->mCountPricePack = val.value().value<qint64>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("expirationDate")) {// converter_complextype.cpp:235
-            d_ptr->mExpirationDate = val.value().value<QDate>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("balance")) {// converter_complextype.cpp:235
-            d_ptr->mBalance = val.value().value<qint64>();// converter_complextype.cpp:248
+        if (name == QLatin1String("items")) {// converter_complextype.cpp:235
+            TNS__Provider mItemsTemp;
+            mItemsTemp.deserialize(val);// converter_complextype.cpp:250
+            d_ptr->mItems.append(mItemsTemp);
         }
     }
 }
 
-TNS__Price::TNS__Price()
+TNS__ProviderList::TNS__ProviderList()
     : d_ptr(new PrivateDPtr)
 {
 }
 
-TNS__Price::~TNS__Price()
+TNS__ProviderList::~TNS__ProviderList()
 {
 }
 
-TNS__Price::TNS__Price( const TNS__Price& other )
+TNS__ProviderList::TNS__ProviderList( const TNS__ProviderList& other )
     : d_ptr( other.d_ptr )
 {
 }
 
-TNS__Price&  TNS__Price::operator=( const TNS__Price& other )
+TNS__ProviderList&  TNS__ProviderList::operator=( const TNS__ProviderList& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__GetProviders::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__UUID mApiKey;
+};
+
+void TNS__GetProviders::setApiKey( const TNS__UUID& apiKey )
+{
+    d_ptr->mApiKey = apiKey;
+}
+
+TNS__UUID TNS__GetProviders::apiKey() const
+{
+    return d_ptr->mApiKey;
+}
+
+KDSoapValue TNS__GetProviders::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getProviders"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueApiKey.setQualified(true);
+    args.append(_valueApiKey);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__GetProviders::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
+            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
+        }
+    }
+}
+
+TNS__GetProviders::TNS__GetProviders()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__GetProviders::~TNS__GetProviders()
+{
+}
+
+TNS__GetProviders::TNS__GetProviders( const TNS__GetProviders& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__GetProviders&  TNS__GetProviders::operator=( const TNS__GetProviders& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__OperationError::PrivateDPtr : public QSharedData
+{
+public:
+    PrivateDPtr();
+
+public:
+    bool mIsValid;
+    QString mText;
+};
+
+TNS__OperationError::PrivateDPtr::PrivateDPtr()
+    : mIsValid(false)
+{
+}
+
+
+void TNS__OperationError::setIsValid( bool isValid )
+{
+    d_ptr->mIsValid = isValid;
+}
+
+bool TNS__OperationError::isValid() const
+{
+    return d_ptr->mIsValid;
+}
+
+void TNS__OperationError::setText( const QString& text )
+{
+    d_ptr->mText = text;
+}
+
+QString TNS__OperationError::text() const
+{
+    return d_ptr->mText;
+}
+
+KDSoapValue TNS__OperationError::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("OperationError"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueIsValid(QString::fromLatin1("isValid"), QVariant::fromValue(d_ptr->mIsValid), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
+    _valueIsValid.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueIsValid.setQualified(true);
+    args.append(_valueIsValid);// converter_complextype.cpp:223
+    KDSoapValue _valueText(QString::fromLatin1("text"), QVariant::fromValue(d_ptr->mText), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueText.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueText.setQualified(true);
+    args.append(_valueText);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__OperationError::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("isValid")) {// converter_complextype.cpp:235
+            d_ptr->mIsValid = val.value().value<bool>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("text")) {// converter_complextype.cpp:235
+            d_ptr->mText = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+    }
+}
+
+TNS__OperationError::TNS__OperationError()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__OperationError::~TNS__OperationError()
+{
+}
+
+TNS__OperationError::TNS__OperationError( const TNS__OperationError& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__OperationError&  TNS__OperationError::operator=( const TNS__OperationError& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__GetProvidersResponse::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__ProviderList mReturn;
+};
+
+void TNS__GetProvidersResponse::setReturn( const TNS__ProviderList& return_ )
+{
+    d_ptr->mReturn = return_;
+}
+
+TNS__ProviderList TNS__GetProvidersResponse::return_() const
+{
+    return d_ptr->mReturn;
+}
+
+KDSoapValue TNS__GetProvidersResponse::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getProvidersResponse"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueReturn(d_ptr->mReturn.serialize(QString::fromLatin1("return")));// converter_complextype.cpp:209
+    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueReturn.setQualified(true);
+    args.append(_valueReturn);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__GetProvidersResponse::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
+            d_ptr->mReturn.deserialize(val);// converter_complextype.cpp:250
+        }
+    }
+}
+
+TNS__GetProvidersResponse::TNS__GetProvidersResponse()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__GetProvidersResponse::~TNS__GetProvidersResponse()
+{
+}
+
+TNS__GetProvidersResponse::TNS__GetProvidersResponse( const TNS__GetProvidersResponse& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__GetProvidersResponse&  TNS__GetProvidersResponse::operator=( const TNS__GetProvidersResponse& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__Provider::PrivateDPtr : public QSharedData
+{
+public:
+    PrivateDPtr();
+
+public:
+    TNS__UUID mId;
+    QString mName;
+    bool mIsDeleted;
+    bool mIsUnavailable;
+    KDDateTime mDatePrice;
+};
+
+TNS__Provider::PrivateDPtr::PrivateDPtr()
+    : mIsDeleted(false), mIsUnavailable(false)
+{
+}
+
+
+void TNS__Provider::setId( const TNS__UUID& id )
+{
+    d_ptr->mId = id;
+}
+
+TNS__UUID TNS__Provider::id() const
+{
+    return d_ptr->mId;
+}
+
+void TNS__Provider::setName( const QString& name )
+{
+    d_ptr->mName = name;
+}
+
+QString TNS__Provider::name() const
+{
+    return d_ptr->mName;
+}
+
+void TNS__Provider::setIsDeleted( bool isDeleted )
+{
+    d_ptr->mIsDeleted = isDeleted;
+}
+
+bool TNS__Provider::isDeleted() const
+{
+    return d_ptr->mIsDeleted;
+}
+
+void TNS__Provider::setIsUnavailable( bool isUnavailable )
+{
+    d_ptr->mIsUnavailable = isUnavailable;
+}
+
+bool TNS__Provider::isUnavailable() const
+{
+    return d_ptr->mIsUnavailable;
+}
+
+void TNS__Provider::setDatePrice( const KDDateTime& datePrice )
+{
+    d_ptr->mDatePrice = datePrice;
+}
+
+KDDateTime TNS__Provider::datePrice() const
+{
+    return d_ptr->mDatePrice;
+}
+
+KDSoapValue TNS__Provider::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("Provider"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueId(QString::fromLatin1("id"), d_ptr->mId.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueId.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueId.setQualified(true);
+    args.append(_valueId);// converter_complextype.cpp:223
+    KDSoapValue _valueName(QString::fromLatin1("name"), QVariant::fromValue(d_ptr->mName), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueName.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueName.setQualified(true);
+    args.append(_valueName);// converter_complextype.cpp:223
+    KDSoapValue _valueIsDeleted(QString::fromLatin1("isDeleted"), QVariant::fromValue(d_ptr->mIsDeleted), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
+    _valueIsDeleted.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueIsDeleted.setQualified(true);
+    args.append(_valueIsDeleted);// converter_complextype.cpp:223
+    KDSoapValue _valueIsUnavailable(QString::fromLatin1("isUnavailable"), QVariant::fromValue(d_ptr->mIsUnavailable), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
+    _valueIsUnavailable.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueIsUnavailable.setQualified(true);
+    args.append(_valueIsUnavailable);// converter_complextype.cpp:223
+    KDSoapValue _valueDatePrice(QString::fromLatin1("datePrice"), d_ptr->mDatePrice.toDateString(), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("dateTime"));// converter_complextype.cpp:215
+    _valueDatePrice.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueDatePrice.setQualified(true);
+    args.append(_valueDatePrice);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__Provider::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("id")) {// converter_complextype.cpp:235
+            d_ptr->mId.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("name")) {// converter_complextype.cpp:235
+            d_ptr->mName = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("isDeleted")) {// converter_complextype.cpp:235
+            d_ptr->mIsDeleted = val.value().value<bool>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("isUnavailable")) {// converter_complextype.cpp:235
+            d_ptr->mIsUnavailable = val.value().value<bool>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("datePrice")) {// converter_complextype.cpp:235
+            d_ptr->mDatePrice = KDDateTime::fromDateString(val.value().toString());// converter_complextype.cpp:248
+        }
+    }
+}
+
+TNS__Provider::TNS__Provider()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__Provider::~TNS__Provider()
+{
+}
+
+TNS__Provider::TNS__Provider( const TNS__Provider& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__Provider&  TNS__Provider::operator=( const TNS__Provider& other )
 {
     if ( this == &other )
         return *this;
@@ -1121,618 +668,6 @@ TNS__SalePoint&  TNS__SalePoint::operator=( const TNS__SalePoint& other )
 }
 
 
-class TNS__OperationError::PrivateDPtr : public QSharedData
-{
-public:
-    PrivateDPtr();
-
-public:
-    bool mIsValid;
-    QString mText;
-};
-
-TNS__OperationError::PrivateDPtr::PrivateDPtr()
-    : mIsValid(false)
-{
-}
-
-
-void TNS__OperationError::setIsValid( bool isValid )
-{
-    d_ptr->mIsValid = isValid;
-}
-
-bool TNS__OperationError::isValid() const
-{
-    return d_ptr->mIsValid;
-}
-
-void TNS__OperationError::setText( const QString& text )
-{
-    d_ptr->mText = text;
-}
-
-QString TNS__OperationError::text() const
-{
-    return d_ptr->mText;
-}
-
-KDSoapValue TNS__OperationError::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("OperationError"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueIsValid(QString::fromLatin1("isValid"), QVariant::fromValue(d_ptr->mIsValid), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
-    _valueIsValid.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueIsValid.setQualified(true);
-    args.append(_valueIsValid);// converter_complextype.cpp:223
-    KDSoapValue _valueText(QString::fromLatin1("text"), QVariant::fromValue(d_ptr->mText), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valueText.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueText.setQualified(true);
-    args.append(_valueText);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__OperationError::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("isValid")) {// converter_complextype.cpp:235
-            d_ptr->mIsValid = val.value().value<bool>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("text")) {// converter_complextype.cpp:235
-            d_ptr->mText = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-    }
-}
-
-TNS__OperationError::TNS__OperationError()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__OperationError::~TNS__OperationError()
-{
-}
-
-TNS__OperationError::TNS__OperationError( const TNS__OperationError& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__OperationError&  TNS__OperationError::operator=( const TNS__OperationError& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__SendOrderResponse::PrivateDPtr : public QSharedData
-{
-public:
-    QString mReturn;
-};
-
-void TNS__SendOrderResponse::setReturn( const QString& return_ )
-{
-    d_ptr->mReturn = return_;
-}
-
-QString TNS__SendOrderResponse::return_() const
-{
-    return d_ptr->mReturn;
-}
-
-KDSoapValue TNS__SendOrderResponse::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("sendOrderResponse"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueReturn(QString::fromLatin1("return"), QVariant::fromValue(d_ptr->mReturn), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueReturn.setQualified(true);
-    args.append(_valueReturn);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__SendOrderResponse::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
-            d_ptr->mReturn = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-    }
-}
-
-TNS__SendOrderResponse::TNS__SendOrderResponse()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__SendOrderResponse::~TNS__SendOrderResponse()
-{
-}
-
-TNS__SendOrderResponse::TNS__SendOrderResponse( const TNS__SendOrderResponse& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__SendOrderResponse&  TNS__SendOrderResponse::operator=( const TNS__SendOrderResponse& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__VersionDescription::PrivateDPtr : public QSharedData
-{
-public:
-    PrivateDPtr();
-
-public:
-    qint64 mBuildNumber;
-    QString mStringNumber;
-    QString mDescription;
-};
-
-TNS__VersionDescription::PrivateDPtr::PrivateDPtr()
-    : mBuildNumber(0)
-{
-}
-
-
-void TNS__VersionDescription::setBuildNumber( qint64 buildNumber )
-{
-    d_ptr->mBuildNumber = buildNumber;
-}
-
-qint64 TNS__VersionDescription::buildNumber() const
-{
-    return d_ptr->mBuildNumber;
-}
-
-void TNS__VersionDescription::setStringNumber( const QString& stringNumber )
-{
-    d_ptr->mStringNumber = stringNumber;
-}
-
-QString TNS__VersionDescription::stringNumber() const
-{
-    return d_ptr->mStringNumber;
-}
-
-void TNS__VersionDescription::setDescription( const QString& description )
-{
-    d_ptr->mDescription = description;
-}
-
-QString TNS__VersionDescription::description() const
-{
-    return d_ptr->mDescription;
-}
-
-KDSoapValue TNS__VersionDescription::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("VersionDescription"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueBuildNumber(QString::fromLatin1("buildNumber"), QVariant::fromValue(d_ptr->mBuildNumber), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
-    _valueBuildNumber.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueBuildNumber.setQualified(true);
-    args.append(_valueBuildNumber);// converter_complextype.cpp:223
-    KDSoapValue _valueStringNumber(QString::fromLatin1("stringNumber"), QVariant::fromValue(d_ptr->mStringNumber), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valueStringNumber.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueStringNumber.setQualified(true);
-    args.append(_valueStringNumber);// converter_complextype.cpp:223
-    KDSoapValue _valueDescription(QString::fromLatin1("description"), QVariant::fromValue(d_ptr->mDescription), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valueDescription.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueDescription.setQualified(true);
-    args.append(_valueDescription);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__VersionDescription::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("buildNumber")) {// converter_complextype.cpp:235
-            d_ptr->mBuildNumber = val.value().value<qint64>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("stringNumber")) {// converter_complextype.cpp:235
-            d_ptr->mStringNumber = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("description")) {// converter_complextype.cpp:235
-            d_ptr->mDescription = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-    }
-}
-
-TNS__VersionDescription::TNS__VersionDescription()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__VersionDescription::~TNS__VersionDescription()
-{
-}
-
-TNS__VersionDescription::TNS__VersionDescription( const TNS__VersionDescription& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__VersionDescription&  TNS__VersionDescription::operator=( const TNS__VersionDescription& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__GetPriceListResponse::PrivateDPtr : public QSharedData
-{
-public:
-    TNS__PriceList mReturn;
-};
-
-void TNS__GetPriceListResponse::setReturn( const TNS__PriceList& return_ )
-{
-    d_ptr->mReturn = return_;
-}
-
-TNS__PriceList TNS__GetPriceListResponse::return_() const
-{
-    return d_ptr->mReturn;
-}
-
-KDSoapValue TNS__GetPriceListResponse::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getPriceListResponse"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueReturn(d_ptr->mReturn.serialize(QString::fromLatin1("return")));// converter_complextype.cpp:209
-    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueReturn.setQualified(true);
-    args.append(_valueReturn);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__GetPriceListResponse::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
-            d_ptr->mReturn.deserialize(val);// converter_complextype.cpp:250
-        }
-    }
-}
-
-TNS__GetPriceListResponse::TNS__GetPriceListResponse()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__GetPriceListResponse::~TNS__GetPriceListResponse()
-{
-}
-
-TNS__GetPriceListResponse::TNS__GetPriceListResponse( const TNS__GetPriceListResponse& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__GetPriceListResponse&  TNS__GetPriceListResponse::operator=( const TNS__GetPriceListResponse& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__Order::PrivateDPtr : public QSharedData
-{
-public:
-    TNS__UUID mProvider_id;
-    TNS__UUID mSalepoint_id;
-    QList<TNS__OrderRow> mRows;
-};
-
-void TNS__Order::setProvider_id( const TNS__UUID& provider_id )
-{
-    d_ptr->mProvider_id = provider_id;
-}
-
-TNS__UUID TNS__Order::provider_id() const
-{
-    return d_ptr->mProvider_id;
-}
-
-void TNS__Order::setSalepoint_id( const TNS__UUID& salepoint_id )
-{
-    d_ptr->mSalepoint_id = salepoint_id;
-}
-
-TNS__UUID TNS__Order::salepoint_id() const
-{
-    return d_ptr->mSalepoint_id;
-}
-
-void TNS__Order::setRows( const QList<TNS__OrderRow>& rows )
-{
-    d_ptr->mRows = rows;
-}
-
-QList<TNS__OrderRow> TNS__Order::rows() const
-{
-    return d_ptr->mRows;
-}
-
-KDSoapValue TNS__Order::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("Order"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueProvider_id(QString::fromLatin1("provider_id"), d_ptr->mProvider_id.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueProvider_id.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueProvider_id.setQualified(true);
-    args.append(_valueProvider_id);// converter_complextype.cpp:223
-    KDSoapValue _valueSalepoint_id(QString::fromLatin1("salepoint_id"), d_ptr->mSalepoint_id.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueSalepoint_id.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueSalepoint_id.setQualified(true);
-    args.append(_valueSalepoint_id);// converter_complextype.cpp:223
-    for (int i = 0; i < d_ptr->mRows.count(); ++i) {
-        KDSoapValue _valueRows(d_ptr->mRows.at(i).serialize(QString::fromLatin1("rows")));// converter_complextype.cpp:209
-        _valueRows.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-        _valueRows.setQualified(true);
-        args.append(_valueRows);// converter_complextype.cpp:223
-    }
-    return mainValue;
-}
-
-void TNS__Order::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("provider_id")) {// converter_complextype.cpp:235
-            d_ptr->mProvider_id.deserialize(val.value());// converter_complextype.cpp:252
-        }
-        else if (name == QLatin1String("salepoint_id")) {// converter_complextype.cpp:235
-            d_ptr->mSalepoint_id.deserialize(val.value());// converter_complextype.cpp:252
-        }
-        else if (name == QLatin1String("rows")) {// converter_complextype.cpp:235
-            TNS__OrderRow mRowsTemp;
-            mRowsTemp.deserialize(val);// converter_complextype.cpp:250
-            d_ptr->mRows.append(mRowsTemp);
-        }
-    }
-}
-
-TNS__Order::TNS__Order()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__Order::~TNS__Order()
-{
-}
-
-TNS__Order::TNS__Order( const TNS__Order& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__Order&  TNS__Order::operator=( const TNS__Order& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__GetPriceList::PrivateDPtr : public QSharedData
-{
-public:
-    TNS__UUID mApiKey;
-};
-
-void TNS__GetPriceList::setApiKey( const TNS__UUID& apiKey )
-{
-    d_ptr->mApiKey = apiKey;
-}
-
-TNS__UUID TNS__GetPriceList::apiKey() const
-{
-    return d_ptr->mApiKey;
-}
-
-KDSoapValue TNS__GetPriceList::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getPriceList"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueApiKey.setQualified(true);
-    args.append(_valueApiKey);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__GetPriceList::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
-            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
-        }
-    }
-}
-
-TNS__GetPriceList::TNS__GetPriceList()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__GetPriceList::~TNS__GetPriceList()
-{
-}
-
-TNS__GetPriceList::TNS__GetPriceList( const TNS__GetPriceList& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__GetPriceList&  TNS__GetPriceList::operator=( const TNS__GetPriceList& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
-class TNS__Provider::PrivateDPtr : public QSharedData
-{
-public:
-    PrivateDPtr();
-
-public:
-    TNS__UUID mId;
-    QString mName;
-    bool mIsDeleted;
-};
-
-TNS__Provider::PrivateDPtr::PrivateDPtr()
-    : mIsDeleted(false)
-{
-}
-
-
-void TNS__Provider::setId( const TNS__UUID& id )
-{
-    d_ptr->mId = id;
-}
-
-TNS__UUID TNS__Provider::id() const
-{
-    return d_ptr->mId;
-}
-
-void TNS__Provider::setName( const QString& name )
-{
-    d_ptr->mName = name;
-}
-
-QString TNS__Provider::name() const
-{
-    return d_ptr->mName;
-}
-
-void TNS__Provider::setIsDeleted( bool isDeleted )
-{
-    d_ptr->mIsDeleted = isDeleted;
-}
-
-bool TNS__Provider::isDeleted() const
-{
-    return d_ptr->mIsDeleted;
-}
-
-KDSoapValue TNS__Provider::serialize( const QString& valueName ) const
-{
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("Provider"));// converter_complextype.cpp:323
-    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
-    mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueId(QString::fromLatin1("id"), d_ptr->mId.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
-    _valueId.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueId.setQualified(true);
-    args.append(_valueId);// converter_complextype.cpp:223
-    KDSoapValue _valueName(QString::fromLatin1("name"), QVariant::fromValue(d_ptr->mName), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
-    _valueName.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueName.setQualified(true);
-    args.append(_valueName);// converter_complextype.cpp:223
-    KDSoapValue _valueIsDeleted(QString::fromLatin1("isDeleted"), QVariant::fromValue(d_ptr->mIsDeleted), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
-    _valueIsDeleted.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueIsDeleted.setQualified(true);
-    args.append(_valueIsDeleted);// converter_complextype.cpp:223
-    return mainValue;
-}
-
-void TNS__Provider::deserialize( const KDSoapValue& mainValue )
-{
-    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
-    for (int argNr = 0; argNr < args.count(); ++argNr) {
-        const KDSoapValue& val = args.at(argNr);
-        const QString name = val.name();
-        if (name == QLatin1String("id")) {// converter_complextype.cpp:235
-            d_ptr->mId.deserialize(val.value());// converter_complextype.cpp:252
-        }
-        else if (name == QLatin1String("name")) {// converter_complextype.cpp:235
-            d_ptr->mName = val.value().value<QString>();// converter_complextype.cpp:248
-        }
-        else if (name == QLatin1String("isDeleted")) {// converter_complextype.cpp:235
-            d_ptr->mIsDeleted = val.value().value<bool>();// converter_complextype.cpp:248
-        }
-    }
-}
-
-TNS__Provider::TNS__Provider()
-    : d_ptr(new PrivateDPtr)
-{
-}
-
-TNS__Provider::~TNS__Provider()
-{
-}
-
-TNS__Provider::TNS__Provider( const TNS__Provider& other )
-    : d_ptr( other.d_ptr )
-{
-}
-
-TNS__Provider&  TNS__Provider::operator=( const TNS__Provider& other )
-{
-    if ( this == &other )
-        return *this;
-
-    d_ptr = other.d_ptr;
-
-    return *this;
-}
-
-
 class TNS__OrderRow::PrivateDPtr : public QSharedData
 {
 public:
@@ -1843,61 +778,301 @@ TNS__OrderRow&  TNS__OrderRow::operator=( const TNS__OrderRow& other )
 }
 
 
-class TNS__GetSalePointsResponse::PrivateDPtr : public QSharedData
+class TNS__ProviderProduct::PrivateDPtr : public QSharedData
 {
 public:
-    TNS__SalePointList mReturn;
+    PrivateDPtr();
+
+public:
+    TNS__UUID mId;
+    TNS__Product mProduct;
+    QString mName;
+    QString mPartCode;
+    TNS__UUID mProvider_id;
+    bool mIsDeleted;
+    bool mIsCutPrice;
 };
 
-void TNS__GetSalePointsResponse::setReturn( const TNS__SalePointList& return_ )
+TNS__ProviderProduct::PrivateDPtr::PrivateDPtr()
+    : mIsDeleted(false), mIsCutPrice(false)
 {
-    d_ptr->mReturn = return_;
 }
 
-TNS__SalePointList TNS__GetSalePointsResponse::return_() const
+
+void TNS__ProviderProduct::setId( const TNS__UUID& id )
 {
-    return d_ptr->mReturn;
+    d_ptr->mId = id;
 }
 
-KDSoapValue TNS__GetSalePointsResponse::serialize( const QString& valueName ) const
+TNS__UUID TNS__ProviderProduct::id() const
 {
-    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getSalePointsResponse"));// converter_complextype.cpp:323
+    return d_ptr->mId;
+}
+
+void TNS__ProviderProduct::setProduct( const TNS__Product& product )
+{
+    d_ptr->mProduct = product;
+}
+
+TNS__Product TNS__ProviderProduct::product() const
+{
+    return d_ptr->mProduct;
+}
+
+void TNS__ProviderProduct::setName( const QString& name )
+{
+    d_ptr->mName = name;
+}
+
+QString TNS__ProviderProduct::name() const
+{
+    return d_ptr->mName;
+}
+
+void TNS__ProviderProduct::setPartCode( const QString& partCode )
+{
+    d_ptr->mPartCode = partCode;
+}
+
+QString TNS__ProviderProduct::partCode() const
+{
+    return d_ptr->mPartCode;
+}
+
+void TNS__ProviderProduct::setProvider_id( const TNS__UUID& provider_id )
+{
+    d_ptr->mProvider_id = provider_id;
+}
+
+TNS__UUID TNS__ProviderProduct::provider_id() const
+{
+    return d_ptr->mProvider_id;
+}
+
+void TNS__ProviderProduct::setIsDeleted( bool isDeleted )
+{
+    d_ptr->mIsDeleted = isDeleted;
+}
+
+bool TNS__ProviderProduct::isDeleted() const
+{
+    return d_ptr->mIsDeleted;
+}
+
+void TNS__ProviderProduct::setIsCutPrice( bool isCutPrice )
+{
+    d_ptr->mIsCutPrice = isCutPrice;
+}
+
+bool TNS__ProviderProduct::isCutPrice() const
+{
+    return d_ptr->mIsCutPrice;
+}
+
+KDSoapValue TNS__ProviderProduct::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("ProviderProduct"));// converter_complextype.cpp:323
     KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
     mainValue.setQualified(true);// converter_complextype.cpp:345
-    KDSoapValue _valueReturn(d_ptr->mReturn.serialize(QString::fromLatin1("return")));// converter_complextype.cpp:209
-    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
-    _valueReturn.setQualified(true);
-    args.append(_valueReturn);// converter_complextype.cpp:223
+    KDSoapValue _valueId(QString::fromLatin1("id"), d_ptr->mId.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueId.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueId.setQualified(true);
+    args.append(_valueId);// converter_complextype.cpp:223
+    KDSoapValue _valueProduct(d_ptr->mProduct.serialize(QString::fromLatin1("product")));// converter_complextype.cpp:209
+    _valueProduct.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueProduct.setQualified(true);
+    args.append(_valueProduct);// converter_complextype.cpp:223
+    KDSoapValue _valueName(QString::fromLatin1("name"), QVariant::fromValue(d_ptr->mName), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueName.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueName.setQualified(true);
+    args.append(_valueName);// converter_complextype.cpp:223
+    KDSoapValue _valuePartCode(QString::fromLatin1("partCode"), QVariant::fromValue(d_ptr->mPartCode), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valuePartCode.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valuePartCode.setQualified(true);
+    args.append(_valuePartCode);// converter_complextype.cpp:223
+    KDSoapValue _valueProvider_id(QString::fromLatin1("provider_id"), d_ptr->mProvider_id.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueProvider_id.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueProvider_id.setQualified(true);
+    args.append(_valueProvider_id);// converter_complextype.cpp:223
+    KDSoapValue _valueIsDeleted(QString::fromLatin1("isDeleted"), QVariant::fromValue(d_ptr->mIsDeleted), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
+    _valueIsDeleted.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueIsDeleted.setQualified(true);
+    args.append(_valueIsDeleted);// converter_complextype.cpp:223
+    KDSoapValue _valueIsCutPrice(QString::fromLatin1("isCutPrice"), QVariant::fromValue(d_ptr->mIsCutPrice), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
+    _valueIsCutPrice.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueIsCutPrice.setQualified(true);
+    args.append(_valueIsCutPrice);// converter_complextype.cpp:223
     return mainValue;
 }
 
-void TNS__GetSalePointsResponse::deserialize( const KDSoapValue& mainValue )
+void TNS__ProviderProduct::deserialize( const KDSoapValue& mainValue )
 {
     const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
     for (int argNr = 0; argNr < args.count(); ++argNr) {
         const KDSoapValue& val = args.at(argNr);
         const QString name = val.name();
-        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
-            d_ptr->mReturn.deserialize(val);// converter_complextype.cpp:250
+        if (name == QLatin1String("id")) {// converter_complextype.cpp:235
+            d_ptr->mId.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("product")) {// converter_complextype.cpp:235
+            d_ptr->mProduct.deserialize(val);// converter_complextype.cpp:250
+        }
+        else if (name == QLatin1String("name")) {// converter_complextype.cpp:235
+            d_ptr->mName = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("partCode")) {// converter_complextype.cpp:235
+            d_ptr->mPartCode = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("provider_id")) {// converter_complextype.cpp:235
+            d_ptr->mProvider_id.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("isDeleted")) {// converter_complextype.cpp:235
+            d_ptr->mIsDeleted = val.value().value<bool>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("isCutPrice")) {// converter_complextype.cpp:235
+            d_ptr->mIsCutPrice = val.value().value<bool>();// converter_complextype.cpp:248
         }
     }
 }
 
-TNS__GetSalePointsResponse::TNS__GetSalePointsResponse()
+TNS__ProviderProduct::TNS__ProviderProduct()
     : d_ptr(new PrivateDPtr)
 {
 }
 
-TNS__GetSalePointsResponse::~TNS__GetSalePointsResponse()
+TNS__ProviderProduct::~TNS__ProviderProduct()
 {
 }
 
-TNS__GetSalePointsResponse::TNS__GetSalePointsResponse( const TNS__GetSalePointsResponse& other )
+TNS__ProviderProduct::TNS__ProviderProduct( const TNS__ProviderProduct& other )
     : d_ptr( other.d_ptr )
 {
 }
 
-TNS__GetSalePointsResponse&  TNS__GetSalePointsResponse::operator=( const TNS__GetSalePointsResponse& other )
+TNS__ProviderProduct&  TNS__ProviderProduct::operator=( const TNS__ProviderProduct& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__Order::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__UUID mProvider_id;
+    TNS__UUID mSalepoint_id;
+    QString mDescription;
+    QList<TNS__OrderRow> mRows;
+};
+
+void TNS__Order::setProvider_id( const TNS__UUID& provider_id )
+{
+    d_ptr->mProvider_id = provider_id;
+}
+
+TNS__UUID TNS__Order::provider_id() const
+{
+    return d_ptr->mProvider_id;
+}
+
+void TNS__Order::setSalepoint_id( const TNS__UUID& salepoint_id )
+{
+    d_ptr->mSalepoint_id = salepoint_id;
+}
+
+TNS__UUID TNS__Order::salepoint_id() const
+{
+    return d_ptr->mSalepoint_id;
+}
+
+void TNS__Order::setDescription( const QString& description )
+{
+    d_ptr->mDescription = description;
+}
+
+QString TNS__Order::description() const
+{
+    return d_ptr->mDescription;
+}
+
+void TNS__Order::setRows( const QList<TNS__OrderRow>& rows )
+{
+    d_ptr->mRows = rows;
+}
+
+QList<TNS__OrderRow> TNS__Order::rows() const
+{
+    return d_ptr->mRows;
+}
+
+KDSoapValue TNS__Order::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("Order"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueProvider_id(QString::fromLatin1("provider_id"), d_ptr->mProvider_id.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueProvider_id.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueProvider_id.setQualified(true);
+    args.append(_valueProvider_id);// converter_complextype.cpp:223
+    KDSoapValue _valueSalepoint_id(QString::fromLatin1("salepoint_id"), d_ptr->mSalepoint_id.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueSalepoint_id.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueSalepoint_id.setQualified(true);
+    args.append(_valueSalepoint_id);// converter_complextype.cpp:223
+    KDSoapValue _valueDescription(QString::fromLatin1("description"), QVariant::fromValue(d_ptr->mDescription), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueDescription.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueDescription.setQualified(true);
+    args.append(_valueDescription);// converter_complextype.cpp:223
+    for (int i = 0; i < d_ptr->mRows.count(); ++i) {
+        KDSoapValue _valueRows(d_ptr->mRows.at(i).serialize(QString::fromLatin1("rows")));// converter_complextype.cpp:209
+        _valueRows.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+        _valueRows.setQualified(true);
+        args.append(_valueRows);// converter_complextype.cpp:223
+    }
+    return mainValue;
+}
+
+void TNS__Order::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("provider_id")) {// converter_complextype.cpp:235
+            d_ptr->mProvider_id.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("salepoint_id")) {// converter_complextype.cpp:235
+            d_ptr->mSalepoint_id.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("description")) {// converter_complextype.cpp:235
+            d_ptr->mDescription = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("rows")) {// converter_complextype.cpp:235
+            TNS__OrderRow mRowsTemp;
+            mRowsTemp.deserialize(val);// converter_complextype.cpp:250
+            d_ptr->mRows.append(mRowsTemp);
+        }
+    }
+}
+
+TNS__Order::TNS__Order()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__Order::~TNS__Order()
+{
+}
+
+TNS__Order::TNS__Order( const TNS__Order& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__Order&  TNS__Order::operator=( const TNS__Order& other )
 {
     if ( this == &other )
         return *this;
@@ -2044,6 +1219,1138 @@ TNS__Product::TNS__Product( const TNS__Product& other )
 }
 
 TNS__Product&  TNS__Product::operator=( const TNS__Product& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__GetUpdateResponse::PrivateDPtr : public QSharedData
+{
+public:
+    QByteArray mReturn;
+};
+
+void TNS__GetUpdateResponse::setReturn( const QByteArray& return_ )
+{
+    d_ptr->mReturn = return_;
+}
+
+QByteArray TNS__GetUpdateResponse::return_() const
+{
+    return d_ptr->mReturn;
+}
+
+KDSoapValue TNS__GetUpdateResponse::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getUpdateResponse"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueReturn(QString::fromLatin1("return"), QString::fromLatin1(d_ptr->mReturn.toBase64().constData()), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("base64Binary"));// converter_complextype.cpp:215
+    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueReturn.setQualified(true);
+    args.append(_valueReturn);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__GetUpdateResponse::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
+            d_ptr->mReturn = QByteArray::fromBase64(val.value().toString().toLatin1());// converter_complextype.cpp:248
+        }
+    }
+}
+
+TNS__GetUpdateResponse::TNS__GetUpdateResponse()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__GetUpdateResponse::~TNS__GetUpdateResponse()
+{
+}
+
+TNS__GetUpdateResponse::TNS__GetUpdateResponse( const TNS__GetUpdateResponse& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__GetUpdateResponse&  TNS__GetUpdateResponse::operator=( const TNS__GetUpdateResponse& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__Price::PrivateDPtr : public QSharedData
+{
+public:
+    PrivateDPtr();
+
+public:
+    KDDateTime mDate;
+    QString mManufacturer;
+    TNS__ProviderProduct mProviderProduct;
+    double mPriceValue;
+    double mPriceVital;
+    qint64 mCountPricePack;
+    QDate mExpirationDate;
+    qint64 mBalance;
+    bool mIsUrgent;
+};
+
+TNS__Price::PrivateDPtr::PrivateDPtr()
+    : mPriceValue(0), mPriceVital(0), mCountPricePack(0), mBalance(0), mIsUrgent(false)
+{
+}
+
+
+void TNS__Price::setDate( const KDDateTime& date )
+{
+    d_ptr->mDate = date;
+}
+
+KDDateTime TNS__Price::date() const
+{
+    return d_ptr->mDate;
+}
+
+void TNS__Price::setManufacturer( const QString& manufacturer )
+{
+    d_ptr->mManufacturer = manufacturer;
+}
+
+QString TNS__Price::manufacturer() const
+{
+    return d_ptr->mManufacturer;
+}
+
+void TNS__Price::setProviderProduct( const TNS__ProviderProduct& providerProduct )
+{
+    d_ptr->mProviderProduct = providerProduct;
+}
+
+TNS__ProviderProduct TNS__Price::providerProduct() const
+{
+    return d_ptr->mProviderProduct;
+}
+
+void TNS__Price::setPriceValue( double priceValue )
+{
+    d_ptr->mPriceValue = priceValue;
+}
+
+double TNS__Price::priceValue() const
+{
+    return d_ptr->mPriceValue;
+}
+
+void TNS__Price::setPriceVital( double priceVital )
+{
+    d_ptr->mPriceVital = priceVital;
+}
+
+double TNS__Price::priceVital() const
+{
+    return d_ptr->mPriceVital;
+}
+
+void TNS__Price::setCountPricePack( qint64 countPricePack )
+{
+    d_ptr->mCountPricePack = countPricePack;
+}
+
+qint64 TNS__Price::countPricePack() const
+{
+    return d_ptr->mCountPricePack;
+}
+
+void TNS__Price::setExpirationDate( const QDate& expirationDate )
+{
+    d_ptr->mExpirationDate = expirationDate;
+}
+
+QDate TNS__Price::expirationDate() const
+{
+    return d_ptr->mExpirationDate;
+}
+
+void TNS__Price::setBalance( qint64 balance )
+{
+    d_ptr->mBalance = balance;
+}
+
+qint64 TNS__Price::balance() const
+{
+    return d_ptr->mBalance;
+}
+
+void TNS__Price::setIsUrgent( bool isUrgent )
+{
+    d_ptr->mIsUrgent = isUrgent;
+}
+
+bool TNS__Price::isUrgent() const
+{
+    return d_ptr->mIsUrgent;
+}
+
+KDSoapValue TNS__Price::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("Price"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueDate(QString::fromLatin1("date"), d_ptr->mDate.toDateString(), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("dateTime"));// converter_complextype.cpp:215
+    _valueDate.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueDate.setQualified(true);
+    args.append(_valueDate);// converter_complextype.cpp:223
+    KDSoapValue _valueManufacturer(QString::fromLatin1("manufacturer"), QVariant::fromValue(d_ptr->mManufacturer), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueManufacturer.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueManufacturer.setQualified(true);
+    args.append(_valueManufacturer);// converter_complextype.cpp:223
+    KDSoapValue _valueProviderProduct(d_ptr->mProviderProduct.serialize(QString::fromLatin1("providerProduct")));// converter_complextype.cpp:209
+    _valueProviderProduct.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueProviderProduct.setQualified(true);
+    args.append(_valueProviderProduct);// converter_complextype.cpp:223
+    KDSoapValue _valuePriceValue(QString::fromLatin1("priceValue"), QVariant::fromValue(d_ptr->mPriceValue), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("double"));// converter_complextype.cpp:215
+    _valuePriceValue.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valuePriceValue.setQualified(true);
+    args.append(_valuePriceValue);// converter_complextype.cpp:223
+    KDSoapValue _valuePriceVital(QString::fromLatin1("priceVital"), QVariant::fromValue(d_ptr->mPriceVital), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("double"));// converter_complextype.cpp:215
+    _valuePriceVital.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valuePriceVital.setQualified(true);
+    args.append(_valuePriceVital);// converter_complextype.cpp:223
+    KDSoapValue _valueCountPricePack(QString::fromLatin1("countPricePack"), QVariant::fromValue(d_ptr->mCountPricePack), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
+    _valueCountPricePack.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueCountPricePack.setQualified(true);
+    args.append(_valueCountPricePack);// converter_complextype.cpp:223
+    KDSoapValue _valueExpirationDate(QString::fromLatin1("expirationDate"), QVariant::fromValue(d_ptr->mExpirationDate), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("date"));// converter_complextype.cpp:215
+    _valueExpirationDate.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueExpirationDate.setQualified(true);
+    args.append(_valueExpirationDate);// converter_complextype.cpp:223
+    KDSoapValue _valueBalance(QString::fromLatin1("balance"), QVariant::fromValue(d_ptr->mBalance), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
+    _valueBalance.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueBalance.setQualified(true);
+    args.append(_valueBalance);// converter_complextype.cpp:223
+    KDSoapValue _valueIsUrgent(QString::fromLatin1("isUrgent"), QVariant::fromValue(d_ptr->mIsUrgent), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("boolean"));// converter_complextype.cpp:215
+    _valueIsUrgent.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueIsUrgent.setQualified(true);
+    args.append(_valueIsUrgent);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__Price::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("date")) {// converter_complextype.cpp:235
+            d_ptr->mDate = KDDateTime::fromDateString(val.value().toString());// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("manufacturer")) {// converter_complextype.cpp:235
+            d_ptr->mManufacturer = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("providerProduct")) {// converter_complextype.cpp:235
+            d_ptr->mProviderProduct.deserialize(val);// converter_complextype.cpp:250
+        }
+        else if (name == QLatin1String("priceValue")) {// converter_complextype.cpp:235
+            d_ptr->mPriceValue = val.value().value<double>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("priceVital")) {// converter_complextype.cpp:235
+            d_ptr->mPriceVital = val.value().value<double>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("countPricePack")) {// converter_complextype.cpp:235
+            d_ptr->mCountPricePack = val.value().value<qint64>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("expirationDate")) {// converter_complextype.cpp:235
+            d_ptr->mExpirationDate = val.value().value<QDate>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("balance")) {// converter_complextype.cpp:235
+            d_ptr->mBalance = val.value().value<qint64>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("isUrgent")) {// converter_complextype.cpp:235
+            d_ptr->mIsUrgent = val.value().value<bool>();// converter_complextype.cpp:248
+        }
+    }
+}
+
+TNS__Price::TNS__Price()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__Price::~TNS__Price()
+{
+}
+
+TNS__Price::TNS__Price( const TNS__Price& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__Price&  TNS__Price::operator=( const TNS__Price& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__GetSalePoints::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__UUID mApiKey;
+};
+
+void TNS__GetSalePoints::setApiKey( const TNS__UUID& apiKey )
+{
+    d_ptr->mApiKey = apiKey;
+}
+
+TNS__UUID TNS__GetSalePoints::apiKey() const
+{
+    return d_ptr->mApiKey;
+}
+
+KDSoapValue TNS__GetSalePoints::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getSalePoints"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueApiKey.setQualified(true);
+    args.append(_valueApiKey);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__GetSalePoints::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
+            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
+        }
+    }
+}
+
+TNS__GetSalePoints::TNS__GetSalePoints()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__GetSalePoints::~TNS__GetSalePoints()
+{
+}
+
+TNS__GetSalePoints::TNS__GetSalePoints( const TNS__GetSalePoints& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__GetSalePoints&  TNS__GetSalePoints::operator=( const TNS__GetSalePoints& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__GetUpdate::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__UUID mApiKey;
+};
+
+void TNS__GetUpdate::setApiKey( const TNS__UUID& apiKey )
+{
+    d_ptr->mApiKey = apiKey;
+}
+
+TNS__UUID TNS__GetUpdate::apiKey() const
+{
+    return d_ptr->mApiKey;
+}
+
+KDSoapValue TNS__GetUpdate::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getUpdate"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueApiKey.setQualified(true);
+    args.append(_valueApiKey);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__GetUpdate::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
+            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
+        }
+    }
+}
+
+TNS__GetUpdate::TNS__GetUpdate()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__GetUpdate::~TNS__GetUpdate()
+{
+}
+
+TNS__GetUpdate::TNS__GetUpdate( const TNS__GetUpdate& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__GetUpdate&  TNS__GetUpdate::operator=( const TNS__GetUpdate& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__SendOrder::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__UUID mApiKey;
+    TNS__Order mParams;
+};
+
+void TNS__SendOrder::setApiKey( const TNS__UUID& apiKey )
+{
+    d_ptr->mApiKey = apiKey;
+}
+
+TNS__UUID TNS__SendOrder::apiKey() const
+{
+    return d_ptr->mApiKey;
+}
+
+void TNS__SendOrder::setParams( const TNS__Order& params )
+{
+    d_ptr->mParams = params;
+}
+
+TNS__Order TNS__SendOrder::params() const
+{
+    return d_ptr->mParams;
+}
+
+KDSoapValue TNS__SendOrder::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("sendOrder"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueApiKey.setQualified(true);
+    args.append(_valueApiKey);// converter_complextype.cpp:223
+    KDSoapValue _valueParams(d_ptr->mParams.serialize(QString::fromLatin1("params")));// converter_complextype.cpp:209
+    _valueParams.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueParams.setQualified(true);
+    args.append(_valueParams);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__SendOrder::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
+            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("params")) {// converter_complextype.cpp:235
+            d_ptr->mParams.deserialize(val);// converter_complextype.cpp:250
+        }
+    }
+}
+
+TNS__SendOrder::TNS__SendOrder()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__SendOrder::~TNS__SendOrder()
+{
+}
+
+TNS__SendOrder::TNS__SendOrder( const TNS__SendOrder& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__SendOrder&  TNS__SendOrder::operator=( const TNS__SendOrder& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__GetSalePointsResponse::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__SalePointList mReturn;
+};
+
+void TNS__GetSalePointsResponse::setReturn( const TNS__SalePointList& return_ )
+{
+    d_ptr->mReturn = return_;
+}
+
+TNS__SalePointList TNS__GetSalePointsResponse::return_() const
+{
+    return d_ptr->mReturn;
+}
+
+KDSoapValue TNS__GetSalePointsResponse::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getSalePointsResponse"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueReturn(d_ptr->mReturn.serialize(QString::fromLatin1("return")));// converter_complextype.cpp:209
+    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueReturn.setQualified(true);
+    args.append(_valueReturn);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__GetSalePointsResponse::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
+            d_ptr->mReturn.deserialize(val);// converter_complextype.cpp:250
+        }
+    }
+}
+
+TNS__GetSalePointsResponse::TNS__GetSalePointsResponse()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__GetSalePointsResponse::~TNS__GetSalePointsResponse()
+{
+}
+
+TNS__GetSalePointsResponse::TNS__GetSalePointsResponse( const TNS__GetSalePointsResponse& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__GetSalePointsResponse&  TNS__GetSalePointsResponse::operator=( const TNS__GetSalePointsResponse& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__CheckUpdate::PrivateDPtr : public QSharedData
+{
+public:
+    PrivateDPtr();
+
+public:
+    TNS__UUID mApiKey;
+    qint64 mClientVersion;
+};
+
+TNS__CheckUpdate::PrivateDPtr::PrivateDPtr()
+    : mClientVersion(0)
+{
+}
+
+
+void TNS__CheckUpdate::setApiKey( const TNS__UUID& apiKey )
+{
+    d_ptr->mApiKey = apiKey;
+}
+
+TNS__UUID TNS__CheckUpdate::apiKey() const
+{
+    return d_ptr->mApiKey;
+}
+
+void TNS__CheckUpdate::setClientVersion( qint64 clientVersion )
+{
+    d_ptr->mClientVersion = clientVersion;
+}
+
+qint64 TNS__CheckUpdate::clientVersion() const
+{
+    return d_ptr->mClientVersion;
+}
+
+KDSoapValue TNS__CheckUpdate::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("checkUpdate"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueApiKey.setQualified(true);
+    args.append(_valueApiKey);// converter_complextype.cpp:223
+    KDSoapValue _valueClientVersion(QString::fromLatin1("clientVersion"), QVariant::fromValue(d_ptr->mClientVersion), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
+    _valueClientVersion.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueClientVersion.setQualified(true);
+    args.append(_valueClientVersion);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__CheckUpdate::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
+            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("clientVersion")) {// converter_complextype.cpp:235
+            d_ptr->mClientVersion = val.value().value<qint64>();// converter_complextype.cpp:248
+        }
+    }
+}
+
+TNS__CheckUpdate::TNS__CheckUpdate()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__CheckUpdate::~TNS__CheckUpdate()
+{
+}
+
+TNS__CheckUpdate::TNS__CheckUpdate( const TNS__CheckUpdate& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__CheckUpdate&  TNS__CheckUpdate::operator=( const TNS__CheckUpdate& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__VersionDescription::PrivateDPtr : public QSharedData
+{
+public:
+    PrivateDPtr();
+
+public:
+    qint64 mBuildNumber;
+    QString mStringNumber;
+    QString mDescription;
+};
+
+TNS__VersionDescription::PrivateDPtr::PrivateDPtr()
+    : mBuildNumber(0)
+{
+}
+
+
+void TNS__VersionDescription::setBuildNumber( qint64 buildNumber )
+{
+    d_ptr->mBuildNumber = buildNumber;
+}
+
+qint64 TNS__VersionDescription::buildNumber() const
+{
+    return d_ptr->mBuildNumber;
+}
+
+void TNS__VersionDescription::setStringNumber( const QString& stringNumber )
+{
+    d_ptr->mStringNumber = stringNumber;
+}
+
+QString TNS__VersionDescription::stringNumber() const
+{
+    return d_ptr->mStringNumber;
+}
+
+void TNS__VersionDescription::setDescription( const QString& description )
+{
+    d_ptr->mDescription = description;
+}
+
+QString TNS__VersionDescription::description() const
+{
+    return d_ptr->mDescription;
+}
+
+KDSoapValue TNS__VersionDescription::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("VersionDescription"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueBuildNumber(QString::fromLatin1("buildNumber"), QVariant::fromValue(d_ptr->mBuildNumber), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("integer"));// converter_complextype.cpp:215
+    _valueBuildNumber.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueBuildNumber.setQualified(true);
+    args.append(_valueBuildNumber);// converter_complextype.cpp:223
+    KDSoapValue _valueStringNumber(QString::fromLatin1("stringNumber"), QVariant::fromValue(d_ptr->mStringNumber), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueStringNumber.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueStringNumber.setQualified(true);
+    args.append(_valueStringNumber);// converter_complextype.cpp:223
+    KDSoapValue _valueDescription(QString::fromLatin1("description"), QVariant::fromValue(d_ptr->mDescription), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueDescription.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueDescription.setQualified(true);
+    args.append(_valueDescription);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__VersionDescription::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("buildNumber")) {// converter_complextype.cpp:235
+            d_ptr->mBuildNumber = val.value().value<qint64>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("stringNumber")) {// converter_complextype.cpp:235
+            d_ptr->mStringNumber = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+        else if (name == QLatin1String("description")) {// converter_complextype.cpp:235
+            d_ptr->mDescription = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+    }
+}
+
+TNS__VersionDescription::TNS__VersionDescription()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__VersionDescription::~TNS__VersionDescription()
+{
+}
+
+TNS__VersionDescription::TNS__VersionDescription( const TNS__VersionDescription& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__VersionDescription&  TNS__VersionDescription::operator=( const TNS__VersionDescription& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__GetPriceList::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__UUID mApiKey;
+    TNS__ProviderList mProviders;
+};
+
+void TNS__GetPriceList::setApiKey( const TNS__UUID& apiKey )
+{
+    d_ptr->mApiKey = apiKey;
+}
+
+TNS__UUID TNS__GetPriceList::apiKey() const
+{
+    return d_ptr->mApiKey;
+}
+
+void TNS__GetPriceList::setProviders( const TNS__ProviderList& providers )
+{
+    d_ptr->mProviders = providers;
+}
+
+TNS__ProviderList TNS__GetPriceList::providers() const
+{
+    return d_ptr->mProviders;
+}
+
+KDSoapValue TNS__GetPriceList::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("getPriceList"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueApiKey(QString::fromLatin1("apiKey"), d_ptr->mApiKey.serialize(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("UUID"));// converter_complextype.cpp:217
+    _valueApiKey.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueApiKey.setQualified(true);
+    args.append(_valueApiKey);// converter_complextype.cpp:223
+    KDSoapValue _valueProviders(d_ptr->mProviders.serialize(QString::fromLatin1("Providers")));// converter_complextype.cpp:209
+    _valueProviders.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueProviders.setQualified(true);
+    args.append(_valueProviders);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__GetPriceList::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("apiKey")) {// converter_complextype.cpp:235
+            d_ptr->mApiKey.deserialize(val.value());// converter_complextype.cpp:252
+        }
+        else if (name == QLatin1String("Providers")) {// converter_complextype.cpp:235
+            d_ptr->mProviders.deserialize(val);// converter_complextype.cpp:250
+        }
+    }
+}
+
+TNS__GetPriceList::TNS__GetPriceList()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__GetPriceList::~TNS__GetPriceList()
+{
+}
+
+TNS__GetPriceList::TNS__GetPriceList( const TNS__GetPriceList& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__GetPriceList&  TNS__GetPriceList::operator=( const TNS__GetPriceList& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__CheckUpdateResponse::PrivateDPtr : public QSharedData
+{
+public:
+    TNS__VersionDescription mReturn;
+};
+
+void TNS__CheckUpdateResponse::setReturn( const TNS__VersionDescription& return_ )
+{
+    d_ptr->mReturn = return_;
+}
+
+TNS__VersionDescription TNS__CheckUpdateResponse::return_() const
+{
+    return d_ptr->mReturn;
+}
+
+KDSoapValue TNS__CheckUpdateResponse::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("checkUpdateResponse"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueReturn(d_ptr->mReturn.serialize(QString::fromLatin1("return")));// converter_complextype.cpp:209
+    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueReturn.setQualified(true);
+    args.append(_valueReturn);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__CheckUpdateResponse::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
+            d_ptr->mReturn.deserialize(val);// converter_complextype.cpp:250
+        }
+    }
+}
+
+TNS__CheckUpdateResponse::TNS__CheckUpdateResponse()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__CheckUpdateResponse::~TNS__CheckUpdateResponse()
+{
+}
+
+TNS__CheckUpdateResponse::TNS__CheckUpdateResponse( const TNS__CheckUpdateResponse& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__CheckUpdateResponse&  TNS__CheckUpdateResponse::operator=( const TNS__CheckUpdateResponse& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__SendOrderResponse::PrivateDPtr : public QSharedData
+{
+public:
+    QString mReturn;
+};
+
+void TNS__SendOrderResponse::setReturn( const QString& return_ )
+{
+    d_ptr->mReturn = return_;
+}
+
+QString TNS__SendOrderResponse::return_() const
+{
+    return d_ptr->mReturn;
+}
+
+KDSoapValue TNS__SendOrderResponse::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("sendOrderResponse"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    KDSoapValue _valueReturn(QString::fromLatin1("return"), QVariant::fromValue(d_ptr->mReturn), KDSoapNamespaceManager::xmlSchema2001(), QString::fromLatin1("string"));// converter_complextype.cpp:215
+    _valueReturn.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueReturn.setQualified(true);
+    args.append(_valueReturn);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__SendOrderResponse::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("return")) {// converter_complextype.cpp:235
+            d_ptr->mReturn = val.value().value<QString>();// converter_complextype.cpp:248
+        }
+    }
+}
+
+TNS__SendOrderResponse::TNS__SendOrderResponse()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__SendOrderResponse::~TNS__SendOrderResponse()
+{
+}
+
+TNS__SendOrderResponse::TNS__SendOrderResponse( const TNS__SendOrderResponse& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__SendOrderResponse&  TNS__SendOrderResponse::operator=( const TNS__SendOrderResponse& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__PriceList::PrivateDPtr : public QSharedData
+{
+public:
+    QList<TNS__Price> mItems;
+};
+
+void TNS__PriceList::setItems( const QList<TNS__Price>& items )
+{
+    d_ptr->mItems = items;
+}
+
+QList<TNS__Price> TNS__PriceList::items() const
+{
+    return d_ptr->mItems;
+}
+
+KDSoapValue TNS__PriceList::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("PriceList"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    for (int i = 0; i < d_ptr->mItems.count(); ++i) {
+        KDSoapValue _valueItems(d_ptr->mItems.at(i).serialize(QString::fromLatin1("items")));// converter_complextype.cpp:209
+        _valueItems.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+        _valueItems.setQualified(true);
+        args.append(_valueItems);// converter_complextype.cpp:223
+    }
+    return mainValue;
+}
+
+void TNS__PriceList::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("items")) {// converter_complextype.cpp:235
+            TNS__Price mItemsTemp;
+            mItemsTemp.deserialize(val);// converter_complextype.cpp:250
+            d_ptr->mItems.append(mItemsTemp);
+        }
+    }
+}
+
+TNS__PriceList::TNS__PriceList()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__PriceList::~TNS__PriceList()
+{
+}
+
+TNS__PriceList::TNS__PriceList( const TNS__PriceList& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__PriceList&  TNS__PriceList::operator=( const TNS__PriceList& other )
+{
+    if ( this == &other )
+        return *this;
+
+    d_ptr = other.d_ptr;
+
+    return *this;
+}
+
+
+class TNS__SalePointList::PrivateDPtr : public QSharedData
+{
+public:
+    QList<TNS__SalePoint> mItems;
+    TNS__OperationError mError;
+};
+
+void TNS__SalePointList::setItems( const QList<TNS__SalePoint>& items )
+{
+    d_ptr->mItems = items;
+}
+
+QList<TNS__SalePoint> TNS__SalePointList::items() const
+{
+    return d_ptr->mItems;
+}
+
+void TNS__SalePointList::setError( const TNS__OperationError& error )
+{
+    d_ptr->mError = error;
+}
+
+TNS__OperationError TNS__SalePointList::error() const
+{
+    return d_ptr->mError;
+}
+
+KDSoapValue TNS__SalePointList::serialize( const QString& valueName ) const
+{
+    KDSoapValue mainValue(valueName, QVariant(), QString::fromLatin1("http://www.tredifarm.org"), QString::fromLatin1("SalePointList"));// converter_complextype.cpp:323
+    KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:343
+    mainValue.setQualified(true);// converter_complextype.cpp:345
+    for (int i = 0; i < d_ptr->mItems.count(); ++i) {
+        KDSoapValue _valueItems(d_ptr->mItems.at(i).serialize(QString::fromLatin1("items")));// converter_complextype.cpp:209
+        _valueItems.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+        _valueItems.setQualified(true);
+        args.append(_valueItems);// converter_complextype.cpp:223
+    }
+    KDSoapValue _valueError(d_ptr->mError.serialize(QString::fromLatin1("error")));// converter_complextype.cpp:209
+    _valueError.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueError.setQualified(true);
+    args.append(_valueError);// converter_complextype.cpp:223
+    return mainValue;
+}
+
+void TNS__SalePointList::deserialize( const KDSoapValue& mainValue )
+{
+    const KDSoapValueList& args = mainValue.childValues();// converter_complextype.cpp:339
+    for (int argNr = 0; argNr < args.count(); ++argNr) {
+        const KDSoapValue& val = args.at(argNr);
+        const QString name = val.name();
+        if (name == QLatin1String("items")) {// converter_complextype.cpp:235
+            TNS__SalePoint mItemsTemp;
+            mItemsTemp.deserialize(val);// converter_complextype.cpp:250
+            d_ptr->mItems.append(mItemsTemp);
+        }
+        else if (name == QLatin1String("error")) {// converter_complextype.cpp:235
+            d_ptr->mError.deserialize(val);// converter_complextype.cpp:250
+        }
+    }
+}
+
+TNS__SalePointList::TNS__SalePointList()
+    : d_ptr(new PrivateDPtr)
+{
+}
+
+TNS__SalePointList::~TNS__SalePointList()
+{
+}
+
+TNS__SalePointList::TNS__SalePointList( const TNS__SalePointList& other )
+    : d_ptr( other.d_ptr )
+{
+}
+
+TNS__SalePointList&  TNS__SalePointList::operator=( const TNS__SalePointList& other )
 {
     if ( this == &other )
         return *this;
@@ -2284,6 +2591,52 @@ void ClientServise::ClientServiseSoapBindingJobs::SendOrderJob::slotFinished( KD
 }
 
 
+ClientServise::ClientServiseSoapBindingJobs::GetProvidersJob::GetProvidersJob( ClientServise::ClientServiseSoapBinding* service, QObject* parent )
+    : KDSoapJob(parent), mService(service)
+{
+}
+
+void ClientServise::ClientServiseSoapBindingJobs::GetProvidersJob::setParameters( const TNS__GetProviders& arg0 )
+{
+    mParameters = arg0;
+}
+
+TNS__GetProviders ClientServise::ClientServiseSoapBindingJobs::GetProvidersJob::parameters() const
+{
+    return mParameters;
+}
+
+void ClientServise::ClientServiseSoapBindingJobs::GetProvidersJob::doStart()
+{
+    const QString action = QString::fromLatin1("http://www.tredifarm.org#ClientServise:getProviders");
+    KDSoapMessage message;
+    message.setUse(KDSoapMessage::LiteralUse);
+    KDSoapValue _valueGetProviders(mParameters.serialize(QString::fromLatin1("getProviders")));// converter_complextype.cpp:209
+    _valueGetProviders.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueGetProviders.setQualified(true);
+    message = _valueGetProviders;// converter_complextype.cpp:223
+    KDSoapPendingCall pendingCall = mService->clientInterface()->asyncCall(QLatin1String("getProviders"), message, action);
+    KDSoapPendingCallWatcher *watcher = new KDSoapPendingCallWatcher(pendingCall, this);
+    QObject::connect(watcher, SIGNAL(finished(KDSoapPendingCallWatcher*)),
+                     this, SLOT(slotFinished(KDSoapPendingCallWatcher*)));
+}
+
+TNS__GetProvidersResponse ClientServise::ClientServiseSoapBindingJobs::GetProvidersJob::resultParameters() const
+{
+    return mResultParameters;
+}
+
+void ClientServise::ClientServiseSoapBindingJobs::GetProvidersJob::slotFinished( KDSoapPendingCallWatcher* watcher )
+{
+    watcher->deleteLater();
+    const KDSoapMessage reply = watcher->returnMessage();
+    if (!reply.isFault()) {// converter_clientstub.cpp:364
+        mResultParameters.deserialize(reply);// converter_clientstub.cpp:519
+    }
+    emitFinished(reply, watcher->returnHeaders());
+}
+
+
 ClientServise::ClientServiseSoap12BindingJobs::GetSalePointsJob::GetSalePointsJob( ClientServise::ClientServiseSoap12Binding* service, QObject* parent )
     : KDSoapJob(parent), mService(service)
 {
@@ -2504,6 +2857,52 @@ TNS__SendOrderResponse ClientServise::ClientServiseSoap12BindingJobs::SendOrderJ
 }
 
 void ClientServise::ClientServiseSoap12BindingJobs::SendOrderJob::slotFinished( KDSoapPendingCallWatcher* watcher )
+{
+    watcher->deleteLater();
+    const KDSoapMessage reply = watcher->returnMessage();
+    if (!reply.isFault()) {// converter_clientstub.cpp:364
+        mResultParameters.deserialize(reply);// converter_clientstub.cpp:519
+    }
+    emitFinished(reply, watcher->returnHeaders());
+}
+
+
+ClientServise::ClientServiseSoap12BindingJobs::GetProvidersJob::GetProvidersJob( ClientServise::ClientServiseSoap12Binding* service, QObject* parent )
+    : KDSoapJob(parent), mService(service)
+{
+}
+
+void ClientServise::ClientServiseSoap12BindingJobs::GetProvidersJob::setParameters( const TNS__GetProviders& arg0 )
+{
+    mParameters = arg0;
+}
+
+TNS__GetProviders ClientServise::ClientServiseSoap12BindingJobs::GetProvidersJob::parameters() const
+{
+    return mParameters;
+}
+
+void ClientServise::ClientServiseSoap12BindingJobs::GetProvidersJob::doStart()
+{
+    const QString action = QString::fromLatin1("http://www.tredifarm.org#ClientServise:getProviders");
+    KDSoapMessage message;
+    message.setUse(KDSoapMessage::LiteralUse);
+    KDSoapValue _valueGetProviders(mParameters.serialize(QString::fromLatin1("getProviders")));// converter_complextype.cpp:209
+    _valueGetProviders.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueGetProviders.setQualified(true);
+    message = _valueGetProviders;// converter_complextype.cpp:223
+    KDSoapPendingCall pendingCall = mService->clientInterface()->asyncCall(QLatin1String("getProviders"), message, action);
+    KDSoapPendingCallWatcher *watcher = new KDSoapPendingCallWatcher(pendingCall, this);
+    QObject::connect(watcher, SIGNAL(finished(KDSoapPendingCallWatcher*)),
+                     this, SLOT(slotFinished(KDSoapPendingCallWatcher*)));
+}
+
+TNS__GetProvidersResponse ClientServise::ClientServiseSoap12BindingJobs::GetProvidersJob::resultParameters() const
+{
+    return mResultParameters;
+}
+
+void ClientServise::ClientServiseSoap12BindingJobs::GetProvidersJob::slotFinished( KDSoapPendingCallWatcher* watcher )
 {
     watcher->deleteLater();
     const KDSoapMessage reply = watcher->returnMessage();
@@ -2815,6 +3214,52 @@ void ClientServise::ClientServiseSoapBinding::_kd_slotSendOrderFinished( KDSoapP
     watcher->deleteLater();
 }
 
+TNS__GetProvidersResponse ClientServise::ClientServiseSoapBinding::getProviders( const TNS__GetProviders& parameters )
+{
+    const QString action = QString::fromLatin1("http://www.tredifarm.org#ClientServise:getProviders");
+    KDSoapMessage message;
+    message.setUse(KDSoapMessage::LiteralUse);
+    KDSoapValue _valueGetProviders(parameters.serialize(QString::fromLatin1("getProviders")));// converter_complextype.cpp:209
+    _valueGetProviders.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueGetProviders.setQualified(true);
+    message = _valueGetProviders;// converter_complextype.cpp:223
+    d_ptr->m_lastReply = clientInterface()->call(QLatin1String("getProviders"), message, action);
+    if (d_ptr->m_lastReply.isFault())
+        return TNS__GetProvidersResponse();
+    TNS__GetProvidersResponse ret;
+    ret.deserialize(d_ptr->m_lastReply);// converter_clientstub.cpp:519
+    return ret;// converter_clientstub.cpp:573
+}
+
+void ClientServise::ClientServiseSoapBinding::asyncGetProviders( const TNS__GetProviders& parameters )
+{
+    const QString action = QString::fromLatin1("http://www.tredifarm.org#ClientServise:getProviders");
+    KDSoapMessage message;
+    message.setUse(KDSoapMessage::LiteralUse);
+    KDSoapValue _valueGetProviders(parameters.serialize(QString::fromLatin1("getProviders")));// converter_complextype.cpp:209
+    _valueGetProviders.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueGetProviders.setQualified(true);
+    message = _valueGetProviders;// converter_complextype.cpp:223
+    KDSoapPendingCall pendingCall = clientInterface()->asyncCall(QLatin1String("getProviders"), message, action);
+    KDSoapPendingCallWatcher *watcher = new KDSoapPendingCallWatcher(pendingCall, this);
+    QObject::connect(watcher, SIGNAL(finished(KDSoapPendingCallWatcher*)),
+                     this, SLOT(_kd_slotGetProvidersFinished(KDSoapPendingCallWatcher*)));
+}
+
+void ClientServise::ClientServiseSoapBinding::_kd_slotGetProvidersFinished( KDSoapPendingCallWatcher* watcher )
+{
+    const KDSoapMessage reply = watcher->returnMessage();
+    if (reply.isFault()) {
+        Q_EMIT getProvidersError(reply);// converter_clientstub.cpp:683
+        Q_EMIT soapError(QLatin1String("getProviders"), reply);
+    } else {
+        TNS__GetProvidersResponse ret;
+        ret.deserialize(reply);// converter_clientstub.cpp:519
+        Q_EMIT getProvidersDone( ret );
+    }
+    watcher->deleteLater();
+}
+
 
 class ClientServise::ClientServiseSoap12Binding::PrivateDPtr
 {
@@ -3113,6 +3558,52 @@ void ClientServise::ClientServiseSoap12Binding::_kd_slotSendOrderFinished( KDSoa
         TNS__SendOrderResponse ret;
         ret.deserialize(reply);// converter_clientstub.cpp:519
         Q_EMIT sendOrderDone( ret );
+    }
+    watcher->deleteLater();
+}
+
+TNS__GetProvidersResponse ClientServise::ClientServiseSoap12Binding::getProviders( const TNS__GetProviders& parameters )
+{
+    const QString action = QString::fromLatin1("http://www.tredifarm.org#ClientServise:getProviders");
+    KDSoapMessage message;
+    message.setUse(KDSoapMessage::LiteralUse);
+    KDSoapValue _valueGetProviders(parameters.serialize(QString::fromLatin1("getProviders")));// converter_complextype.cpp:209
+    _valueGetProviders.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueGetProviders.setQualified(true);
+    message = _valueGetProviders;// converter_complextype.cpp:223
+    d_ptr->m_lastReply = clientInterface()->call(QLatin1String("getProviders"), message, action);
+    if (d_ptr->m_lastReply.isFault())
+        return TNS__GetProvidersResponse();
+    TNS__GetProvidersResponse ret;
+    ret.deserialize(d_ptr->m_lastReply);// converter_clientstub.cpp:519
+    return ret;// converter_clientstub.cpp:573
+}
+
+void ClientServise::ClientServiseSoap12Binding::asyncGetProviders( const TNS__GetProviders& parameters )
+{
+    const QString action = QString::fromLatin1("http://www.tredifarm.org#ClientServise:getProviders");
+    KDSoapMessage message;
+    message.setUse(KDSoapMessage::LiteralUse);
+    KDSoapValue _valueGetProviders(parameters.serialize(QString::fromLatin1("getProviders")));// converter_complextype.cpp:209
+    _valueGetProviders.setNamespaceUri(QString::fromLatin1("http://www.tredifarm.org"));
+    _valueGetProviders.setQualified(true);
+    message = _valueGetProviders;// converter_complextype.cpp:223
+    KDSoapPendingCall pendingCall = clientInterface()->asyncCall(QLatin1String("getProviders"), message, action);
+    KDSoapPendingCallWatcher *watcher = new KDSoapPendingCallWatcher(pendingCall, this);
+    QObject::connect(watcher, SIGNAL(finished(KDSoapPendingCallWatcher*)),
+                     this, SLOT(_kd_slotGetProvidersFinished(KDSoapPendingCallWatcher*)));
+}
+
+void ClientServise::ClientServiseSoap12Binding::_kd_slotGetProvidersFinished( KDSoapPendingCallWatcher* watcher )
+{
+    const KDSoapMessage reply = watcher->returnMessage();
+    if (reply.isFault()) {
+        Q_EMIT getProvidersError(reply);// converter_clientstub.cpp:683
+        Q_EMIT soapError(QLatin1String("getProviders"), reply);
+    } else {
+        TNS__GetProvidersResponse ret;
+        ret.deserialize(reply);// converter_clientstub.cpp:519
+        Q_EMIT getProvidersDone( ret );
     }
     watcher->deleteLater();
 }

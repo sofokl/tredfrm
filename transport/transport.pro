@@ -3,6 +3,8 @@ DESTDIR = ../bin/
 
 TEMPLATE = lib
 
+KDSOAP_DIR = $$PWD
+
 win32:CONFIG(release, debug|release): TARGET = transport
 else:win32:CONFIG(debug, debug|release): TARGET = transportd
 else:unix: TARGET = transport
